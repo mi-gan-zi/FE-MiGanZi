@@ -12,8 +12,9 @@ const foundationColor = {
   "st-gray-03": "#DFDFDF",
   "st-gray-02": "#F5F4F3",
   "st-gray-01": "#F7F7F7",
+  "st-trans": "transparent",
   "st-yellow": "#FEE500",
-}
+};
 const semanticColos = {
   "alert-red": "#F22222",
   "warning-gold": "#FFB525",
@@ -24,6 +25,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        "suit-variable": "suit-variable",
+      },
       width: {
         390: "24rem",
       },
@@ -37,6 +41,10 @@ module.exports = {
       ...foundationColor,
       ...semanticColos,
     },
+    colors: {
+      ...foundationColor,
+      ...semanticColos,
+    },
     // checkbox: {
     //   display: "inline-block",
     //   verticalAlign: "top",
@@ -46,4 +54,4 @@ module.exports = {
     // },
   },
   plugins: [],
-}
+};
