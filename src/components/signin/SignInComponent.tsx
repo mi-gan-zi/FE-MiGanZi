@@ -1,17 +1,17 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react"
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 
 type SignInProps = {
-  setStatus: Dispatch<SetStateAction<Number>>
-}
+  setStatus: Dispatch<SetStateAction<Number>>;
+};
 
 const SignInComponent = ({ setStatus }: SignInProps) => {
   const onClickButton = () => {
-    setStatus(1)
-  }
+    setStatus(1);
+  };
 
   useEffect(() => {
-    setStatus(0)
-  }, [])
+    setStatus(0);
+  }, []);
 
   return (
     <div className="flex flex-col justify-between h-[740px] w-[24rem]">
@@ -37,7 +37,7 @@ const SignInComponent = ({ setStatus }: SignInProps) => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignInComponent
+export default SignInComponent;

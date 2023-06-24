@@ -1,15 +1,15 @@
-import React, { useRef } from "react"
+import React, { useRef } from "react";
 
 export const NicknameComponent = () => {
-  const input_ref = useRef<HTMLInputElement>(null)
+  const input_ref = useRef<HTMLInputElement>(null);
 
   const submit = (e: React.SyntheticEvent) => {
-    e.preventDefault()
-    const nickname = input_ref.current?.value
+    e.preventDefault();
+    const nickname = input_ref.current?.value;
     if (nickname === "") {
-      alert("닉네임을 입력해주세요")
+      alert("닉네임을 입력해주세요.");
     }
-  }
+  };
 
   return (
     <form onSubmit={(e) => submit(e)}>
@@ -30,5 +30,5 @@ export const NicknameComponent = () => {
         </button>
       </div>
     </form>
-  )
-}
+  );
+};
