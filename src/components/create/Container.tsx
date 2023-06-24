@@ -1,6 +1,6 @@
 import React from "react";
 import ImageUpLoad from "./ImageUpLoad";
-import MusicSelect from "./Player";
+import Player from "components/common/player/Player";
 import Head from "./Head";
 
 export default function Container() {
@@ -8,7 +8,7 @@ export default function Container() {
     <div className="w-[390px] bg-slate-50 mx-auto flex-col mt-40 bg">
       <>
         <Head />
-        <MusicSelect />
+        <Player />
         <ImageUpLoad />
       </>
     </div>
