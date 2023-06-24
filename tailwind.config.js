@@ -20,6 +20,11 @@ const semanticColos = {
   "warning-gold": "#FFB525",
   "complete-green": "#00C950",
   "active-blue": "#007DF0",
+};
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {},
 }
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],

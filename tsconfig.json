@@ -20,5 +20,9 @@
       "kakao.maps.d.ts"
     ]
   },
-  "include": ["src"]
+  "include": ["src"],
+  "typeRoots": [
+    "node_modules/@types",
+    "custom_typings/"
+  ] 
 }
