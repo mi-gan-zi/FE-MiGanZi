@@ -1,6 +1,6 @@
-import React from "react"
-import Layout from "shared/Layout/Layout"
+import React from "react";
+import Layout from "shared/Layout/Layout";
 
 export default function Main() {
-  return <Layout>MainPage</Layout>
+  return <Layout>브랜치 테스트</Layout>;
 }
