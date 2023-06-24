@@ -22,7 +22,17 @@ const semanticColos = {
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+
+    extend: {
+      width: {
+        390: "24rem",
+      },
+      height: {
+        59: "4rem",
+        90: "6rem",
+      },
+    },
+
     backgroundColor: {
       ...foundationColor,
       ...semanticColos,
@@ -34,6 +44,7 @@ module.exports = {
     //   borderWidth: 0,
     //   borderRadius: 0,
     // },
+
   },
   plugins: [],
-};
+}
