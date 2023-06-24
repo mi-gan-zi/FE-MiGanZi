@@ -1,5 +1,5 @@
-import React from "react";
+import Container from "components/create/Container";
 
 export default function Create() {
-  return <div>Create Page</div>;
+  return <Container />;
 }
