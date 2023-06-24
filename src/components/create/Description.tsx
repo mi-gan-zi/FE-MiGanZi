@@ -1,69 +1,55 @@
-import React, { useEffect, useState } from "react";
+import { PinIcon, SearchIcon, WihteSearchIcon } from "assets/Icon";
+import useKeywordMap from "components/common/keyword_map/useKeywordMap";
+import { useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 
 export default function Description() {
-  const [info, setInfo] = useState();
-  const [markers, setMarkers] = useState([]);
-  const [map, setMap] = useState();
-
-  useEffect(() => {
-    if (!map) return;
-    const ps = new kakao.maps.services.Places();
-
-    ps.keywordSearch(
-      "서울특별시 서초구 나루터로",
-      (data, status, _pagination) => {
-        if (status === kakao.maps.services.Status.OK) {
-          // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-          // LatLngBounds 객체에 좌표를 추가합니다
-          const bounds = new kakao.maps.LatLngBounds();
-          let markers = [];
-
-          for (var i = 0; i < data.length; i++) {
-            // @ts-ignore
-            markers.push({
-              position: {
-                lat: data[i].y,
-                lng: data[i].x,
-              },
-              content: data[i].place_name,
-            });
-            // @ts-ignore
-            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-          }
-          setMarkers(markers);
-
-          // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-          map.setBounds(bounds);
-        }
-      }
-    );
-  }, [map]);
-
+  const [keyWord, setKeyWord] = useState("");
+  const [isPopUp, setIsPopUp] = useState(false);
+  const handleAddress = (data: any) => {
+    setKeyWord(data.address);
+    setIsPopUp(!isPopUp);
+  };
   return (
-    <Map // 로드뷰를 표시할 Container
-      center={{
-        lat: 37.566826,
-        lng: 126.9786567,
-      }}
-      style={{
-        width: "100%",
-        height: "350px",
-      }}
-      level={3}
-      onCreate={setMap}
-    >
-      {markers.map((marker) => (
-        <MapMarker
-          key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
-          position={marker.position}
-          onClick={() => setInfo(marker)}
+    <div className="flex flex-col gap-4">
+      <h1>장소 입력</h1>
+      <div className="input-box">
+        <div
+          className={
+            "w-[350px] h-[42px]  rounded-md mx-auto flex items-center px-3 gap-2 shadow-st-gray-07 justify-center " +
+            (keyWord
+              ? "bg-st-white border-st-gray-05 border-[1px] text-st-gray-07"
+              : "bg-[#007DF0]")
+          }
+          onClick={handleAddress}
         >
-          {info && info.content === marker.content && (
-            <div style={{ color: "#000" }}>{marker.content}</div>
+          {keyWord ? <PinIcon /> : <WihteSearchIcon />}
+          {keyWord ? (
+            keyWord
+          ) : (
+            <p className="text-st-white flex justify-center items-center cursor-pointer">
+              장소 입력하기
+            </p>
           )}
-        </MapMarker>
-      ))}
-    </Map>
+        </div>
+      </div>
+      {isPopUp && (
+        <div>
+          <DaumPostCode onComplete={handleAddress} autoClose />
+        </div>
+      )}
+      <div className="flex">{useKeywordMap({ keyWord })}</div>
+      <div className="border-t-[1px] border-st-gray-03 flex justify-center ">
+        <button
+          className={
+            " w-[350px] h-[50px] text-st-white font-bold  mt-2 rounded-md " +
+            (keyWord ? "bg-[#007DF0] " : "bg-st-gray-05")
+          }
+          disabled
+        >
+          다음으로
+        </button>
+      </div>
+    </div>
   );
 }
