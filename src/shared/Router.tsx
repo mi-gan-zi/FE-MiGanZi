@@ -3,6 +3,7 @@ import Main from "../pages/Main";
 import Detail from "../pages/Detail";
 import Search from "../pages/Search";
 import SignIn from "../pages/SignIn";
+import Create from "../pages/Create";
 export default function Router() {
   return (
     <BrowserRouter>
@@ -11,6 +12,7 @@ export default function Router() {
         <Route path="/detail" element={<Detail />} />
         <Route path="/search" element={<Search />} />
         <Route path="/Sign-in" element={<SignIn />} />
+        <Route path="/create" element={<Create />} />
       </Routes>
     </BrowserRouter>
   );
