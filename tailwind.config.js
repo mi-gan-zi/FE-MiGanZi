@@ -12,6 +12,8 @@ const foundationColor = {
   "st-gray-03": "#DFDFDF",
   "st-gray-02": "#F5F4F3",
   "st-gray-01": "#F7F7F7",
+  "st-trans": "transparent",
+  "st-yellow": "#FEE500",
 };
 const semanticColos = {
   "alert-red": "#F22222",
@@ -23,7 +25,28 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {},
+}
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {
+      fontFamily: {
+        "suit-variable": "suit-variable",
+      },
+      width: {
+        390: "24rem",
+      },
+      height: {
+        59: "4rem",
+        90: "6rem",
+      },
+    },
+
     backgroundColor: {
+      ...foundationColor,
+      ...semanticColos,
+    },
+    colors: {
       ...foundationColor,
       ...semanticColos,
     },
