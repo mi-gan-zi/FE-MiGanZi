@@ -13,13 +13,14 @@ const foundationColor = {
   "st-gray-02": "#F5F4F3",
   "st-gray-01": "#F7F7F7",
   "st-trans": "transparent",
+  "st-yellow": "#FEE500",
 };
 const semanticColos = {
   "alert-red": "#F22222",
   "warning-gold": "#FFB525",
   "complete-green": "#00C950",
   "active-blue": "#007DF0",
-};
+}
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
