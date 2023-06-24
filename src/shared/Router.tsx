@@ -11,7 +11,7 @@ export default function Router() {
         <Route path="/" element={<Main />} />
         <Route path="/detail" element={<Detail />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/Sign-in" element={<SignIn />} />
+        <Route path="/sign-in" element={<SignIn />} />
         <Route path="/create" element={<Create />} />
       </Routes>
     </BrowserRouter>
