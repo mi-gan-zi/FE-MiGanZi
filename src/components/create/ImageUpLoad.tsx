@@ -1,10 +1,12 @@
 import { UpLoadIcon } from "assets/Icon";
-import React, { useRef, useState } from "react";
+import { DragEvent, useCallback, useRef, useState } from "react";
 
 export default function ImageUpLoad() {
   const [img, setImg] = useState<string>("");
   const ref = useRef<HTMLInputElement>(null);
-  const handleCreateIMG = () => {
+
+  const handleCreateIMG = (e: any) => {
+    const dropFile = e.dataTransfer.files[0];
     const file = ref.current?.files?.[0];
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -12,8 +14,16 @@ export default function ImageUpLoad() {
     };
     if (file) {
       reader.readAsDataURL(file);
+    } else if (dropFile) {
+      reader.readAsDataURL(dropFile);
     }
   };
+
+  const handleDrop = useCallback((e: DragEvent): void => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleCreateIMG(e);
+  }, []);
 
   return (
     <div>
@@ -23,6 +33,10 @@ export default function ImageUpLoad() {
           "pre-img w-[350px] h-[467px] flex-col justify-center items-center flex " +
           (img ? "" : "border-dashed border-st-gray-05 border-[1px] rounded-lg")
         }
+        onDragOver={(e) => {
+          e.preventDefault();
+        }}
+        onDrop={(e: DragEvent) => handleDrop(e)}
       >
         {img ? (
           <img
@@ -39,7 +53,7 @@ export default function ImageUpLoad() {
               </p>
             </div>
             <div className=" flex-col flex justify-center items-center">
-              <p>당신만 아는 장소를 업로드 해주세요</p>
+              <p>당신만 아는 장소를 선택 또는 드레그 해주세요</p>
               <p>3:4 비율 사진을 추천해요.</p>
             </div>
           </div>

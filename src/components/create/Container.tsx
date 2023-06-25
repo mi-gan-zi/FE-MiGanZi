@@ -5,7 +5,7 @@ import Description from "./Description";
 import MusicSelect from "./MusicSelect";
 
 export default function Container() {
-  const [nextMove, setNextMove] = useState<number>(1);
+  const [nextMove, setNextMove] = useState<number>(2);
   const [keyWord, setKeyWord] = useState("");
   // switch (nextMove) {
   //   case 1:
