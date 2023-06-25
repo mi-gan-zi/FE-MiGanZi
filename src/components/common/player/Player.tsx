@@ -5,7 +5,7 @@ interface PropsType {
   song?: string;
   artist?: string;
   playList?: any;
-  playTime?: string;
+  playTime?: String;
   onStartPlay?(): void;
   onStopPlay?(): void;
 }

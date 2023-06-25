@@ -12,6 +12,7 @@ import { ReactComponent as ContentImg } from '../assets/Contentimg.svg';
 import { ReactComponent as Mark } from '../assets/Mark.svg';
 import { ReactComponent as CommentImg } from '../assets/Commentimg.svg';
 import { ReactComponent as Dot } from '../assets/Dot.svg';
+import axios, { AxiosResponse }from 'axios';
 
 function Header({comment} : any) {
   return(
@@ -125,18 +126,18 @@ function CommentList({comment} : any) {
   );
 }
 
-function CommentInput({newComment,  setNewComment} : any) {
+function CommentInput({newComment,  setNewComment, onSend} : any) {
   return(
     <div className = 'w-[390px] h-[85px] relative'>
       <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02'> 
-        <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} onChange={(event) => { setNewComment(event.target.value);}}/>    
-        <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' />
+        <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} onChange={(event) => { setNewComment(event.target.value); console.log(event.target.value); }}/>    
+        <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSend} />
       </form>
     </div>
   );
 }
 
-function Comment({commentNum, newComment, setNewComment} : any) {
+function Comment({commentNum, newComment, setNewComment, onSend} : any) {
   return(
     <div>
         <div className = 'w-[390px] h-[70px] mt-[32px] mb-[32px] relative'>
@@ -144,7 +145,7 @@ function Comment({commentNum, newComment, setNewComment} : any) {
           댓글 {commentNum}</p>
         </div>
         <CommentList></CommentList>
-        <CommentInput newComment={newComment} setNewComment={setNewComment}></CommentInput>
+        <CommentInput newComment={newComment} setNewComment={setNewComment} onSend={onSend}></CommentInput>
     </div>
   );
 }
@@ -152,8 +153,9 @@ function Comment({commentNum, newComment, setNewComment} : any) {
 function Detail() {
   const [audio] = useState(new Audio(music1));
   const [playing, setPlaying] = useState(false);
-  const [songName, setSongName] = useState(false);
-  const [artistName, setArtistName] = useState(false);
+  //const [songName, setSongName] = useState(false);
+  //const [artistName, setArtistName] = useState(false);
+  const [userName, setUserName] = useState('');
   const [imagePreview, setImagePreview] = useState("");
   const [comment, setComment] = useState([]);
   const [commentNum, setCommentNum] = useState(0);
@@ -161,8 +163,53 @@ function Detail() {
   const [totalTime, setTotalTime] = useState(0);
   const [currentTime, setCurrentTime] = useState('');
 
+  const [result, setResult] = useState<AxiosResponse | null>(null);
+
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const callAPI = async () => {
+    try{
+      const res = await axios.get("https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/board/101");
+      console.log(res);
+      setResult(res);
+     }catch(err){
+      console.log("Error:", err);
+     }
+  };
+
+  /* const callAPI2 = async () => {
+    try{
+      const res = await axios.post("https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/board/comment", 
+      {    
+        nickname: 'yarn',
+        content: newComment
+      })
+      const data = res.data.result;
+      console.log(data);
+     }catch(err){
+      console.log("Error:", err);
+     }
+  }; */
+
+  const callAPI3 = async () => {
+    const formData = new FormData();
+    formData.append('nickname', 'yarn')
+    formData.append('content', newComment)
+    try{
+      const res = await axios.post("https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/board/comment", 
+      formData
+      )
+      const data = res.data.result;
+      console.log(data);
+     }catch(err){
+      console.log("Error:", err);
+     }
+  };
+
+  /* useEffect(() => {
+    callAPI();
+  }, [result]); */
 
   useEffect(() => {
     playing ? audio.play() : audio.pause();
@@ -182,18 +229,20 @@ function Detail() {
     setPlaying(false)
   }
 
+  const onSend = () => {
+    callAPI3();
+  }
+
   return(
-    <>
-    
+    <>   
       <Header></Header>
       <Player onStartPlay={onStartPlay} onStopPlay={onStopPlay} playTime={currentTime}></Player>
       <div className='w-[390px] h-[14px] bg-st-gray-02 mt-[32px]'></div>
       <Content></Content>
       <ImageInfo></ImageInfo>
       <div className='w-[390px] h-[14px] bg-st-gray-02'></div>
-      <Comment commentNum={commentNum} newComment={newComment} setNewComment={setNewComment}></Comment>
-      
-    
+      <Comment commentNum={commentNum} newComment={newComment} setNewComment={setNewComment}
+      onSend={onSend}> </Comment>  
     </>
   );
 }
