@@ -1,4 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
+import { ReactComponent as Logo } from "../../assets/logo.svg";
+import { ReactComponent as Line } from "../../assets/line.svg";
 
 type SignInProps = {
   setStatus: Dispatch<SetStateAction<Number>>;
@@ -15,7 +17,24 @@ const SignInComponent = ({ setStatus }: SignInProps) => {
 
   return (
     <div className="flex flex-col justify-between h-[740px] w-[24rem]">
-      <div className="h-[510px] w-full"></div>
+      <div className="h-[510px] w-full flex flex-col items-center ">
+        <div className="translate-x-3">
+          <Line></Line>
+        </div>
+        <div className="flex flex-col ml-[35px]">
+          <Logo></Logo>
+          <div className="mb-[50px]">
+            <p>미(간)지의 장소를 탐색하기 위해</p>
+            <p>회원가입/로그인을 진행헤주세요!</p>
+          </div>
+        </div>
+        <div className="flex text-left w-[326px] translate-y-[260px]">
+          <p className="text-[#A5A5A5] text-xs">
+            '미(간)지'는 네이밍의 담긴 의미처럼, 아직 다른 사람들에게 발견 되지
+            않은 미지의 공간을 특별한 가치를 담은 큐레이팅으로 제공합니다.
+          </p>
+        </div>
+      </div>
       <div className="h-[182px] w-full flex flex-col justify-between items-center">
         <button
           onClick={onClickButton}
@@ -31,7 +50,7 @@ const SignInComponent = ({ setStatus }: SignInProps) => {
         </button>
         <button
           onClick={onClickButton}
-          className="w-[350px] h-[50px] py-[13px] px-[16px] rounded-lg bg-st-gray-10 text-white"
+          className="w-[350px] h-[50px] py-[13px] px-[16px] rounded-lg bg-st-gray-10 text-st-white"
         >
           APPLE로 시작하기
         </button>
