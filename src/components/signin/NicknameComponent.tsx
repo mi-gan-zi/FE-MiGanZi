@@ -25,7 +25,7 @@ export const NicknameComponent = () => {
         </div>
       </div>
       <div className="w-[390px] flex items-center">
-        <button className="w-[350px] h-[50px] px-[16px] py-[13px] bg-[#007DF0] text-white rounded-lg mx-auto">
+        <button className="w-[350px] h-[50px] px-[16px] py-[13px] bg-[#007DF0] text-st-white rounded-lg mx-auto">
           가입 완료
         </button>
       </div>
