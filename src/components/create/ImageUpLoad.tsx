@@ -28,7 +28,7 @@ export default function ImageUpLoad() {
           <img
             src={img}
             alt=""
-            className=" max-w-xl rounded-md w-full h-auto aspect-[4/3] object-cover"
+            className=" max-w-xl rounded-md w-full h-auto aspect-[3/4] object-cover"
           />
         ) : (
           <div className="items-center justify-center flex-col flex gap-1">
