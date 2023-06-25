@@ -15,6 +15,25 @@ export const NicknameComponent = () => {
       alert("닉네임을 입력해주세요.");
     } else {
       try {
+        process.env.REACT_APP_ENDPOINT &&
+          axios
+            .post(
+              process.env.REACT_APP_ENDPOINT + "/user/siginup",
+              {
+                nickname,
+              },
+              { headers }
+            )
+            .then(() =>
+              axios.post(
+                process.env.REACT_APP_ENDPOINT + "/user/login",
+                {
+                  nickname,
+                },
+                { headers }
+              )
+            )
+            .then(() => alert("로그인 성공!"));
       } catch (err) {
         console.log(err);
       }
