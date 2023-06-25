@@ -5,9 +5,9 @@ import Header from "./Header";
 const Layout = (props: { children: React.ReactNode }) => {
   return (
     <div className="w-[390px] mx-auto border ">
-      {/* <Header /> */}
+      <Header />
       <main>{props.children}</main>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };

@@ -80,13 +80,13 @@ export default function ImageUpLoad() {
           onChange={handleCreateIMG}
           ref={ref}
         />
-        <button
+        {/* <button
           onClick={() => {
             setImg("");
           }}
         >
           취소
-        </button>
+        </button> */}
       </div>
     </div>
   );
