@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ImageUpLoad from "./ImageUpLoad";
 import Head from "./Head";
 import Description from "./Description";
@@ -10,14 +10,22 @@ export default function Container() {
   // switch (nextMove) {
   //   case 1:
   // }
+
+  useEffect(() => {
+    if (nextMove < 1) {
+      setNextMove(1);
+    } else if (nextMove > 3) {
+      setNextMove(3);
+    }
+  }, [nextMove]);
   return (
-    <div className="w-[390px] bg-slate-50 mx-auto flex-col mt-40 bg">
-      <>
-        <Head />
+    <>
+      <Head setNextMove={setNextMove} />
+      <div className="w-[390px] bg-slate-50 mx-auto flex-col mt-40 bg">
         {nextMove === 1 && <MusicSelect />}
         {nextMove === 2 && <ImageUpLoad />}
         {nextMove === 3 && <Description />}
-      </>
-    </div>
+      </div>
+    </>
   );
 }
