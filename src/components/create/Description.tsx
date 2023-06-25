@@ -2,6 +2,7 @@ import { PinIcon, SearchIcon, WihteSearchIcon } from "assets/Icon";
 import useKeywordMap from "components/common/keyword_map/useKeywordMap";
 import { useState } from "react";
 import DaumPostCode from "react-daum-postcode";
+import { Text } from "./Text";
 
 export default function Description() {
   const [keyWord, setKeyWord] = useState("");
@@ -12,7 +13,10 @@ export default function Description() {
   };
   return (
     <div className="flex flex-col gap-4">
-      <h1>장소 입력</h1>
+      <Text />
+      <div className="w-[350px] h-[70px] font-bold text-xl flex items-center px-5">
+        <h1>장소 입력</h1>
+      </div>
       <div className="input-box">
         <div
           className={

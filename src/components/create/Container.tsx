@@ -21,11 +21,9 @@ export default function Container() {
   return (
     <>
       <Head setNextMove={setNextMove} />
-      <div className="w-[390px] bg-slate-50 mx-auto flex-col ">
-        {nextMove === 1 && <MusicSelect />}
-        {nextMove === 2 && <ImageUpLoad />}
-        {nextMove === 3 && <Description />}
-      </div>
+      {nextMove === 1 && <MusicSelect />}
+      {nextMove === 2 && <ImageUpLoad />}
+      {nextMove === 3 && <Description />}
     </>
   );
 }

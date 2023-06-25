@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useRef } from "react";
 
 export const NicknameComponent = () => {
@@ -6,14 +7,23 @@ export const NicknameComponent = () => {
   const submit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const nickname = input_ref.current?.value;
+    const headers = {
+      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+      Accept: "*/*",
+    };
     if (nickname === "") {
       alert("닉네임을 입력해주세요.");
+    } else {
+      try {
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
   return (
     <form onSubmit={(e) => submit(e)}>
-      <div className="h-[770px] w-[390px] flex flex-col items-center">
+      <div className="h-[650px] w-[390px] flex flex-col items-center mt-6">
         <input
           ref={input_ref}
           className="w-[350px] h-[44px] px-[12px] py-[10px] border rounded focus:outline-none"
