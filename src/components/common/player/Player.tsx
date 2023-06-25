@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import music1 from "../../../assets/SimpleSound.mp3";
 interface PropsType {
   song?: string;
   artist?: string;
-  playList?: any;
+  playList: any;
 }
 export default function Player(props: PropsType) {
-  const { song = "Happay", artist = "방랑자", playList = music1 } = props;
+  const { song = "Happay", artist = "방랑자", playList } = props;
   const [playing, setPlaying] = useState(false);
   const [totalTime, setTotalTime] = useState(0);
   const [current, setCurrentTime] = useState(0);
-  const [audio] = useState(new Audio(playList));
+  const [audio, setAudio] = useState(new Audio());
+
+  console.log(playList);
   useEffect(() => {
     playing ? audio.play() : audio.pause();
     if (playing) {
@@ -20,6 +21,11 @@ export default function Player(props: PropsType) {
       });
     }
   }, [playing]);
+  useEffect(() => {
+    if (playList) {
+      setAudio(new Audio(playList));
+    }
+  }, [playList]);
 
   const onStartPlay = () => {
     playing || setPlaying(true);
@@ -31,12 +37,12 @@ export default function Player(props: PropsType) {
   };
   return (
     <div className="bg-yellow-300 flex justify-end">
-      <div className="bg-[#F5F4F3] border-gray-200 border-[1px] w-[370px] h-[157px] rounded-l-xl py-4 flex justify-between px-6">
+      <div className="bg-[#F5F4F3] border-st-gray-03 border-[1px] w-[370px] h-[157px] rounded-l-xl py-4 flex justify-between px-6">
         <article className="left_box flex-col flex">
           <div className="description flex-col flex gap-1 mb-2">
             <p>{song}</p>
             <p>{artist}</p>
-            <p className="thin">{totalTime}</p>
+            <p className="thin">{current}</p>
           </div>
           <div className="button_box flex gap-3">
             <div
