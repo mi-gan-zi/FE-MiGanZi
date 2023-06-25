@@ -1,10 +1,12 @@
 import { UpLoadIcon } from "assets/Icon";
-import React, { useRef, useState } from "react";
+import React, { DragEvent, useCallback, useRef, useState } from "react";
 
 export default function ImageUpLoad() {
   const [img, setImg] = useState<string>("");
   const ref = useRef<HTMLInputElement>(null);
-  const handleCreateIMG = () => {
+
+  const handleCreateIMG = (e: any) => {
+    const dropFile = e.dataTransfer.files[0];
     const file = ref.current?.files?.[0];
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -12,8 +14,16 @@ export default function ImageUpLoad() {
     };
     if (file) {
       reader.readAsDataURL(file);
+    } else if (dropFile) {
+      reader.readAsDataURL(dropFile);
     }
   };
+
+  const handleDrop = useCallback((e: DragEvent): void => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleCreateIMG(e);
+  }, []);
 
   return (
     <div>
@@ -23,6 +33,10 @@ export default function ImageUpLoad() {
           "pre-img w-[350px] h-[467px] flex-col justify-center items-center flex " +
           (img ? "" : "border-dashed border-st-gray-05 border-[1px] rounded-lg")
         }
+        onDragOver={(e) => {
+          e.preventDefault();
+        }}
+        onDrop={(e: DragEvent) => handleDrop(e)}
       >
         {img ? (
           <img
