@@ -11,7 +11,6 @@ export default function Player(props: PropsType) {
   const [current, setCurrentTime] = useState(0);
   const [audio, setAudio] = useState(new Audio());
 
-  console.log(playList);
   useEffect(() => {
     playing ? audio.play() : audio.pause();
     if (playing) {
@@ -61,11 +60,11 @@ export default function Player(props: PropsType) {
         </article>
         <article className="record-box mr-2">
           <div className="progress-bar border-[5px] border-solid border-gray-500 rounded-full w-[120px] h-[120px] flex items-center justify-center shadow-xl">
-            <div className="record w-[100px] h-[100px] bg-st-gray-09 rounded-full flex justify-center items-center shadow-md">
-              <div className="first-line border-[1px] border-solid border-gray-900 w-[90px] h-[90px]  rounded-full items-center justify-center flex">
-                <div className="first-line border-[1px] border-solid border-gray-900 w-[75px] h-[75px]  rounded-full items-center justify-center flex">
-                  <div className="first-line border-[1px] border-solid border-gray-900 w-[60px] h-[60px]  rounded-full items-center justify-center flex">
-                    <div className="first-line border-[1px] border-solid border-gray-900 w-[45px] h-[45px]  rounded-full items-center justify-center flex">
+            <div className="record w-[100px] h-[100px] bg-st-gray-09 rounded-full flex justify-center items-center shadow-md animate-spin">
+              <div className="first-line border-b-[1px] border-solid border-b-st-gray-05 w-[90px] h-[90px]  rounded-full items-center justify-center flex">
+                <div className="first-line border-b-[1px] border-solid border-b-st-gray-05 w-[75px] h-[75px]  rounded-full items-center justify-center flex">
+                  <div className="first-line border-b-[1px] border-solid border-st-gray-05 w-[60px] h-[60px]  rounded-full items-center justify-center flex">
+                    <div className="first-line border-b-[1px] border-solid border-st-gray-05 w-[45px] h-[45px]  rounded-full items-center justify-center flex">
                       <div className="w-7 h-7 rounded-full bg-st-white"></div>
                     </div>
                   </div>
