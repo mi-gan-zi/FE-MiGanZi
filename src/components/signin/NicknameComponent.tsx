@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useRef } from "react";
 
 export const NicknameComponent = () => {
@@ -6,14 +7,29 @@ export const NicknameComponent = () => {
   const submit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const nickname = input_ref.current?.value;
+    const headers = {
+      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+      Accept: "*/*",
+    };
     if (nickname === "") {
       alert("닉네임을 입력해주세요.");
+    } else {
+      try {
+        const res = axios.post(
+          "https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/login ",
+          { nickname },
+          { headers }
+        );
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
   return (
     <form onSubmit={(e) => submit(e)}>
-      <div className="h-[770px] w-[390px] flex flex-col items-center">
+      <div className="h-[700px] w-[390px] flex flex-col items-center">
         <input
           ref={input_ref}
           className="w-[350px] h-[44px] px-[12px] py-[10px] border rounded focus:outline-none"

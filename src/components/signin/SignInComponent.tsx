@@ -1,6 +1,9 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as Line } from "../../assets/line.svg";
+import { ReactComponent as Apple } from "../../assets/apple.svg";
+import { ReactComponent as Google } from "../../assets/google.svg";
+import { ReactComponent as Kakao } from "../../assets/kakao.svg";
 
 type SignInProps = {
   setStatus: Dispatch<SetStateAction<Number>>;
@@ -19,7 +22,7 @@ const SignInComponent = ({ setStatus }: SignInProps) => {
     <div className="flex flex-col justify-between h-[740px] w-[24rem]">
       <div className="h-[510px] w-full flex flex-col items-center ">
         <div className="translate-x-3">
-          <Line></Line>
+          <Line className="mt-2"></Line>
         </div>
         <div className="flex flex-col ml-[35px]">
           <Logo></Logo>
@@ -38,20 +41,23 @@ const SignInComponent = ({ setStatus }: SignInProps) => {
       <div className="h-[182px] w-full flex flex-col justify-between items-center">
         <button
           onClick={onClickButton}
-          className="w-[350px] h-[50px] border border-st-gray-05 bg-st-gray-02 py-[13px] px-[16px] rounded-lg"
+          className="w-[350px] h-[50px] border border-st-gray-05 bg-st-gray-02 py-[13px] px-[16px] rounded-lg flex items-center justify-center"
         >
+          <Google className="mr-3" />
           Google로 시작하기
         </button>
         <button
           onClick={onClickButton}
-          className="w-[350px] h-[50px] py-[13px] px-[16px] rounded-lg bg-st-yellow"
+          className="w-[350px] h-[50px] py-[13px] px-[16px] rounded-lg bg-st-yellow flex items-center justify-center"
         >
+          <Kakao className="mr-3" />
           카카오 계정으로 시작하기
         </button>
         <button
           onClick={onClickButton}
-          className="w-[350px] h-[50px] py-[13px] px-[16px] rounded-lg bg-st-gray-10 text-st-white"
+          className="w-[350px] h-[50px] py-[13px] px-[16px] rounded-lg bg-st-gray-10 text-st-white flex items-center justify-center"
         >
+          <Apple className="mr-3" />
           APPLE로 시작하기
         </button>
       </div>

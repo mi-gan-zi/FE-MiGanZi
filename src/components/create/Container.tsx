@@ -21,11 +21,11 @@ export default function Container() {
   return (
     <>
       <Head setNextMove={setNextMove} />
-      <div className="w-[390px] bg-slate-50 mx-auto flex-col mt-40 bg">
-        {nextMove === 1 && <MusicSelect />}
-        {nextMove === 2 && <ImageUpLoad />}
-        {nextMove === 3 && <Description />}
-      </div>
+      {/* <div className="w-[390px] bg-slate-50 mx-auto flex-col mt-40 bg"> */}
+      {nextMove === 1 && <MusicSelect />}
+      {nextMove === 2 && <ImageUpLoad />}
+      {nextMove === 3 && <Description />}
+      {/* </div> */}
     </>
   );
 }

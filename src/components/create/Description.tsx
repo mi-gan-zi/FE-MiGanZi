@@ -15,7 +15,7 @@ export default function Description() {
     <div className="flex flex-col gap-4">
       <Text />
       <div className="w-[350px] h-[70px] font-bold text-xl flex items-center px-5">
-        <h1>장소 설명 입력</h1>
+        <h1>장소 입력</h1>
       </div>
       <div className="input-box">
         <div
