@@ -8,10 +8,10 @@ export default function SignIn() {
   const [status, setStatus] = useState<Number>(0);
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       {status === 0 && <SignInComponent setStatus={setStatus} />}
       {status === 1 && <NicknameComponent />}
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
