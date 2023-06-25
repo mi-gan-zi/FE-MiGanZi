@@ -15,12 +15,6 @@ export const NicknameComponent = () => {
       alert("닉네임을 입력해주세요.");
     } else {
       try {
-        const res = axios.post(
-          "https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/login ",
-          { nickname },
-          { headers }
-        );
-        console.log(res);
       } catch (err) {
         console.log(err);
       }
