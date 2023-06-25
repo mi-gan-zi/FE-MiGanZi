@@ -16,7 +16,7 @@ import { ReactComponent as Dot } from '../assets/Dot.svg';
 function Header({comment} : any) {
   return(
     <div className = 'w-[390px] h-[70px] relative'>
-          <p className='text-[20px] mt-[10px] absolute left-[40px]'>같이 감상하면 좋은 곡</p>
+          <p className='text-[20px] mt-[10px] font-bold absolute left-[40px]'>같이 감상하면 좋은 곡</p>
     </div>
   );
 }
@@ -77,14 +77,14 @@ function ImageInfo({tagList, info, location} : any) {
         <div className = 'w-[330px] h-[26px] flex flex-row items-start gap-[10px]'>
           <Tag tagList={tagList} ></Tag>
         </div>
-        <div className = 'w-[330px] h-[96px] mt-[16px] overflow-auto scrollbar-hide'>설명자리{info}
+        <div className = 'w-[330px] h-[96px] mt-[16px] overflow-auto scrollbar-hide'>{info}
         기상청에 따르면 현재 중국 상하이에서 제주까지 정체전선이 걸쳐진 상황이며 잘 발달한 비구름대가 우리나라를 향해 북상 중이다.박중환 기상청 예보분석관은 "남쪽에서 따뜻하고 습한 공기가 유입되는 가운데 정체전선상 발달한 저기압이 우리나라로 들어오면서 전국에 많은 비가 강하게 내리겠다"라고 설명했다.제주와 남해안에는 이미 장맛비가 내리고 있다. 제주 한라산 일부엔 이날 들어 정오까지 이미 100㎜ 안팎 비가 쏟아졌다. 정체전선 위에 발달한 저기압의 앞쪽과 북태평양고기압 가장자리에서 부는 고온다습한 남풍을 맞는 제주산지와 남해안 강수량이 특히 많을 것으로 예상된다. 정체전선 움직임에 따라 비가 집중적으로 쏟아지는 지역이 조금씩 바뀌겠다.제주와 남해안, 지리산 부근은 이날 밤까지 비가 거세게 내리겠다.
         
         </div>
       </div>
       <div className = 'w-[390px] h-[114px] absolute top-[170px]'>
         <div className = 'w-[330px] h-[70px] absolute left-[40px]'>
-          <p className="absolute top-[20px] text-[20px]">이 장소는 어디인가요?</p></div>
+          <p className="absolute top-[20px] text-[20px] font-bold">이 장소는 어디인가요?</p></div>
         <div className = 'w-[330px] h-[44px] absolute top-[70px] left-[40px] border-2'>
           <Mark className="absolute top-[14px] left-[14px]" ></Mark>
           <span className = 'w-[281px] h-[24px] text-[16px] absolute left-[39px] top-[10px]'>수원시{location}</span>
@@ -144,7 +144,7 @@ function Comment({commentNum, newComment, setNewComment} : any) {
           댓글 {commentNum}</p>
         </div>
         <CommentList></CommentList>
-        <CommentInput></CommentInput>
+        <CommentInput newComment={newComment} setNewComment={setNewComment}></CommentInput>
     </div>
   );
 }
@@ -191,7 +191,7 @@ function Detail() {
       <Content></Content>
       <ImageInfo></ImageInfo>
       <div className='w-[390px] h-[14px] bg-st-gray-02'></div>
-      <Comment commentNum={commentNum}></Comment>
+      <Comment commentNum={commentNum} newComment={newComment} setNewComment={setNewComment}></Comment>
       
     
     </>
