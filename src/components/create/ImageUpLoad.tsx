@@ -1,5 +1,5 @@
 import { UpLoadIcon } from "assets/Icon";
-import React, { DragEvent, useCallback, useRef, useState } from "react";
+import { DragEvent, useCallback, useRef, useState } from "react";
 
 export default function ImageUpLoad() {
   const [img, setImg] = useState<string>("");
@@ -53,7 +53,7 @@ export default function ImageUpLoad() {
               </p>
             </div>
             <div className=" flex-col flex justify-center items-center">
-              <p>당신만 아는 장소를 업로드 해주세요</p>
+              <p>당신만 아는 장소를 선택 또는 드레그 해주세요</p>
               <p>3:4 비율 사진을 추천해요.</p>
             </div>
           </div>
