@@ -7,7 +7,7 @@ const Header = () => {
   const currentTime = new Date().toTimeString().split(" ")[0].slice(0, 5);
   console.log(currentTime);
   return (
-    <div className="w-full  flex items-center justify-between px-5 py-2 border-st-gray-03 mb-4">
+    <div className="w-full flex items-center justify-between px-5 py-2 border-st-gray-03 mb-4">
       <div className="time text-[14px] font-bold ">{currentTime}</div>
       <div>
         <HeaderIcon />
