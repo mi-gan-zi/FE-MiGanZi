@@ -14,7 +14,7 @@ const TagList = () => {
     // TODO: 서버에 요청 & 결과 렌더링
   };
   return (
-    <div className="mb-8">
+    <div className="mb-5">
       <ul className="px-[20px] grid grid-rows-3 grid-flow-col gap-2">
         {tagList.map((item) => (
           <li>
