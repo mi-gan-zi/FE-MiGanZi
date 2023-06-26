@@ -178,7 +178,7 @@ function Detail() {
      }
   };
 
-  const callAPI3 = async () => {
+  const callAPI2 = async () => {
     const formData = new FormData();
     formData.append('nickname', 'yarn')
     formData.append('content', newComment)
@@ -216,7 +216,7 @@ function Detail() {
   }
 
   const onSend = () => {
-    callAPI3();
+    callAPI2();
   }
 
   return(
