@@ -9,6 +9,7 @@ const Layout = (props: { children: React.ReactNode }) => {
   return (
     <>
       <div
+
         className="w-full h-screen bg-center bg-cover bg-no-repeat flex items-center overflow-y-scroll "
         style={{
           backgroundImage: `url(${backpng})`,
