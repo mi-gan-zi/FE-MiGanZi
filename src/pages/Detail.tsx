@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Player from "components/common/player/Player";
+import Player from "../components/common/player/Player2"
 import moment from 'moment';
 import music1 from '../assets/SimpleSound.mp3';
 import exampleImg from '../assets/example.png';
@@ -177,20 +177,6 @@ function Detail() {
       console.log("Error:", err);
      }
   };
-
-  /* const callAPI2 = async () => {
-    try{
-      const res = await axios.post("https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/board/comment", 
-      {    
-        nickname: 'yarn',
-        content: newComment
-      })
-      const data = res.data.result;
-      console.log(data);
-     }catch(err){
-      console.log("Error:", err);
-     }
-  }; */
 
   const callAPI3 = async () => {
     const formData = new FormData();
