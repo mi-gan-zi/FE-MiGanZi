@@ -1,5 +1,5 @@
-import axios from "axios";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+// import axios from "axios";
+import React, { useState, useEffect, useRef } from "react";
 import Layout from "shared/Layout/Layout";
 
 interface Iinfo {
@@ -16,42 +16,42 @@ interface Iinfo {
 }
 
 export default function Main() {
-  const [infoArray, setInfoArray] = useState<Iinfo[]>([]);
-  const observerRef = useRef<IntersectionObserver>();
-  const boxRef = useRef<HTMLDivElement>(null);
+  // const [infoArray, setInfoArray] = useState<Iinfo[]>([]);
+  // const observerRef = useRef<IntersectionObserver>();
+  // const boxRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // getInfo();
-  }, []);
+  // useEffect(() => {
+  //   // getInfo();
+  // }, []);
 
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(intersectionObserver);
-    boxRef.current && observerRef.current.observe(boxRef.current);
-  });
+  // useEffect(() => {
+  //   observerRef.current = new IntersectionObserver(intersectionObserver);
+  //   boxRef.current && observerRef.current.observe(boxRef.current);
+  // });
 
-  const getInfo = async () => {
-    const response = await axios.get(
-      `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/board`
-    );
+  // const getInfo = async () => {
+  //   const response = await axios.get(
+  //     `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/board`
+  //   );
 
-    // setInfoArray((curInfoArray) => [...curInfoArray, ...response.data]);
-    setInfoArray(response.data);
+  //   // setInfoArray((curInfoArray) => [...curInfoArray, ...response.data]);
+  //   setInfoArray(response.data);
 
-    console.log(infoArray);
-    console.log("ADD info data...");
-  };
+  //   console.log(infoArray);
+  //   console.log("ADD info data...");
+  // };
 
-  const intersectionObserver = (
-    entries: IntersectionObserverEntry[],
-    io: IntersectionObserver
-  ) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        io.unobserve(entry.target);
-        getInfo();
-      }
-    });
-  };
+  // const intersectionObserver = (
+  //   entries: IntersectionObserverEntry[],
+  //   io: IntersectionObserver
+  // ) => {
+  //   entries.forEach((entry) => {
+  //     if (entry.isIntersecting) {
+  //       io.unobserve(entry.target);
+  //       getInfo();
+  //     }
+  //   });
+  // };
 
   // const [posts, setPosts] = useState<Iinfo[]>([]);
   // const [hasNextPage, setHasNextPage] = useState<boolean>(true);
