@@ -9,12 +9,6 @@ type KeywordType = {
   keyWord?: string;
   // setKeyWord: Dispatch<SetStateAction<string>>;
 };
-/**
- * @property
- * 부모에서  useState생성 keyWord, setKeyWord 프롭스로 전달!
- * @type
- * string
- */
 export default function useKeywordMap(props: KeywordType) {
   const { keyWord } = props;
   const [info, setInfo] = useState();

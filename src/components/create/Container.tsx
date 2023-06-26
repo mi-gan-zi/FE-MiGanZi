@@ -7,9 +7,6 @@ import MusicSelect from "./MusicSelect";
 export default function Container() {
   const [nextMove, setNextMove] = useState<number>(1);
   const [keyWord, setKeyWord] = useState("");
-  // switch (nextMove) {
-  //   case 1:
-  // }
 
   useEffect(() => {
     if (nextMove < 1) {

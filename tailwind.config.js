@@ -46,6 +46,9 @@ module.exports = {
       ...foundationColor,
       ...semanticColos,
     },
+    // animation: {
+    //   "spin-slow": "spin 3s linear infinite",
+    // },
     // checkbox: {
     //   display: "inline-block",
     //   verticalAlign: "top",
@@ -54,5 +57,5 @@ module.exports = {
     //   borderRadius: 0,
     // },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };
