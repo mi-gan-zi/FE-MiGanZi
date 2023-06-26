@@ -51,6 +51,7 @@ export default function useKeywordMap(props: KeywordType) {
         map.setBounds(bounds);
       }
     });
+    console.log(keyWord);
   }, [map, keyWord]);
 
   return (

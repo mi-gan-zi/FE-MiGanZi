@@ -54,5 +54,5 @@ module.exports = {
     //   borderRadius: 0,
     // },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 type MapProps = {
@@ -9,10 +9,10 @@ type MapProps = {
 const MapComponent = ({ lat, lng }: MapProps) => {
   return (
     <Map
-      center={{ lat: 33.5563, lng: 126.79581 }}
+      center={{ lat: lat, lng: lng }}
       style={{ width: "100%", height: "360px" }}
     >
-      <MapMarker position={{ lat: 33.55635, lng: 126.795841 }}></MapMarker>
+      <MapMarker position={{ lat: lat, lng: lng }}></MapMarker>
     </Map>
   );
 };
