@@ -18,7 +18,7 @@ const Layout = (props: { children: React.ReactNode }) => {
         }}
       >
         {/* <BackSVG className="w-full h-full -z-50 absolute inset-0 "></BackSVG> */}
-        <div className="w-[390px] h-[844px] mx-auto  z-50 bg-st-white flex-col flex justify-between">
+        <div className="w-[390px] h-[900px] mx-auto  z-50 bg-st-white flex-col flex justify-between">
           <div className="overflow-y-scroll">
             <Header />
             <main>{props.children}</main>
