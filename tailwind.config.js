@@ -46,6 +46,9 @@ module.exports = {
       ...foundationColor,
       ...semanticColos,
     },
+    // animation: {
+    //   "spin-slow": "spin 3s linear infinite",
+    // },
     // checkbox: {
     //   display: "inline-block",
     //   verticalAlign: "top",
