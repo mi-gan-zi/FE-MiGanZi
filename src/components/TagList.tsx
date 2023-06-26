@@ -1,5 +1,5 @@
 import TagButton from "./TagButton";
-import { tagList } from "../types/tag.type";
+import { tagList } from "../@types/tag.type";
 
 const TagList = () => {
   const arr = new Array<string>();
