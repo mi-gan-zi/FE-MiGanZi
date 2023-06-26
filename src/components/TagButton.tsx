@@ -9,7 +9,7 @@ const TagButton = ({
 }) => {
   const [isClicked, setIsClicked] = useState(false);
 
-  let textColor = isClicked ? "text-white" : "text-[#6f6f6f]";
+  let textColor = isClicked ? "text-[#ffffff]" : "text-[#6f6f6f]";
   let bgColor = isClicked ? "bg-[#007DF0]" : "bg-white";
   let borderColor = isClicked ? "border-[#007DF0]" : "border-[#6f6f6f]";
 

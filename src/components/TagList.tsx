@@ -14,8 +14,8 @@ const TagList = () => {
     // TODO: 서버에 요청 & 결과 렌더링
   };
   return (
-    <div>
-      <ul className="px-[20px] flex flex-row gap-4">
+    <div className="mb-8">
+      <ul className="px-[20px] grid grid-rows-3 grid-flow-col gap-2">
         {tagList.map((item) => (
           <li>
             <TagButton key={item.id} text={item.name} handleSelect={handleSelect} />
