@@ -3,13 +3,13 @@ import TagList from "components/TagList";
 import { ReactComponent as Magnifier } from "../assets/magnifier.svg";
 import { ReactComponent as Down } from "../assets/down.svg";
 import { ReactComponent as Up } from "../assets/up.svg";
-// import useKeywordMap from "components/common/keyword_map/useKeywordMap";
+import useKeywordMap from "components/common/keyword_map/useKeywordMap";
 import DaumPostCode from "react-daum-postcode";
 
 export default function Search() {
   const [isPopUp, setIsPopUp] = useState(false);
+  const [isMapOpen, setIsMapOpen] = useState(false);
   const [isTagOpen, setIsTagOpen] = useState(false);
-  // const [isMapOpen, setIsMapOpen] = useState(false);
   const [keyWord, setKeyWord] = useState("");
 
   const handleInput = (e: React.MouseEvent) => {
@@ -19,9 +19,9 @@ export default function Search() {
   const handleAddress = (data: any) => {
     setKeyWord(data.address);
   };
-  // const handleMapToggle = () => {
-  //   setIsMapOpen(!isMapOpen);
-  // };
+  const handleMapToggle = () => {
+    setIsMapOpen(!isMapOpen);
+  };
   const handleTagToggle = () => {
     setIsTagOpen(!isTagOpen);
   };
@@ -45,15 +45,18 @@ export default function Search() {
           </div>
         )}
       </section>
-      {/* <section className="bg-white border-b-2 border-[#F5F4F3]">
+      <section className="bg-white border-b-2 border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
           <p className="px-[20px] text-xl font-bold">지도 탐색하기</p>
           <button className="px-[20px]" onClick={handleMapToggle}>
             {!isMapOpen ? <Down /> : <Up />}
           </button>
         </div>
-        <div className="mb-8 flex">{useKeywordMap({ keyWord })}</div>
-      </section> */}
+        {/* TODO: 핀 찍으면 지도에 표시되는 기능 필요*/}
+        {/* <div className="mb-5 flex">{useKeywordMap({ keyWord })}</div> */}
+
+        {isMapOpen && <div className="mb-5 flex">지도이미지</div>}
+      </section>
       <section className="bg-white border-b-2 border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
           <p className="px-[20px] text-xl font-bold">장소 태그</p>
