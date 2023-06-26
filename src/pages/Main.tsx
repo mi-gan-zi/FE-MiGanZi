@@ -21,7 +21,7 @@ export default function Main() {
   const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getInfo();
+    // getInfo();
   }, []);
 
   useEffect(() => {
