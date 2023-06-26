@@ -65,3 +65,33 @@ export const UpLoadIcon = () => {
     </svg>
   );
 };
+export const HeaderIcon = () => {
+  return (
+    <svg
+      width="67"
+      height="11"
+      viewBox="0 0 67 11"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect x="14" width="3" height="11" rx="1" fill="#0F0F0F" />
+      <rect x="9" y="3" width="3" height="8" rx="1" fill="#0F0F0F" />
+      <rect x="5" y="5" width="3" height="6" rx="1" fill="#0F0F0F" />
+      <rect y="6" width="3" height="5" rx="1" fill="#0F0F0F" />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M28.0223 8.52232L30 10.5L31.8907 8.4742C31.3277 8.17164 30.6839 8 30 8C29.2806 8 28.6056 8.1899 28.0223 8.52232ZM26.7233 7.22326C27.6008 6.46124 28.7465 6 30 6C31.196 6 32.2939 6.41991 33.1543 7.12035L34.5212 5.65581C33.3015 4.62288 31.7235 4 30 4C28.1942 4 26.5481 4.68377 25.3065 5.80653L26.7233 7.22326ZM23.9389 4.43887C25.3732 2.96919 27.5055 2 30 2C32.3752 2 34.422 2.87871 35.8506 4.23151L37 3L37.1199 2.68029C35.3065 1.02562 32.7863 0 30 0C27.0259 0 24.355 1.16852 22.5233 3.02326L23.9389 4.43887Z"
+        fill="#0F0F0F"
+      />
+      <rect x="45" y="2" width="12" height="7" rx="1" fill="#0F0F0F" />
+      <rect x="43.5" y="0.5" width="21" height="10" rx="2.5" stroke="#0F0F0F" />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M66 3.11377V6.88616C66.5826 6.6116 67 5.87078 67 4.99997C67 4.12915 66.5826 3.38833 66 3.11377Z"
+        fill="#0F0F0F"
+      />
+    </svg>
+  );
+};
