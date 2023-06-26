@@ -13,8 +13,8 @@ interface PropsType {
 }
 export default function Player(props: PropsType) {
   const {
-    song = "Happay",
-    artist = "방랑자",
+    song = "음악을 선택해주세요!",
+    artist,
     playList,
     setIsCheck,
     setPlaying,
