@@ -104,7 +104,7 @@ function ImageInfo({tagList, info, location} : any) {
           <Tag tagList={tagList} ></Tag>
         </div>
         <div className = 'w-[330px] h-[96px] mt-[16px] overflow-auto scrollbar-hide'>{info}
-        기상청에 따르면 현재 중국 상하이에서 제주까지 정체전선이 걸쳐진 상황이며 잘 발달한 비구름대가 우리나라를 향해 북상 중이다.박중환 기상청 예보분석관은 "남쪽에서 따뜻하고 습한 공기가 유입되는 가운데 정체전선상 발달한 저기압이 우리나라로 들어오면서 전국에 많은 비가 강하게 내리겠다"라고 설명했다.제주와 남해안에는 이미 장맛비가 내리고 있다. 제주 한라산 일부엔 이날 들어 정오까지 이미 100㎜ 안팎 비가 쏟아졌다. 정체전선 위에 발달한 저기압의 앞쪽과 북태평양고기압 가장자리에서 부는 고온다습한 남풍을 맞는 제주산지와 남해안 강수량이 특히 많을 것으로 예상된다. 정체전선 움직임에 따라 비가 집중적으로 쏟아지는 지역이 조금씩 바뀌겠다.제주와 남해안, 지리산 부근은 이날 밤까지 비가 거세게 내리겠다.
+        우리동네사진입니다.
         
         </div>
       </div>
@@ -126,8 +126,8 @@ function CommentListItem({comment} : any) {
       <div className = 'w-[350px] h-[60px] absolute top-[24px] left-[20px]'>
         <CommentImg className = 'w-[60px] h-[60px] absolute left-0'></CommentImg>
         <div className = 'w-[182px] h-[60px] absolute left-[72px]'>
-          <p className='w-[182px] h-[21px]'>{comment.commentuser}</p>
-          <p className='w-[182px] h-[21px] absolute top-[29px]'>{comment.commentdate}</p>
+          <p className='w-[182px] h-[21px]'>{comment.nickname}</p>
+          <p className='w-[182px] h-[21px] absolute top-[29px]'>{comment.createdDate}</p>
         </div>
         <div className = 'w-[96px] h-[60px] absolute right-0'>
           <Dot className = 'w-[36px] h-[36px] absolute left-[12px]'></Dot>
@@ -135,7 +135,7 @@ function CommentListItem({comment} : any) {
         </div>
       </div>
       <div className = 'w-[350px] h-[84px] absolute left-[20px] top-[108px]'>
-        {comment.commentcontent}
+        {comment.content}
       </div>
     </div>
   );
@@ -183,7 +183,8 @@ function Detail() {
   const [imagePreview, setImagePreview] = useState<AxiosResponse | null>(null); //메인이미지
   const [createdDate, setCreatedDate] = useState<AxiosResponse | null>(null); //생성날짜
   const [viewCount, setViewCount] = useState<AxiosResponse | null>(null); //조회수
-  const [comment, setComment] = useState<any[]>(commentMock);
+  //const [comment, setComment] = useState<any[]>(commentMock);
+  const [comment, setComment] = useState<AxiosResponse | null>(null);
   const [commentNum, setCommentNum] = useState(commentMock.length); //댓글수
   const [newComment, setNewComment] = useState('');
   const [totalTime, setTotalTime] = useState(0);
@@ -203,6 +204,8 @@ function Detail() {
       setImagePreview(res.data.imageUrl);
       setCreatedDate(res.data.createdDate);
       setViewCount(res.data.viewCount);
+      setComment(res.data.userComments);
+      setCommentNum(res.data.userComments.length);
      }catch(err){
       console.log("Error:", err);
      }
@@ -210,8 +213,10 @@ function Detail() {
 
   const callAPI2 = async () => {
     const formData = new FormData();
+    const num = 101;
     formData.append('nickname', 'yarn')
     formData.append('content', newComment)
+    formData.append('id', '101')
     try{
       const res = await axios.post("https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/board/comment", 
       formData
@@ -246,12 +251,12 @@ function Detail() {
   }
 
   const onSend = () => {
-    setComment(state => [...state, {
+    /* setComment(state => [...state, {
       commentuser: 'teo' ,
       commentdate: "2023-06-26",
       commentimg: '',
       commentcontent: newComment
-    }])
+    }]) */
     callAPI2();
   }
 
