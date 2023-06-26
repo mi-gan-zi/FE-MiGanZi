@@ -3,6 +3,7 @@ import useKeywordMap from "components/common/keyword_map/useKeywordMap";
 import { useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import { Text } from "./Text";
+import TagList from "components/TagList";
 
 export default function Description() {
   const [keyWord, setKeyWord] = useState("");
@@ -13,6 +14,10 @@ export default function Description() {
   };
   return (
     <div className="flex flex-col gap-4">
+      <div className="py-5">
+        <h1 className="font-bold text-xl px-5 pb-5">태그 선택</h1>
+        <TagList />
+      </div>
       <Text />
       <div className="w-[350px] h-[70px] font-bold text-xl flex items-center px-5">
         <h1>장소 입력</h1>
