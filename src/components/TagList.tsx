@@ -17,8 +17,8 @@ const TagList = () => {
     <div className="mb-5">
       <ul className="px-[20px] grid grid-rows-3 grid-flow-col gap-2">
         {tagList.map((item) => (
-          <li>
-            <TagButton key={item.id} text={item.name} handleSelect={handleSelect} />
+          <li key={item.id}>
+            <TagButton text={item.name} handleSelect={handleSelect} />
           </li>
         ))}
       </ul>
