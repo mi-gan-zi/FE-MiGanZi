@@ -8,7 +8,7 @@ const Layout = (props: { children: React.ReactNode }) => {
   return (
     <>
       <div
-        className="w-full h-full bg-center bg-cover bg-no-repeat"
+        className="w-[1920px] h-[1080px] bg-center bg-cover bg-no-repeat overflow-hidden"
         style={{ backgroundImage: `url(${background})`, zIndex: -99 }}
       >
         <div className="w-[390px] mx-auto border z-10 bg-st-white">
