@@ -1,5 +1,6 @@
 import moment from "moment";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import defrecord from "assets/defrecord.png";
 interface PropsType {
   song?: string;
   artist?: string;
@@ -41,7 +42,6 @@ export default function Player(props: PropsType) {
     setIsCheck(true);
     // }
   }, [playList, targetId]);
-  console.log(targetId);
   // useEffect(() => {
   //   // setPlaying(false);
   //   // setAudio(new Audio());
@@ -88,8 +88,34 @@ export default function Player(props: PropsType) {
           </div>
         </article>
         <article className="record-box mr-2">
-          <div className="progress-bar border-[5px] border-solid border-gray-500 rounded-full w-[120px] h-[120px] flex items-center justify-center shadow-xl">
-            <div
+          <div className="progress-bar border-[5px]  border-solid border-gray-500 rounded-full w-[120px] h-[120px] flex items-center justify-center shadow-xl relative">
+            {playList ? (
+              <>
+                <img
+                  className={
+                    `rounded-full w-[100px] h-[100px] ` +
+                    (playing ? "animate-spin" : "")
+                  }
+                  src={imgURL}
+                  alt=""
+                />
+                <div className="rounded-full w-[30px] h-[30px] bg-st-white absolute"></div>
+              </>
+            ) : (
+              <>
+                <img
+                  className={
+                    `rounded-full w-[100px] h-[100px] `
+                    // (playing ? "animate-spin" : "")
+                  }
+                  src={defrecord}
+                  alt=""
+                />
+                <div className="rounded-full w-[10px] h-[10px] bg-st-white absolute"></div>
+              </>
+            )}
+
+            {/* <div
               className={
                 `record w-[100px] h-[100px] bg-st-gray-09 rounded-full flex justify-center items-center shadow-md  ` +
                 (playing ? "animate-spin" : "")
@@ -104,7 +130,7 @@ export default function Player(props: PropsType) {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </article>
       </div>
