@@ -4,37 +4,36 @@ import React, { useRef } from "react";
 export const NicknameComponent = () => {
   const input_ref = useRef<HTMLInputElement>(null);
 
-  const submit = (e: React.SyntheticEvent) => {
+  const submit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const nickname = input_ref.current?.value;
     const headers = {
       "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
       Accept: "*/*",
     };
-    if (nickname === "") {
+    if (!nickname) {
       alert("닉네임을 입력해주세요.");
     } else {
+      const formData = new FormData();
+      formData.append("nickname", nickname);
       try {
-        process.env.REACT_APP_ENDPOINT &&
-          axios
-            .post(
-              process.env.REACT_APP_ENDPOINT + "user/siginup",
-              {
-                nickname,
-              },
-              { headers }
-            )
-            .then(() =>
-              axios.post(
-                process.env.REACT_APP_ENDPOINT + "user/login",
-                {
-                  nickname,
-                },
-                { headers }
-              )
-            )
-            .then(() => alert("로그인 성공!"));
+        const res = await axios.post(
+          process.env.REACT_APP_ENDPOINT + "user/signup",
+          formData
+        );
+        if (res.status === 200) {
+          const response = await axios.post(
+            process.env.REACT_APP_ENDPOINT + "user/login",
+            formData
+          );
+          if (response.status === 200) {
+            localStorage.setItem("nickname", nickname);
+            alert(`${nickname}님
+          가입을 축하합니다!`);
+          }
+        }
       } catch (err) {
+        alert("중복된 닉네임입니다!");
         console.log(err);
       }
     }

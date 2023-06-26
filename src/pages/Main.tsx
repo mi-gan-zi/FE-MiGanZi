@@ -1,5 +1,6 @@
 // import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "shared/Layout/Layout";
 
 interface Iinfo {
@@ -16,6 +17,7 @@ interface Iinfo {
 }
 
 export default function Main() {
+  const navigate = useNavigate();
   // const [infoArray, setInfoArray] = useState<Iinfo[]>([]);
   // const observerRef = useRef<IntersectionObserver>();
   // const boxRef = useRef<HTMLDivElement>(null);
@@ -193,7 +195,10 @@ export default function Main() {
         <div className="flex justify-center text-[20px] h-[70px] items-center">
           새로 작성된 아티클을 확인해보세요
         </div>
-        <div className="flex flex-row w-[390px] mb-[5px] justify-evenly">
+        <div
+          onClick={() => navigate("/detail")}
+          className="flex flex-row w-[390px] mb-[5px] justify-evenly"
+        >
           <img
             className="w-[126px] h-[169px]"
             src="street1.jpg"
@@ -210,7 +215,10 @@ export default function Main() {
             alt="img"
           ></img>
         </div>
-        <div className="flex flex-row w-[390px] mb-[5px] justify-evenly">
+        <div
+          onClick={() => navigate("/detail")}
+          className="flex flex-row w-[390px] mb-[5px] justify-evenly"
+        >
           <img
             className="w-[126px] h-[169px]"
             src="street4.jpg"
