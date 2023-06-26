@@ -42,7 +42,7 @@ export const NicknameComponent = () => {
 
   return (
     <form onSubmit={(e) => submit(e)}>
-      <div className="h-[650px] w-[390px] flex flex-col items-center mt-6">
+      <div className="h-[600px] w-[390px] flex flex-col items-center mt-6 py-5">
         <input
           ref={input_ref}
           className="w-[350px] h-[44px] px-[12px] py-[10px] border rounded focus:outline-none"

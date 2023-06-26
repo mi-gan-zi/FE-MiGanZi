@@ -19,8 +19,8 @@ const SignInComponent = ({ setStatus }: SignInProps) => {
   }, []);
 
   return (
-    <div className="flex flex-col justify-between h-[740px] w-[24rem]">
-      <div className="h-[510px] w-full flex flex-col items-center ">
+    <div className="flex flex-col justify-between h-[670px] w-[24rem]">
+      <div className="h-[310px] w-full flex flex-col items-center ">
         <div className="translate-x-3">
           <Line className="mt-2"></Line>
         </div>
@@ -31,14 +31,14 @@ const SignInComponent = ({ setStatus }: SignInProps) => {
             <p>회원가입/로그인을 진행헤주세요!</p>
           </div>
         </div>
-        <div className="flex text-left w-[326px] translate-y-[260px]">
+        <div className="flex text-left w-[326px] translate-y-[200px]">
           <p className="text-[#A5A5A5] text-xs">
             '미(간)지'는 네이밍의 담긴 의미처럼, 아직 다른 사람들에게 발견 되지
             않은 미지의 공간을 특별한 가치를 담은 큐레이팅으로 제공합니다.
           </p>
         </div>
       </div>
-      <div className="h-[182px] w-full flex flex-col justify-between items-center">
+      <div className="h-[182px] w-full flex flex-col items-center justify-between">
         <button
           onClick={onClickButton}
           className="w-[350px] h-[50px] border border-st-gray-05 bg-st-gray-02 py-[13px] px-[16px] rounded-lg flex items-center justify-center"

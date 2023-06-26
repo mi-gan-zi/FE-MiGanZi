@@ -168,7 +168,7 @@ export default function Main() {
 
   return (
     <>
-      <Layout>
+      <>
         <div className="text-[20px] h-[70px] border-b-2 flex items-center ml-[40px]">
           유저가 뽑은 베스트 아티클
         </div>
@@ -227,7 +227,7 @@ export default function Main() {
             alt="img"
           ></img>
         </div>
-      </Layout>
+      </>
     </>
   );
 }
