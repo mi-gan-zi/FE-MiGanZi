@@ -200,6 +200,7 @@ function Detail() {
       const url = `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/board/101`
       const res = await axios.get(url);
       console.log(res.data);
+      setResult(res);
       setUserName(res.data.nickname);
       setImagePreview(res.data.imageUrl);
       setCreatedDate(res.data.createdDate);
@@ -230,7 +231,7 @@ function Detail() {
 
   useEffect(() => {
     callAPI();
-  }, []); 
+  }, [result]); 
 
   useEffect(() => {
     playing ? audio.play() : audio.pause();
