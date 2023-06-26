@@ -18,7 +18,7 @@ export const NicknameComponent = () => {
         process.env.REACT_APP_ENDPOINT &&
           axios
             .post(
-              process.env.REACT_APP_ENDPOINT + "/user/siginup",
+              process.env.REACT_APP_ENDPOINT + "user/siginup",
               {
                 nickname,
               },
@@ -26,7 +26,7 @@ export const NicknameComponent = () => {
             )
             .then(() =>
               axios.post(
-                process.env.REACT_APP_ENDPOINT + "/user/login",
+                process.env.REACT_APP_ENDPOINT + "user/login",
                 {
                   nickname,
                 },
