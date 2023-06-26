@@ -27,6 +27,10 @@ export default function Search() {
   const handleTagToggle = () => {
     setIsTagOpen(!isTagOpen);
   };
+  const handleFilterReset = () => {
+    // TODO: 태그도 초기화 필요
+    setKeyWord("");
+  };
 
   return (
     <div className="w-full flex flex-col justify-center content-center">
@@ -77,7 +81,9 @@ export default function Search() {
       <section className="bg-white border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
           <p className="px-[20px] text-xl font-bold">아티클 둘러보기</p>
-          <button className="px-[20px] text-sm font-medium text-[#F22222]">초기화</button>
+          <button className="px-[20px] text-sm font-medium text-[#F22222]" onClick={handleFilterReset}>
+            초기화
+          </button>
         </div>
         <div className="py-[20px] flex flex-col justify-center items-center">
           <img alt="" src={result} />
