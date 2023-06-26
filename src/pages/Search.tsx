@@ -3,8 +3,9 @@ import TagList from "components/TagList";
 import { ReactComponent as Magnifier } from "../assets/magnifier.svg";
 import { ReactComponent as Down } from "../assets/down.svg";
 import { ReactComponent as Up } from "../assets/up.svg";
-import useKeywordMap from "components/common/keyword_map/useKeywordMap";
+import map from "../assets/mapIMG.png";
 import DaumPostCode from "react-daum-postcode";
+// import useKeywordMap from "components/common/keyword_map/useKeywordMap";
 
 export default function Search() {
   const [isPopUp, setIsPopUp] = useState(false);
@@ -52,10 +53,16 @@ export default function Search() {
             {!isMapOpen ? <Down /> : <Up />}
           </button>
         </div>
-        {/* TODO: 핀 찍으면 지도에 표시되는 기능 필요*/}
+        {isMapOpen && (
+          <div
+            className="w-full h-60 opacity-50 flex justify-center items-center text-lg font-semibold"
+            style={{ backgroundImage: `url(${map})` }}
+          >
+            준비중...
+          </div>
+        )}
+        {/* TODO: 추후 변경 필요 이미지 -> 지도에서 직접 핀 찍는 기능*/}
         {/* <div className="mb-5 flex">{useKeywordMap({ keyWord })}</div> */}
-
-        {isMapOpen && <div className="mb-5 flex">지도이미지</div>}
       </section>
       <section className="bg-white border-b-2 border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
