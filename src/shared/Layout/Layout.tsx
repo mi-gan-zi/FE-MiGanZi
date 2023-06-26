@@ -12,7 +12,7 @@ const Layout = (props: { children: React.ReactNode }) => {
         style={{ backgroundImage: `url(${background})`, zIndex: -99 }}
       >
         <div className="w-[390px] mx-auto border z-10 bg-st-white">
-          <Header />
+          {/* <Header /> */}
           <main>{props.children}</main>
           <Footer />
         </div>
