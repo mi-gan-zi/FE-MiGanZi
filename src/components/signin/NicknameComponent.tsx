@@ -28,11 +28,10 @@ export const NicknameComponent = () => {
             process.env.REACT_APP_ENDPOINT + "user/login",
             formData
           );
-          console.log(response)
           if (response.status === 200) {
+            localStorage.setItem("token", response.data)
             localStorage.setItem("nickname", nickname);
-            alert(`${nickname}님
-          가입을 축하합니다!`);
+            alert(`${nickname}님 가입을 축하합니다!`);
           navigate("/")
           }
         }
