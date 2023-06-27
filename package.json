@@ -23,7 +23,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "husky install",
+    "format": "prettier --write --cache .",
+    "lint": "eslint --cache ."
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +49,7 @@
   "devDependencies": {
     "eslint-config-prettier": "^8.8.0",
     "file-loader": "^6.2.0",
+    "husky": "^8.0.3",
     "moment": "^2.29.4",
     "prettier": "^2.8.8",
     "tailwind-scrollbar-hide": "^1.1.7",

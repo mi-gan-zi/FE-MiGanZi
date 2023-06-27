@@ -17,6 +17,7 @@ export default function useKeywordMap(props: KeywordType) {
 
   useEffect(() => {
     if (!map) return;
+    /*global kakao*/
     const ps = new kakao.maps.services.Places();
 
     ps.keywordSearch(`${keyWord}`, (data, status, _pagination) => {
