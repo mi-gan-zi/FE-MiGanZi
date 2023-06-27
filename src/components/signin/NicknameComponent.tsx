@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const NicknameComponent = () => {
   const input_ref = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate()
 
   const submit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -26,10 +28,12 @@ export const NicknameComponent = () => {
             process.env.REACT_APP_ENDPOINT + "user/login",
             formData
           );
+          console.log(response)
           if (response.status === 200) {
             localStorage.setItem("nickname", nickname);
             alert(`${nickname}님
           가입을 축하합니다!`);
+          navigate("/")
           }
         }
       } catch (err) {
