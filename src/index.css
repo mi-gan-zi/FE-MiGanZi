@@ -1,0 +1,17 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@font-face {
+  font-family: "suit-variable";
+  src: url("../src/assets/font/SUIT-Variable.woff2");
+}
+body {
+  margin: 0;
+  font-family: suit-variable, sans-serif;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
