@@ -1,18 +1,14 @@
 import axios from "axios";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const NicknameComponent = () => {
   const input_ref = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const submit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const nickname = input_ref.current?.value;
-    const headers = {
-      "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-      Accept: "*/*",
-    };
     if (!nickname) {
       alert("닉네임을 입력해주세요.");
     } else {
@@ -28,12 +24,12 @@ export const NicknameComponent = () => {
             process.env.REACT_APP_ENDPOINT + "user/login",
             formData
           );
-          console.log(response)
           if (response.status === 200) {
+            localStorage.setItem("token", response.data);
             localStorage.setItem("nickname", nickname);
             alert(`${nickname}님
           가입을 축하합니다!`);
-          navigate("/")
+            navigate("/");
           }
         }
       } catch (err) {
@@ -42,6 +38,12 @@ export const NicknameComponent = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <form onSubmit={(e) => submit(e)}>
