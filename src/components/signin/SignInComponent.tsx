@@ -24,6 +24,7 @@ const SignInComponent = () => {
       formData)
       if(res.status === 200){
         localStorage.setItem("token", res.data())
+        localStorage.setItem("nickname", nickname)
       }
     }
   }
