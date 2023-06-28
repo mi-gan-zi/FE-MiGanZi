@@ -69,27 +69,27 @@ const MapMark = () => {
         />
       </Map>
       <div
+        className="mx-2 mt-2 pb-[20px] flex justify-start"
         style={{
           display: "flex",
           gap: "8px",
         }}
       >
         <button
+          className="px-2.5 py-1 text-xs text-[#6f6f6f] font-semibold rounded-[4px] border border-[#6f6f6f]"
           onClick={(e) => {
             selectOverlay(kakao.maps.drawing.OverlayType.MARKER);
           }}
         >
-          마커
+          마커찍기
         </button>
-      </div>
-      <div
-        style={{
-          position: "relative",
-        }}
-      >
-        <div>
-          <button onClick={drawOverlayData}>가져오기</button>
-        </div>
+
+        <button
+          className="px-2.5 py-1 text-xs text-[#6f6f6f] font-semibold rounded-[4px] border border-[#6f6f6f]"
+          onClick={drawOverlayData}
+        >
+          가져오기
+        </button>
       </div>
     </>
   );
