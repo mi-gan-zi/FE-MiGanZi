@@ -34,7 +34,7 @@ const Footer = () => {
       setOnSearch(false);
       setOnUpload(true);
       setOnUser(false);
-    } else if (location === "/login") {
+    } else if (location === "/login" || location === "signup") {
       setOnMain(false);
       setOnSearch(false);
       setOnUpload(false);

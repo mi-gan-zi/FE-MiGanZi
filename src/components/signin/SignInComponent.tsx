@@ -29,7 +29,7 @@ const SignInComponent = () => {
   }
 
   return (
-    <div className="flex flex-col justify-between h-[725px] w-[24rem] px-5">
+    <div className="flex flex-col justify-between h-[665px] w-[24rem] px-5">
       <div className="h-[310px] w-full flex flex-col items-center ">
         <div className="translate-x-3">
           <Line className="mt-2"></Line>
@@ -50,8 +50,8 @@ const SignInComponent = () => {
       </div>
       <div className="flex flex-col items-center justify-center">
         <form onSubmit={login} className="mb-[35px]">
-          <input ref={nickname_ref} placeholder="nickname" className="w-[350px] h-[50px] border border-st-gray-09 rounded-lg py-[13px] px-[16px] mb-4"/>
-          <input ref={password_ref} placeholder="password" type="password" className="w-[350px] h-[50px] border border-st-gray-09 rounded-lg py-[13px] px-[16px] mb-4"/>
+          <input ref={nickname_ref} placeholder="nickname" className="w-[350px] h-[50px] border border-st-gray-09 rounded-lg py-[13px] px-[16px] mb-4 focus:outline-none"/>
+          <input ref={password_ref} placeholder="password" type="password" className="w-[350px] h-[50px] border border-st-gray-09 rounded-lg py-[13px] px-[16px] mb-4 focus:outline-none"/>
           <div className="flex justify-between mb-4">
             <div>
             <input type="checkbox" className="mr-2"/>
@@ -62,7 +62,7 @@ const SignInComponent = () => {
           <button className="w-[350px] h-[47px] rounded-lg py-[13px] px-[16px] bg-st-gray-09 text-st-white text-sm font-semibold">Log in</button>
         </form>
         <div className="border-t border-st-gray-03 w-[327px] flex items-center justify-center pt-[20px] text-st-gray-06">
-        <p>미(간)지에 처음이신가요?<a className="underline cursor-pointer">회원가입하기</a></p>
+        <p>미(간)지에 처음이신가요?<a href="./signup" className="underline cursor-pointer">회원가입하기</a></p>
         </div>
       </div>
       {/* <div className="h-[182px] w-full flex flex-col items-center justify-between">

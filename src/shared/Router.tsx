@@ -5,6 +5,7 @@ import Search from "../pages/Search";
 import SignIn from "../pages/SignIn";
 import Create from "../pages/Create";
 import Layout from "./Layout/Layout";
+import SignUp from "../pages/SignUp";
 export default function Router() {
   return (
     <BrowserRouter>
@@ -14,6 +15,7 @@ export default function Router() {
           <Route path="/detail" element={<Detail />} />
           <Route path="/search" element={<Search />} />
           <Route path="/login" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/create" element={<Create />} />
           <Route path="*" element={<Main />} />
         </Routes>
