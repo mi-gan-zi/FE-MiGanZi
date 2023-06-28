@@ -17,7 +17,7 @@ const Footer = () => {
   const [onUser, setOnUser] = useState(false);
   const navigate = useNavigate();
   const location = window.location.pathname;
-  
+
   useEffect(() => {
     if (location === "/") {
       setOnMain(true);

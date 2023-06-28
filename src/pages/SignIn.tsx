@@ -6,10 +6,9 @@ import Footer from "shared/Layout/Footer";
 import Header from "components/signin/Header";
 
 export default function SignIn() {
-  
   return (
     <>
-    <Header/>
+      <Header />
       <SignInComponent />
     </>
   );
