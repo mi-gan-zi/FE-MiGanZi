@@ -24,11 +24,17 @@ const MapMark = () => {
     const manager = managerRef.current;
     manager && manager.cancel();
     manager && manager.select(type);
-
+    // const geocoder = new kakao.maps.services.Geocoder()
+    // manager &&  geocoder.coord2Address(
+    //   manager.getData().marker[0].x,
+    //   manager.getData().marker[0].y,
+    //   (result: any) => console.log(result[0].address.address_name)
+    // );
     // TODO: 희망사항
     // - [] 마커 한 개만 찍을 수 있게 변경
     // - [] 마커 찍으면 바로 주소값 출력되게 변경
     // drawOverlayData();
+    searchAddrFromCoords(manager);
   }
 
   function drawOverlayData() {
@@ -38,18 +44,18 @@ const MapMark = () => {
     manager && setOverlayData(manager.getData());
 
     // 주소-좌표 변환 객체를 생성합니다
-    const geocoder = new kakao.maps.services.Geocoder();
-
-    searchAddrFromCoords(manager, geocoder);
+    
   }
-
-  function searchAddrFromCoords(manager: any, geocoder: any) {
-    // 좌표로 행정동 주소 정보를 요청합니다
-    geocoder.coord2Address(
-      manager?.getData().marker[0].x,
-      manager?.getData().marker[0].y,
-      (result: any) => console.log(result[0].address.address_name)
-    );
+  
+  function searchAddrFromCoords(manager:any) {
+    const geocoder = new kakao.maps.services.Geocoder();
+    console.log(geocoder)
+  // 좌표로 행정동 주소 정보를 요청합니다
+  geocoder.coord2Address(
+    manager?.getData().marker[0].x,
+    manager?.getData().marker[0].y,
+    (result: any) => console.log(result[0].address.address_name)
+  );
   }
 
   return (
@@ -69,7 +75,7 @@ const MapMark = () => {
         <DrawingManager
           ref={managerRef}
           drawingMode={[kakao.maps.drawing.OverlayType.MARKER]}
-          guideTooltip={["draw", "drag", "edit"]}
+          guideTooltip={["draw", "drag"]}
           markerOptions={{
             // 마커 옵션입니다
             draggable: true, // 마커를 그리고 나서 드래그 가능하게 합니다
