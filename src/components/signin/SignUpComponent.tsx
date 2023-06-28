@@ -55,11 +55,11 @@ export const SignUp = () => {
       </div>
       <div className='mb-[90px]'>
         <p className='text-xl font-bold'>비밀번호</p>
-          <input className='mt-[30px] w-[350px] h-[44px] px-3 py-2.5 border border-st-gray-05 rounded mr-3' ref={password_ref} placeholder='비밀번호 입력'/>  
+          <input type="password" className='mt-[30px] w-[350px] h-[44px] px-3 py-2.5 border border-st-gray-05 rounded mr-3' ref={password_ref} placeholder='비밀번호 입력'/>  
       </div>
       <div className='mb-[120px]'>
         <p className='text-xl font-bold'>비밀번호 재확인</p>
-          <input className='mt-[30px] w-[350px] h-[44px] px-3 py-2.5 border border-st-gray-05 rounded mr-3' ref={check_ref} placeholder='비밀번호 입력'/>
+          <input type="password" className='mt-[30px] w-[350px] h-[44px] px-3 py-2.5 border border-st-gray-05 rounded mr-3' ref={check_ref} placeholder='비밀번호 입력'/>
       </div>
       <button className='w-[350px] h-[50px] px-[16px] py-[13px] bg-active-blue font-semibold text-st-white rounded-lg'>가입완료</button>
     </form>
