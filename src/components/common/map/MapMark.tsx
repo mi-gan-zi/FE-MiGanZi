@@ -34,7 +34,6 @@ const MapMark = () => {
     // - [] 마커 한 개만 찍을 수 있게 변경
     // - [] 마커 찍으면 바로 주소값 출력되게 변경
     // drawOverlayData();
-    searchAddrFromCoords(manager);
   }
 
   function drawOverlayData() {
@@ -42,25 +41,25 @@ const MapMark = () => {
     console.log(manager?.getData().marker[0].x);
     console.log(manager?.getData().marker[0].y);
     manager && setOverlayData(manager.getData());
-
+    searchAddrFromCoords(manager);
     // 주소-좌표 변환 객체를 생성합니다
-    
   }
-  
-  function searchAddrFromCoords(manager:any) {
+
+  function searchAddrFromCoords(manager: any) {
     const geocoder = new kakao.maps.services.Geocoder();
-    console.log(geocoder)
-  // 좌표로 행정동 주소 정보를 요청합니다
-  geocoder.coord2Address(
-    manager?.getData().marker[0].x,
-    manager?.getData().marker[0].y,
-    (result: any) => console.log(result[0].address.address_name)
-  );
+    console.log(geocoder);
+    // 좌표로 행정동 주소 정보를 요청합니다
+    geocoder.coord2Address(
+      manager?.getData().marker[0].x,
+      manager?.getData().marker[0].y,
+      (result: any) => console.log(result[0].address.address_name)
+    );
   }
 
   return (
     <>
       <Map
+        onClick={() => setTimeout(() => drawOverlayData(), 500)}
         center={{
           // 지도의 중심좌표
           lat: 37.56685123050336,
