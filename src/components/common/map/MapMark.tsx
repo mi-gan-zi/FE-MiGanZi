@@ -53,7 +53,7 @@ const MapMark = () => {
         }}
         style={{
           width: "100%",
-          height: "450px",
+          height: "248px",
         }}
         level={3} // 지도의 확대 레벨
       >
