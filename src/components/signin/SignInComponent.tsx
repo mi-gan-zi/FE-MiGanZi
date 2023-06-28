@@ -1,12 +1,32 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as Line } from "../../assets/line.svg";
 import { ReactComponent as Apple } from "../../assets/apple.svg";
 import { ReactComponent as Google } from "../../assets/google.svg";
 import { ReactComponent as Kakao } from "../../assets/kakao.svg";
+import axios from "axios";
 
 
 const SignInComponent = () => {
+  const nickname_ref = useRef<HTMLInputElement>(null);
+  const password_ref = useRef<HTMLInputElement>(null);
+
+  const login = async() => {
+    const nickname = nickname_ref.current?.value
+    const password = password_ref.current?.value
+    const formData = new FormData();
+    if(!nickname || !password){
+      alert("닉네임과 비밀번호를 적어주세요!")
+    }else{
+      formData.append("nickname", nickname);
+      formData.append("password", password);
+      const res = await axios.post(process.env.REACT_APP_ENDPOINT + "user/login",
+      formData)
+      if(res.status === 200){
+        localStorage.setItem("token", res.data())
+      }
+    }
+  }
 
   return (
     <div className="flex flex-col justify-between h-[725px] w-[24rem] px-5">
@@ -29,9 +49,9 @@ const SignInComponent = () => {
         </div> */}
       </div>
       <div className="flex flex-col items-center justify-center">
-        <div className="mb-[35px]">
-          <input placeholder="nickname" className="w-[350px] h-[50px] border border-st-gray-09 rounded-lg py-[13px] px-[16px] mb-4"/>
-          <input placeholder="password" type="password" className="w-[350px] h-[50px] border border-st-gray-09 rounded-lg py-[13px] px-[16px] mb-4"/>
+        <form onSubmit={login} className="mb-[35px]">
+          <input ref={nickname_ref} placeholder="nickname" className="w-[350px] h-[50px] border border-st-gray-09 rounded-lg py-[13px] px-[16px] mb-4"/>
+          <input ref={password_ref} placeholder="password" type="password" className="w-[350px] h-[50px] border border-st-gray-09 rounded-lg py-[13px] px-[16px] mb-4"/>
           <div className="flex justify-between mb-4">
             <div>
             <input type="checkbox" className="mr-2"/>
@@ -40,7 +60,7 @@ const SignInComponent = () => {
             <span>비밀번호를 잊으셨나요?</span>
           </div>
           <button className="w-[350px] h-[47px] rounded-lg py-[13px] px-[16px] bg-st-gray-09 text-st-white text-sm font-semibold">Log in</button>
-        </div>
+        </form>
         <div className="border-t border-st-gray-03 w-[327px] flex items-center justify-center pt-[20px] text-st-gray-06">
         <p>미(간)지에 처음이신가요?<a className="underline cursor-pointer">회원가입하기</a></p>
         </div>
