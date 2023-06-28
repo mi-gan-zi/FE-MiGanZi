@@ -24,6 +24,11 @@ const MapMark = () => {
     const manager = managerRef.current;
     manager && manager.cancel();
     manager && manager.select(type);
+
+    // TODO: 희망사항
+    // - [] 마커 한 개만 찍을 수 있게 변경
+    // - [] 마커 찍으면 바로 주소값 출력되게 변경
+    // drawOverlayData();
   }
 
   function drawOverlayData() {
@@ -43,7 +48,7 @@ const MapMark = () => {
     geocoder.coord2Address(
       manager?.getData().marker[0].x,
       manager?.getData().marker[0].y,
-      (result: any) => console.log(result[0].address)
+      (result: any) => console.log(result[0].address.address_name)
     );
   }
 
@@ -52,12 +57,12 @@ const MapMark = () => {
       <Map
         center={{
           // 지도의 중심좌표
-          lat: 33.450701,
-          lng: 126.570667,
+          lat: 37.56685123050336,
+          lng: 126.97864093204903,
         }}
         style={{
           width: "100%",
-          height: "450px",
+          height: "248px",
         }}
         level={3} // 지도의 확대 레벨
       >
@@ -73,27 +78,26 @@ const MapMark = () => {
         />
       </Map>
       <div
+        className="mx-2 mt-2 pb-[20px] flex justify-start"
         style={{
           display: "flex",
           gap: "8px",
         }}
       >
         <button
+          className="px-2.5 py-1 text-xs font-medium rounded-sm border"
           onClick={(e) => {
             selectOverlay(kakao.maps.drawing.OverlayType.MARKER);
           }}
         >
-          마커
+          마커찍기
         </button>
-      </div>
-      <div
-        style={{
-          position: "relative",
-        }}
-      >
-        <div>
-          <button onClick={drawOverlayData}>가져오기</button>
-        </div>
+        <button
+          className="px-2.5 py-1 text-xs font-medium rounded-sm border"
+          onClick={drawOverlayData}
+        >
+          가져오기
+        </button>
       </div>
     </>
   );
