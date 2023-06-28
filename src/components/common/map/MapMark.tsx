@@ -8,9 +8,7 @@ const MapMark = () => {
 
   const managerRef = useRef<DrawingManagerType>(null);
 
-  const [overlayData, setOverlayData] = useState<
-    ReturnType<DrawingManagerType["getData"]>
-  >({
+  const [overlayData, setOverlayData] = useState<ReturnType<DrawingManagerType["getData"]>>({
     arrow: [],
     circle: [],
     ellipse: [],
@@ -40,10 +38,8 @@ const MapMark = () => {
 
   function searchAddrFromCoords(manager: any, geocoder: any) {
     // 좌표로 행정동 주소 정보를 요청합니다
-    geocoder.coord2Address(
-      manager?.getData().marker[0].x,
-      manager?.getData().marker[0].y,
-      (result: any) => console.log(result[0].address)
+    geocoder.coord2Address(manager?.getData().marker[0].x, manager?.getData().marker[0].y, (result: any) =>
+      console.log(result[0].address)
     );
   }
 
@@ -52,8 +48,8 @@ const MapMark = () => {
       <Map
         center={{
           // 지도의 중심좌표
-          lat: 33.450701,
-          lng: 126.570667,
+          lat: 37.56685123050336,
+          lng: 126.97864093204903,
         }}
         style={{
           width: "100%",
