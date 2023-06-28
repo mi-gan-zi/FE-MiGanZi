@@ -1,5 +1,5 @@
-// import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Layout from "shared/Layout/Layout";
 
@@ -18,155 +18,21 @@ interface Iinfo {
 
 export default function Main() {
   const navigate = useNavigate();
-  // const [infoArray, setInfoArray] = useState<Iinfo[]>([]);
-  // const observerRef = useRef<IntersectionObserver>();
-  // const boxRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   // getInfo();
-  // }, []);
-
-  // useEffect(() => {
-  //   observerRef.current = new IntersectionObserver(intersectionObserver);
-  //   boxRef.current && observerRef.current.observe(boxRef.current);
-  // });
-
-  // const getInfo = async () => {
-  //   const response = await axios.get(
-  //     `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/board`
-  //   );
-
-  //   // setInfoArray((curInfoArray) => [...curInfoArray, ...response.data]);
-  //   setInfoArray(response.data);
-
-  //   console.log(infoArray);
-  //   console.log("ADD info data...");
-  // };
-
-  // const intersectionObserver = (
-  //   entries: IntersectionObserverEntry[],
-  //   io: IntersectionObserver
-  // ) => {
-  //   entries.forEach((entry) => {
-  //     if (entry.isIntersecting) {
-  //       io.unobserve(entry.target);
-  //       getInfo();
-  //     }
-  //   });
-  // };
-
-  // const [posts, setPosts] = useState<Iinfo[]>([]);
-  // const [hasNextPage, setHasNextPage] = useState<boolean>(true);
-  // const page = useRef<number>(1);
-  // const observerTargetEl = useRef<HTMLDivElement>(null);
-
-  // const fetch = useCallback(async () => {
-  //   try {
-  //     // const { data } = await axios.get(
-  //     //   `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/board`
-  //     // );
-  //     const test = await axios.get(
-  //       `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/board`
-  //     );
-  //     setPosts((prevPosts) => [...prevPosts, ...test.data]);
-  //     console.log(posts);
-  //     // setHasNextPage(data.length === 10);
-  //     console.log("ADD data...");
-  //     // if (data.length) {
-  //     //   page.current += 1;
-  //     // }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (!observerTargetEl.current || !hasNextPage) return;
-
-  //   const io = new IntersectionObserver((entries, observer) => {
-  //     // if (entries[0].isIntersecting) {
-  //     fetch();
-  //     // }
-  //   });
-  //   io.observe(observerTargetEl.current);
-  //   return () => {
-  //     io.disconnect();
-  //   };
-  // }, []);
-
-  // {infoArray.map((info, index) => {
-  //   if (infoArray.length - 1 === index) {
-  //     console.log("인포 !! " + info.imageUrl);
-  //     return (
-  //       <div ref={boxRef} key={index}>
-  //         <table>
-  //           <tbody>
-  //             <tr>
-  //               <td>이름</td>
-  //             </tr>
-  //             <tr>
-  //               <td>전화번호</td>
-  //             </tr>
-  //           </tbody>
-  //         </table>
-  //       </div>
-  //     );
-  //   } else {
-  //     return (
-  //       <div className="h-[70px]" key={index}>
-  //         <p> dd</p>
-  //         {/* <div key={index}> */}
-  //         {/* <img src={info.imageUrl} alt="미술관사진"></img> */}
-  //         {/* </div> */}
-  //       </div>
-  //     );
-  //   }
-  // })}
-
-  // const [page, setPage] = useState(1);
-  // const [load, setLoad] = useState(false);
-  // const preventRef = useRef(true);
-  // const endRef = useRef(false);
-  // const [infoArray, setInfoArray] = useState<Iinfo[]>([]);
-  // const observerRef = useRef(null);
-  // const boxRef = useRef<HTMLDivElement>(null);
-
-  // useEffect(() => {
-  //   getInfo();
-  // }, [page]);
-
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(obsHandler, { threshold: 0.5 });
-  //   if (observerRef.current) observer.observe(observerRef.current);
-  //   return () => {
-  //     observer.disconnect();
-  //   };
-  // });
-
-  // const obsHandler = (entries: any) => {
-  //   const target = entries[0];
-  //   if (!endRef.current && target.isIntersecting && preventRef.current) {
-  //     preventRef.current = false;
-  //     setPage((prev) => prev + 1);
-  //   }
-  // };
-
-  // const getInfo = useCallback(async () => {
-  //   setLoad(true);
-  //   try {
-  //     const response = await axios.get(
-  //       `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/board`
-  //     );
-  //     if (response.data.end) {
-  //       endRef.current = true;
-  //       setInfoArray((curInfoArray) => [...curInfoArray, ...response.data]);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setLoad(false);
-  //   }
-  // }, [page]);
+  useEffect(() => {
+    const getBoards = async () => {
+      const posts = await axios.get(
+        `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_TESTAUTH}`,
+          },
+        }
+      );
+      console.log(posts.data);
+    };
+    getBoards();
+  }, []);
 
   return (
     <>
