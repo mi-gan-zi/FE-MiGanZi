@@ -7,12 +7,20 @@ export const SignUp = () => {
   const nickname_ref = useRef<HTMLInputElement>(null);
   const password_ref = useRef<HTMLInputElement>(null);
   const check_ref = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const headers = {
+    "accept": "application/json, text/plain, */*",
+    "accept-language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site",
+    withCredentials: true,
+  };
 
   const checkNickname = async() =>{
     const nickname = nickname_ref.current?.value
     if(nickname){
-      const res = await axios.get(process.env.REACT_APP_ENDPOINT+"user/check/"+`${nickname}`)
+      const res = await axios.get(process.env.REACT_APP_ENDPOINT+"user/check/"+`${nickname}`,{headers})
       if(res.status === 200){
         setCheck(true)
       }
@@ -36,7 +44,7 @@ export const SignUp = () => {
       formData.append("nickname", nickname);
       formData.append("password", password);
       const res = await axios.post(process.env.REACT_APP_ENDPOINT + "user/login",
-      formData)
+      formData,{headers})
       if(res.status === 200){
         alert(`${nickname}님 회원가입을 축하드립니다.`)
         navigate("/login")
