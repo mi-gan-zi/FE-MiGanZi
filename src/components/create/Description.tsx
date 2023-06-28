@@ -1,16 +1,40 @@
 import { PinIcon, SearchIcon, WihteSearchIcon } from "assets/Icon";
-import useKeywordMap from "components/common/keyword_map/useKeywordMap";
+import UseKeywordMap from "components/common/keyword_map/useKeywordMap";
 import { useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import { Text } from "./Text";
 import TagList from "components/TagList";
-
+import axios from "axios";
+interface MarkType {
+  lat: string;
+  lng: string;
+}
 export default function Description() {
   const [keyWord, setKeyWord] = useState("");
   const [isPopUp, setIsPopUp] = useState(false);
+  const [mark, setMarkes] = useState<MarkType>();
+  console.log(mark);
   const handleAddress = (data: any) => {
     setKeyWord(data.address);
+    console.log(data);
     setIsPopUp(!isPopUp);
+  };
+  console.log(mark?.lat);
+  const testMapDataHandle = async () => {
+    const testPostData = {
+      address_name: keyWord,
+      lat: mark?.lat,
+      lng: mark?.lng,
+    };
+    try {
+      const res = await axios.post(
+        process.env.REACT_APP_ENDPOINT + "user/board/post",
+        testPostData
+      );
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <div className="flex flex-col gap-4">
@@ -47,14 +71,17 @@ export default function Description() {
           <DaumPostCode onComplete={handleAddress} autoClose />
         </div>
       )}
-      <div className="flex">{useKeywordMap({ keyWord })}</div>
+
+      {/* <div className="flex">{useKeywordMap({ keyWord })}</div> */}
+      <UseKeywordMap keyWord={keyWord} setMarkes={setMarkes} />
       <div className="border-t-[1px] border-st-gray-03 flex justify-center ">
         <button
           className={
             " w-[350px] h-[50px] text-st-white font-bold  mt-2 rounded-md " +
             (keyWord ? "bg-[#007DF0] " : "bg-st-gray-05")
           }
-          disabled
+          onClick={testMapDataHandle}
+          // disabled
         >
           다음으로
         </button>
