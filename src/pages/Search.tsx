@@ -75,9 +75,10 @@ export default function Search() {
             className="px-[20px] text-sm font-medium text-[#F22222]"
             onClick={handleFilterReset}
           >
-            초기화
+            필터 초기화
           </button>
         </div>
+        <div>필터 적용 결과값</div>
         <div className="py-[20px] flex flex-col justify-center items-center">
           <img alt="" src={result} />
           <p className="text-lg font-semibold text-[#3D3D3D]">

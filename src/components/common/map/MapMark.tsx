@@ -8,7 +8,9 @@ const MapMark = () => {
 
   const managerRef = useRef<DrawingManagerType>(null);
 
-  const [overlayData, setOverlayData] = useState<ReturnType<DrawingManagerType["getData"]>>({
+  const [overlayData, setOverlayData] = useState<
+    ReturnType<DrawingManagerType["getData"]>
+  >({
     arrow: [],
     circle: [],
     ellipse: [],
@@ -43,8 +45,10 @@ const MapMark = () => {
 
   function searchAddrFromCoords(manager: any, geocoder: any) {
     // 좌표로 행정동 주소 정보를 요청합니다
-    geocoder.coord2Address(manager?.getData().marker[0].x, manager?.getData().marker[0].y, (result: any) =>
-      console.log(result[0].address.address_name)
+    geocoder.coord2Address(
+      manager?.getData().marker[0].x,
+      manager?.getData().marker[0].y,
+      (result: any) => console.log(result[0].address.address_name)
     );
   }
 
@@ -88,7 +92,10 @@ const MapMark = () => {
         >
           마커찍기
         </button>
-        <button className="px-2.5 py-1 text-xs font-medium rounded-sm border" onClick={drawOverlayData}>
+        <button
+          className="px-2.5 py-1 text-xs font-medium rounded-sm border"
+          onClick={drawOverlayData}
+        >
           가져오기
         </button>
       </div>
