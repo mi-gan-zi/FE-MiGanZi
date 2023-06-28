@@ -15,38 +15,37 @@ const Footer = () => {
   const [onSearch, setOnSearch] = useState(false);
   const [onUpload, setOnUpload] = useState(false);
   const [onUser, setOnUser] = useState(false);
-  const [order, setOrder] = useState(0);
   const navigate = useNavigate();
-
+  const location = window.location.pathname;
+  
   useEffect(() => {
-    if (order === 0) {
+    if (location === "/") {
       setOnMain(true);
       setOnSearch(false);
       setOnUpload(false);
       setOnUser(false);
-    } else if (order === 1) {
+    } else if (location === "/search") {
       setOnMain(false);
       setOnSearch(true);
       setOnUpload(false);
       setOnUser(false);
-    } else if (order === 2) {
+    } else if (location === "/create") {
       setOnMain(false);
       setOnSearch(false);
       setOnUpload(true);
       setOnUser(false);
-    } else if (order === 3) {
+    } else if (location === "/login") {
       setOnMain(false);
       setOnSearch(false);
       setOnUpload(false);
       setOnUser(true);
     }
-  }, [order]);
+  }, [location]);
 
   return (
     <div className="w-full h-[6rem] mt-5 bg-st-gray-02 flex">
       <div
         onClick={() => {
-          setOrder(0);
           navigate("/");
         }}
         className="w-[98px] flex py-[4px] px-[4px] flex-col justify-center items-center"
@@ -56,7 +55,6 @@ const Footer = () => {
       </div>
       <div
         onClick={() => {
-          setOrder(1);
           navigate("/search");
         }}
         className="w-[98px] flex py-[4px] px-[4px] flex-col justify-center items-center"
@@ -66,7 +64,6 @@ const Footer = () => {
       </div>
       <div
         onClick={() => {
-          setOrder(2);
           navigate("/create");
         }}
         className="w-[98px] flex py-[4px] px-[4px] flex-col justify-center items-center"
@@ -76,7 +73,6 @@ const Footer = () => {
       </div>
       <div
         onClick={() => {
-          setOrder(3);
           navigate("/login");
         }}
         className="w-[98px] flex py-[4px] px-[4px] flex-col justify-center items-center"
