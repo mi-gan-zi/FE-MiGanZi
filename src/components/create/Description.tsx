@@ -22,7 +22,6 @@ export default function Description({
 
   const handleAddress = (data: any) => {
     setKeyWord(data.address);
-    console.log(data);
     setIsPopUp(!isPopUp);
   };
 

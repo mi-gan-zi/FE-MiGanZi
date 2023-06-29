@@ -20,6 +20,9 @@ const TagList = ({ setTags }: TagProps) => {
     // TODO: 서버에 요청 & 결과 렌더링
   };
 
+  /**
+   * id 값을 받아서 가는 함수
+   */
   let idArray: string[] = [];
   const onClickMark = (id: number, isClicked: boolean) => {
     if (isClicked === false) {
