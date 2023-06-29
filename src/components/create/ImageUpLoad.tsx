@@ -1,9 +1,26 @@
 import { UpLoadIcon } from "assets/Icon";
-import { DragEvent, useCallback, useRef, useState } from "react";
+import {
+  Dispatch,
+  DragEvent,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
-export default function ImageUpLoad() {
+type ImageProps = {
+  setImage: Dispatch<SetStateAction<boolean>>;
+  setImageFile: Dispatch<SetStateAction<any>>;
+};
+
+export default function ImageUpLoad({ setImage, setImageFile }: ImageProps) {
   const [img, setImg] = useState<string>("");
   const ref = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setImage(true);
+  }, []);
 
   const handleCreateIMG = (e: any) => {
     const dropFile = e.dataTransfer?.files[0];
@@ -14,8 +31,12 @@ export default function ImageUpLoad() {
     };
     if (file) {
       reader.readAsDataURL(file);
+      setImageFile(e.target.files[0]);
+      setImage(false);
     } else if (dropFile) {
       reader.readAsDataURL(dropFile);
+      setImageFile(e.target.files[0]);
+      setImage(false);
     }
   };
 

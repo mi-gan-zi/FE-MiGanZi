@@ -1,11 +1,15 @@
 import { useState } from "react";
 
 const TagButton = ({
+  id,
   text,
   handleSelect,
+  onClickMark,
 }: {
+  id: number;
   text: string;
   handleSelect: (isClicked: boolean, text: string) => void;
+  onClickMark: (id: number, isClicked: boolean) => void;
 }) => {
   const [isClicked, setIsClicked] = useState(false);
 
@@ -16,6 +20,7 @@ const TagButton = ({
   const handleClick = () => {
     setIsClicked(!isClicked);
     handleSelect(!isClicked, text);
+    onClickMark(id, isClicked);
   };
 
   return (

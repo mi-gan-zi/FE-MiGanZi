@@ -7,7 +7,7 @@ const MapMark = () => {
     kakao.maps.drawing.DrawingManager<kakao.maps.drawing.OverlayType.MARKER>;
 
   const managerRef = useRef<DrawingManagerType>(null);
-
+  const [marker, setMarker] = useState(true);
   const [overlayData, setOverlayData] = useState<
     ReturnType<DrawingManagerType["getData"]>
   >({
@@ -24,16 +24,7 @@ const MapMark = () => {
     const manager = managerRef.current;
     manager && manager.cancel();
     manager && manager.select(type);
-    // const geocoder = new kakao.maps.services.Geocoder()
-    // manager &&  geocoder.coord2Address(
-    //   manager.getData().marker[0].x,
-    //   manager.getData().marker[0].y,
-    //   (result: any) => console.log(result[0].address.address_name)
-    // );
-    // TODO: 희망사항
-    // - [] 마커 한 개만 찍을 수 있게 변경
-    // - [] 마커 찍으면 바로 주소값 출력되게 변경
-    // drawOverlayData();
+    setMarker(false);
   }
 
   function drawOverlayData() {
@@ -89,20 +80,24 @@ const MapMark = () => {
           gap: "8px",
         }}
       >
-        <button
-          className="px-2.5 py-1 text-xs font-medium rounded-sm border"
-          onClick={(e) => {
-            selectOverlay(kakao.maps.drawing.OverlayType.MARKER);
-          }}
-        >
-          마커찍기
-        </button>
-        <button
-          className="px-2.5 py-1 text-xs font-medium rounded-sm border"
-          onClick={drawOverlayData}
-        >
-          가져오기
-        </button>
+        {marker && (
+          <>
+            <button
+              className="px-2.5 py-1 text-xs font-medium rounded-sm border"
+              onClick={(e) => {
+                selectOverlay(kakao.maps.drawing.OverlayType.MARKER);
+              }}
+            >
+              마커찍기
+            </button>
+            <button
+              className="px-2.5 py-1 text-xs font-medium rounded-sm border"
+              onClick={drawOverlayData}
+            >
+              가져오기
+            </button>
+          </>
+        )}
       </div>
     </>
   );
