@@ -1,16 +1,15 @@
 import { useRef, useState } from "react";
-import { DrawingManager, Map, MapMarker } from "react-kakao-maps-sdk";
+import { DrawingManager, Map } from "react-kakao-maps-sdk";
 
 const MapMark = () => {
   type DrawingManagerType =
     /*global kakao*/
     kakao.maps.drawing.DrawingManager<kakao.maps.drawing.OverlayType.MARKER>;
 
+  const [address, setAddress] = useState(null);
   const managerRef = useRef<DrawingManagerType>(null);
 
-  const [overlayData, setOverlayData] = useState<
-    ReturnType<DrawingManagerType["getData"]>
-  >({
+  const [overlayData, setOverlayData] = useState<ReturnType<DrawingManagerType["getData"]>>({
     arrow: [],
     circle: [],
     ellipse: [],
@@ -24,22 +23,15 @@ const MapMark = () => {
     const manager = managerRef.current;
     manager && manager.cancel();
     manager && manager.select(type);
-    // const geocoder = new kakao.maps.services.Geocoder()
-    // manager &&  geocoder.coord2Address(
-    //   manager.getData().marker[0].x,
-    //   manager.getData().marker[0].y,
-    //   (result: any) => console.log(result[0].address.address_name)
-    // );
+
     // TODO: 희망사항
     // - [] 마커 한 개만 찍을 수 있게 변경
-    // - [] 마커 찍으면 바로 주소값 출력되게 변경
-    // drawOverlayData();
   }
 
   function drawOverlayData() {
     const manager = managerRef.current;
-    console.log(manager?.getData().marker[0].x);
-    console.log(manager?.getData().marker[0].y);
+    // console.log(manager?.getData().marker[0].x);
+    // console.log(manager?.getData().marker[0].y);
     manager && setOverlayData(manager.getData());
     searchAddrFromCoords(manager);
     // 주소-좌표 변환 객체를 생성합니다
@@ -47,12 +39,10 @@ const MapMark = () => {
 
   function searchAddrFromCoords(manager: any) {
     const geocoder = new kakao.maps.services.Geocoder();
-    console.log(geocoder);
     // 좌표로 행정동 주소 정보를 요청합니다
-    geocoder.coord2Address(
-      manager?.getData().marker[0].x,
-      manager?.getData().marker[0].y,
-      (result: any) => console.log(result[0].address.address_name)
+    geocoder.coord2Address(manager?.getData().marker[0].x, manager?.getData().marker[0].y, (result: any) =>
+      // console.log(result[0].address.address_name)
+      setAddress(result[0].address.address_name)
     );
   }
 
@@ -76,19 +66,19 @@ const MapMark = () => {
           drawingMode={[kakao.maps.drawing.OverlayType.MARKER]}
           guideTooltip={["draw", "drag"]}
           markerOptions={{
-            // 마커 옵션입니다
             draggable: true, // 마커를 그리고 나서 드래그 가능하게 합니다
             removable: true, // 마커를 삭제 할 수 있도록 x 버튼이 표시됩니다
           }}
         />
       </Map>
       <div
-        className="mx-2 mt-2 pb-[20px] flex justify-start"
+        className="mx-2 mt-2 pb-[20px] flex justify-between items-center"
         style={{
           display: "flex",
           gap: "8px",
         }}
       >
+        <div className="text-active-blue">{address}</div>
         <button
           className="px-2.5 py-1 text-xs font-medium rounded-sm border"
           onClick={(e) => {
@@ -96,12 +86,6 @@ const MapMark = () => {
           }}
         >
           마커찍기
-        </button>
-        <button
-          className="px-2.5 py-1 text-xs font-medium rounded-sm border"
-          onClick={drawOverlayData}
-        >
-          가져오기
         </button>
       </div>
     </>
