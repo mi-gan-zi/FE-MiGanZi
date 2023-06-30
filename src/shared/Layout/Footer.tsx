@@ -43,7 +43,7 @@ const Footer = () => {
   }, [location]);
 
   return (
-    <div className="w-full h-[6rem] mt-5 bg-st-gray-02 flex">
+    <div className="h-[6rem] mt-5 bg-st-gray-02  flex fixed w-[390px] bottom-0 ">
       <div
         onClick={() => {
           navigate("/");
