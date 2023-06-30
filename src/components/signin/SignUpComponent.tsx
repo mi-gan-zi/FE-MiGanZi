@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export const SignUp = () => {
   const [check, setCheck] = useState(false);
   const [err, setErr] = useState<string>("");
+  const [msg, setMsg] = useState<string>("");
   const nickname_ref = useRef<HTMLInputElement>(null);
   const password_ref = useRef<HTMLInputElement>(null);
   const check_ref = useRef<HTMLInputElement>(null);
@@ -28,6 +29,7 @@ export const SignUp = () => {
       if (res.data === "OK") {
         setErr("");
         setCheck(true);
+        setMsg("사용 가능한 닉네임입니다.");
       }
     } else {
       setErr("닉네임을 입력해주세요");
@@ -64,6 +66,7 @@ export const SignUp = () => {
     <form onSubmit={signup} className="px-5">
       <div className="mt-10">
         <p className="text-xl font-bold">닉네임</p>
+        <p className="text-active-blue">{msg}</p>
         <div className="mt-[30px] mb-[70px]">
           <input
             disabled={check}

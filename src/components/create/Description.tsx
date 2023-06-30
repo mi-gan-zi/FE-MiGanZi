@@ -1,48 +1,37 @@
 import { PinIcon, SearchIcon, WihteSearchIcon } from "assets/Icon";
 import UseKeywordMap from "components/common/keyword_map/useKeywordMap";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import { Text } from "./Text";
 import TagList from "components/TagList";
-import axios from "axios";
-interface MarkType {
-  lat: string;
-  lng: string;
-}
-export default function Description() {
+import { MarkType } from "./Container";
+
+export default function Description({
+  testMapDataHandle,
+  setMarkes,
+  setContent,
+  setTags,
+}: {
+  testMapDataHandle: (e: any) => Promise<void>;
+  setMarkes: Dispatch<SetStateAction<MarkType>>;
+  setContent: Dispatch<SetStateAction<string>>;
+  setTags: Dispatch<SetStateAction<string[]>>;
+}) {
   const [keyWord, setKeyWord] = useState("");
   const [isPopUp, setIsPopUp] = useState(false);
-  const [mark, setMarkes] = useState<MarkType>();
-  console.log(mark);
+
   const handleAddress = (data: any) => {
     setKeyWord(data.address);
-    console.log(data);
     setIsPopUp(!isPopUp);
   };
-  console.log(mark?.lat);
-  const testMapDataHandle = async () => {
-    const testPostData = {
-      address_name: keyWord,
-      lat: mark?.lat,
-      lng: mark?.lng,
-    };
-    try {
-      const res = await axios.post(
-        process.env.REACT_APP_ENDPOINT + "user/board/post",
-        testPostData
-      );
-      console.log(res);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+
   return (
     <div className="flex flex-col gap-4">
       <div className="py-5">
         <h1 className="font-bold text-xl px-5 pb-5">태그 선택</h1>
-        <TagList />
+        <TagList setTags={setTags} />
       </div>
-      <Text />
+      <Text setContent={setContent} />
       <div className="w-[350px] h-[70px] font-bold text-xl flex items-center px-5">
         <h1>장소 입력</h1>
       </div>

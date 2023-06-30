@@ -6,9 +6,9 @@ const MapMark = () => {
     /*global kakao*/
     kakao.maps.drawing.DrawingManager<kakao.maps.drawing.OverlayType.MARKER>;
 
-  const [address, setAddress] = useState(null);
   const managerRef = useRef<DrawingManagerType>(null);
 
+  const [address, setAddress] = useState(null);
   const [overlayData, setOverlayData] = useState<ReturnType<DrawingManagerType["getData"]>>({
     arrow: [],
     circle: [],
@@ -23,9 +23,6 @@ const MapMark = () => {
     const manager = managerRef.current;
     manager && manager.cancel();
     manager && manager.select(type);
-
-    // TODO: 희망사항
-    // - [] 마커 한 개만 찍을 수 있게 변경
   }
 
   function drawOverlayData() {
@@ -41,7 +38,6 @@ const MapMark = () => {
     const geocoder = new kakao.maps.services.Geocoder();
     // 좌표로 행정동 주소 정보를 요청합니다
     geocoder.coord2Address(manager?.getData().marker[0].x, manager?.getData().marker[0].y, (result: any) =>
-      // console.log(result[0].address.address_name)
       setAddress(result[0].address.address_name)
     );
   }
@@ -71,6 +67,7 @@ const MapMark = () => {
           }}
         />
       </Map>
+
       <div
         className="mx-2 mt-2 pb-[20px] flex justify-between items-center"
         style={{
