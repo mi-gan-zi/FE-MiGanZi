@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { DrawingManager, Map } from "react-kakao-maps-sdk";
+import { ReactComponent as BluePin } from "assets/blue_pin.svg";
 
 const MapMark = () => {
   type DrawingManagerType =
@@ -53,7 +54,7 @@ const MapMark = () => {
         }}
         style={{
           width: "100%",
-          height: "248px",
+          height: "390px",
         }}
         level={3} // 지도의 확대 레벨
       >
@@ -68,21 +69,18 @@ const MapMark = () => {
         />
       </Map>
 
-      <div
-        className="mx-2 mt-2 pb-[20px] flex justify-between items-center"
-        style={{
-          display: "flex",
-          gap: "8px",
-        }}
-      >
-        <div className="text-active-blue">{address}</div>
+      <div className="px-3 py-5 flex justify-between items-center">
+        <div className="gap-2 flex flex-row items-center">
+          {address ? <BluePin /> : ""}
+          <div className="font-medium text-st-gray-07 ">{address}</div>
+        </div>
         <button
-          className="px-2.5 py-1 text-xs font-medium rounded-sm border"
+          className="px-3 py-1.5 text-[14px] text-[#fff] rounded bg-active-blue"
           onClick={(e) => {
             selectOverlay(kakao.maps.drawing.OverlayType.MARKER);
           }}
         >
-          마커찍기
+          마커 찍기
         </button>
       </div>
     </>
