@@ -1,38 +1,73 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Layout from "shared/Layout/Layout";
 
-interface Iinfo {
+interface IPosts {
+  content: IContent;
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: IPageable;
+  size: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+}
+
+interface IContent {
+  address_name?: string;
   commentCount: number;
   content: string;
   createdDate: Date;
   id: number;
   imageUrl: string;
+  lat?: number;
+  lng?: number;
   modifiedDate: Date;
+  music_id: string;
   nickname: string;
-  title: string;
-  userComments?: string[];
+  tags: string;
   viewCount: number;
+  userComments?: Array<string>; // length만 받아오는건지..?
+}
+
+interface IPageable {
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  unpaged: boolean;
 }
 
 export default function Main() {
   const navigate = useNavigate();
+  const [post, setPost] = useState<IPosts>();
 
   useEffect(() => {
     const getBoards = async () => {
       const posts = await axios.get(
-        `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/`,
+        `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/posts`,
         {
           headers: {
             Authorization: `Bearer ${process.env.REACT_APP_TESTAUTH}`,
           },
         }
       );
-      console.log(posts.data);
+      setPost(posts.data);
     };
     getBoards();
   }, []);
+
+  console.log(typeof post);
 
   return (
     <>
@@ -54,8 +89,6 @@ export default function Main() {
           <div className="flex items-center ml-[10px]">Miganzi</div>
         </div>
         <div className="ml-[40px] w-[350px] h-[467px]">
-          {/* 이미지 들어갈 곳 - 내부에 지도, 태그, 텍스트 내용 최대 2줄.
-          가로방향으로 스크롤 */}
           <img src="logo512.png" alt="img"></img>
         </div>
         <div className="flex justify-center text-[20px] h-[70px] items-center">
