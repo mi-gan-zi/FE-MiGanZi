@@ -7,17 +7,9 @@ export type Post = {
   imageUrl: string;
 };
 
-export type PostData = {
-  empty: boolean;
-  first: boolean;
-  last: boolean;
-  number: number;
-};
-
 export function Main() {
   const navigate = useNavigate();
   const [post, setPost] = useState<Post[] | null>(null);
-  const [postData, setPostData] = useState<PostData | null>(null);
   const ref = useRef(null);
   const [page, setPage] = useState(0);
 
@@ -31,9 +23,7 @@ export function Main() {
       }
     );
     const newPosts = posts.data.content;
-    const newPostsData = posts.data;
     setPost((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
-    setPostData(newPostsData);
     setPage((prevPage) => prevPage + 1);
   };
 
@@ -56,8 +46,6 @@ export function Main() {
       }
     };
   }, [page]);
-
-  console.log(postData);
 
   return (
     <>
