@@ -1,38 +1,51 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Layout from "shared/Layout/Layout";
 
-interface Iinfo {
-  commentCount: number;
-  content: string;
-  createdDate: Date;
+export type Post = {
   id: number;
   imageUrl: string;
-  modifiedDate: Date;
-  nickname: string;
-  title: string;
-  userComments?: string[];
-  viewCount: number;
-}
+};
 
-export default function Main() {
+export function Main() {
   const navigate = useNavigate();
+  const [post, setPost] = useState<Post[] | null>(null);
+  const ref = useRef(null);
+  const [page, setPage] = useState(0);
+
+  const getBoards = async (pageNumber: number) => {
+    const posts = await axios.get(
+      `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/posts?page=${pageNumber}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_TESTAUTH}`,
+        },
+      }
+    );
+    const newPosts = posts.data.content;
+    setPost((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
+    setPage((prevPage) => prevPage + 1);
+  };
 
   useEffect(() => {
-    const getBoards = async () => {
-      const posts = await axios.get(
-        `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_TESTAUTH}`,
-          },
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          getBoards(page);
         }
-      );
-      console.log(posts.data);
+      },
+      { threshold: 0.5 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
     };
-    getBoards();
-  }, []);
+  }, [page]);
 
   return (
     <>
@@ -54,54 +67,38 @@ export default function Main() {
           <div className="flex items-center ml-[10px]">Miganzi</div>
         </div>
         <div className="ml-[40px] w-[350px] h-[467px]">
-          {/* 이미지 들어갈 곳 - 내부에 지도, 태그, 텍스트 내용 최대 2줄.
-          가로방향으로 스크롤 */}
           <img src="logo512.png" alt="img"></img>
         </div>
         <div className="flex justify-center text-[20px] h-[70px] items-center">
           새로 작성된 아티클을 확인해보세요
         </div>
+
+        {/**
+         * 투두 : 피그마처럼 3열 종대로
+         */}
         <div
           onClick={() => navigate("/detail")}
-          className="flex flex-row w-[390px] mb-[5px] justify-evenly"
+          // className="flex flex-column w-[390px] mb-[5px] "
+          className="flex flex-wrap flex-column w-[390px]  "
         >
-          <img
-            className="w-[126px] h-[169px]"
-            src="street1.jpg"
-            alt="img"
-          ></img>
-          <img
-            className="w-[126px] h-[169px]"
-            src="street2.jpg"
-            alt="img"
-          ></img>
-          <img
-            className="w-[126px] h-[169px]"
-            src="street3.jpg"
-            alt="img"
-          ></img>
+          {post
+            ? post.map((item) => {
+                return (
+                  <img
+                    src={item.imageUrl}
+                    alt="이미지"
+                    className="w-[120px] h-[169px] my-[2px] mx-[1px]"
+                    key={item.id}
+                    // onClick = {test(item.id)} 클릭 시 해당 게시글로 라우팅하는 함수
+                  />
+                );
+              })
+            : null}
         </div>
-        <div
-          onClick={() => navigate("/detail")}
-          className="flex flex-row w-[390px] mb-[5px] justify-evenly"
-        >
-          <img
-            className="w-[126px] h-[169px]"
-            src="street4.jpg"
-            alt="img"
-          ></img>
-          <img
-            className="w-[126px] h-[169px]"
-            src="street5.jpg"
-            alt="img"
-          ></img>
-          <img
-            className="w-[126px] h-[169px]"
-            src="street6.jpg"
-            alt="img"
-          ></img>
-        </div>
+        <div ref={ref} className="h-[90px]"></div>
       </>
     </>
   );
 }
+
+export default Main;

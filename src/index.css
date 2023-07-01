@@ -9,6 +9,9 @@
 body {
   margin: 0;
   font-family: suit-variable, sans-serif;
+  background-image: url(../src/assets/background.png);
+  background-size: contain;
+  vertical-align: top;
 }
 
 code {
