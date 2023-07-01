@@ -8,7 +8,6 @@ const MapMark = () => {
     kakao.maps.drawing.DrawingManager<kakao.maps.drawing.OverlayType.MARKER>;
 
   const managerRef = useRef<DrawingManagerType>(null);
-
   const [address, setAddress] = useState(null);
   const [overlayData, setOverlayData] = useState<ReturnType<DrawingManagerType["getData"]>>({
     arrow: [],
@@ -19,7 +18,8 @@ const MapMark = () => {
     polyline: [],
     rectangle: [],
   });
-
+  // TODO: 마커 삭제 후 로직 수정해야함. -> 마커 삭제 후 지도 클릭하면 좌표값이 없어서 에러뜸.
+  // console.log(overlayData.marker);
   function selectOverlay(type: kakao.maps.drawing.OverlayType.MARKER) {
     const manager = managerRef.current;
     manager && manager.cancel();
@@ -31,7 +31,7 @@ const MapMark = () => {
     // console.log(manager?.getData().marker[0].x);
     // console.log(manager?.getData().marker[0].y);
     manager && setOverlayData(manager.getData());
-    searchAddrFromCoords(manager);
+    overlayData.marker[0] ? searchAddrFromCoords(manager) : console.log("ddd");
     // 주소-좌표 변환 객체를 생성합니다
   }
 
@@ -79,6 +79,7 @@ const MapMark = () => {
           onClick={(e) => {
             selectOverlay(kakao.maps.drawing.OverlayType.MARKER);
           }}
+          disabled={address ? true : false}
         >
           마커 찍기
         </button>
