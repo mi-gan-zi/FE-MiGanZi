@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DaumPostCode from "react-daum-postcode";
 import axios from "axios";
 import TagList from "components/TagList";
 import MapMark from "components/common/map/MapMark";
+import { Post } from "./Main";
 import { ReactComponent as Magnifier } from "../assets/magnifier.svg";
 import { ReactComponent as Down } from "../assets/down.svg";
 import { ReactComponent as Up } from "../assets/up.svg";
@@ -13,21 +15,34 @@ export default function Search() {
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [isTagOpen, setIsTagOpen] = useState(false);
   const [keyWord, setKeyWord] = useState("");
+  const [lat, setLat] = useState<number>();
+  const [lng, setLng] = useState<number>();
+  const tags = "000000000000";
 
-  const serverURL = `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/`;
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  const setQueries = (y: number, x: number) => {
+    setLat(y);
+    setLng(x);
+    setLat(37.315);
+    setLng(126.83);
+  };
+
+  const navigate = useNavigate();
+  const serverURL = `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/find-near-post`;
 
   useEffect(() => {
     axios
-      .get(`${serverURL}/posts`) // ?page=0&size=1&sort=string
+      .get(`${serverURL}/37.315/126.83/${tags}`) // ${lat}/${lng}/${tags}
       .then((res) => {
-        console.log(res);
-        return res;
+        console.log("응답: " + res.data.content);
+        setPosts(res.data.content);
       })
       .catch((err) => {
         console.error(err);
         return;
       });
-  }, []);
+  }, [serverURL, lat, lng, tags]);
 
   const handleInput = (e: React.MouseEvent) => {
     setIsPopUp(!isPopUp);
@@ -73,7 +88,7 @@ export default function Search() {
             {!isMapOpen ? <Down /> : <Up />}
           </button>
         </div>
-        {isMapOpen && <MapMark />}
+        {isMapOpen && <MapMark setQueries={setQueries} />}
       </section>
       <section className="bg-white border-b-2 border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
@@ -91,13 +106,28 @@ export default function Search() {
             필터 초기화
           </button>
         </div>
-        <div>필터 적용 결과값</div>
-        <div className="py-[20px] flex flex-col justify-center items-center">
-          <img alt="" src={result} />
-          <p className="text-lg font-semibold text-[#3D3D3D]">검색 값에 맞는 아티클이 없어요.</p>
-          <p className="mt-6 text-[#8B8B8B]">다른 키워드를 검색해보거나,</p>
-          <p className="mb-6 text-[#8B8B8B]">필터 초기화를 통해 미(간)지를 탐색해보세요.</p>
-        </div>
+        {posts.length > 0 ? (
+          <div className="w-[390px] flex flex-wrap flex-column ">
+            {posts.map((item) => {
+              return (
+                <img
+                  src={item.imageUrl}
+                  alt=""
+                  className="w-[120px] h-[169px] my-[2px] mx-[1px]"
+                  key={item.id}
+                  onClick={() => navigate(`/detail/${item.id}`)}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <div className="mb-[6rem] py-[20px] flex flex-col justify-center items-center">
+            <img alt="" src={result} />
+            <p className="text-lg font-semibold text-[#3D3D3D]">검색 값에 맞는 아티클이 없어요.</p>
+            <p className="mt-6 text-[#8B8B8B]">다른 키워드를 검색해보거나,</p>
+            <p className="mb-6 text-[#8B8B8B]">필터 초기화를 통해 미(간)지를 탐색해보세요.</p>
+          </div>
+        )}
       </section>
     </div>
   );

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { DrawingManager, Map } from "react-kakao-maps-sdk";
 import { ReactComponent as BluePin } from "assets/blue_pin.svg";
 
-const MapMark = () => {
+const MapMark = ({ setQueries }: { setQueries: (y: number, x: number) => void }) => {
   type DrawingManagerType =
     /*global kakao*/
     kakao.maps.drawing.DrawingManager<kakao.maps.drawing.OverlayType.MARKER>;
@@ -28,10 +28,14 @@ const MapMark = () => {
 
   function drawOverlayData() {
     const manager = managerRef.current;
-    // console.log(manager?.getData().marker[0].x);
-    // console.log(manager?.getData().marker[0].y);
-    manager && setOverlayData(manager.getData());
-    overlayData.marker[0] ? searchAddrFromCoords(manager) : console.log("ddd");
+    if (manager !== null) {
+      let lng = manager.getData().marker[0].x;
+      let lat = manager.getData().marker[0].y;
+      setQueries(lat, lng);
+      setOverlayData(manager.getData());
+      searchAddrFromCoords(manager);
+    }
+    // overlayData.marker[0] ? searchAddrFromCoords(manager) : console.log("ddd");
     // 주소-좌표 변환 객체를 생성합니다
   }
 
