@@ -78,7 +78,8 @@ export function Main() {
          */}
         <div
           onClick={() => navigate("/detail")}
-          // className="flex flex-column w-[390px] mb-[5px] justify-evenly"
+          // className="flex flex-column w-[390px] mb-[5px] "
+          className="flex flex-wrap flex-column w-[390px]  "
         >
           {post
             ? post.map((item) => {
@@ -86,15 +87,15 @@ export function Main() {
                   <img
                     src={item.imageUrl}
                     alt="이미지"
-                    className="w-[380px] h-[169px]"
+                    className="w-[120px] h-[169px] my-[2px] mx-[1px]"
                     key={item.id}
                     // onClick = {test(item.id)} 클릭 시 해당 게시글로 라우팅하는 함수
                   />
                 );
               })
             : null}
-          <div ref={ref}>안녕</div>
         </div>
+        <div ref={ref} className="h-[90px]"></div>
       </>
     </>
   );
