@@ -84,20 +84,20 @@ export default function Container() {
   return (
     <>
       <Head image={image} setNextMove={setNextMove} />
-      <form onSubmit={testMapDataHandle} encType="multipart/form-data">
-        {nextMove === 1 && <MusicSelect setMusicId={setMusicId} />}
-        {nextMove === 2 && (
-          <ImageUpLoad setImage={setImage} setImageFile={setImageFile} />
-        )}
-        {nextMove === 3 && (
-          <Description
-            testMapDataHandle={testMapDataHandle}
-            setMarkes={setMarkes}
-            setTags={setTags}
-            setContent={setContent}
-          />
-        )}
-      </form>
+      {/* <form onSubmit={testMapDataHandle} encType="multipart/form-data"> */}
+      {nextMove === 1 && <MusicSelect setMusicId={setMusicId} />}
+      {nextMove === 2 && (
+        <ImageUpLoad setImage={setImage} setImageFile={setImageFile} />
+      )}
+      {nextMove === 3 && (
+        <Description
+          testMapDataHandle={testMapDataHandle}
+          setMarkes={setMarkes}
+          setTags={setTags}
+          setContent={setContent}
+        />
+      )}
+      {/* </form> */}
     </>
   );
 }
