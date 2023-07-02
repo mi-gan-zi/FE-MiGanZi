@@ -37,7 +37,7 @@ const SignInComponent = () => {
   };
 
   return (
-    <div className="flex flex-col justify-between h-[665px] w-[24rem] px-5">
+    <div className="flex flex-col justify-between h-[665px] w-[24rem] px-5 overflow-y-auto">
       <div className="h-[310px] w-full flex flex-col items-center ">
         <div className="translate-x-3">
           <Line className="mt-2"></Line>
