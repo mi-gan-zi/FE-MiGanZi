@@ -5,10 +5,12 @@ import { ReactComponent as Apple } from "../../assets/apple.svg";
 import { ReactComponent as Google } from "../../assets/google.svg";
 import { ReactComponent as Kakao } from "../../assets/kakao.svg";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SignInComponent = () => {
   const nickname_ref = useRef<HTMLInputElement>(null);
   const password_ref = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const login = async (e: any) => {
     e.preventDefault();
@@ -28,6 +30,8 @@ const SignInComponent = () => {
       if (res.status === 200) {
         localStorage.setItem("token", res.data);
         localStorage.setItem("nickname", nickname);
+        alert("미(간)지에 오신 걸 환영합니다." + nickname + "님");
+        navigate("/");
       }
     }
   };
