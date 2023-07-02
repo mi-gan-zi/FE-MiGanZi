@@ -63,7 +63,7 @@ export const SignUp = () => {
   };
 
   return (
-    <form onSubmit={signup} className="px-5">
+    <form onSubmit={signup} className="px-5 overflow-y-auto">
       <div className="mt-10">
         <p className="text-xl font-bold">닉네임</p>
         <p className="text-active-blue">{msg}</p>
