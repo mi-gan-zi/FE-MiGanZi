@@ -12,6 +12,7 @@ export function Main() {
   const [post, setPost] = useState<Post[] | null>(null);
   const ref = useRef(null);
   const [page, setPage] = useState(0);
+  const [checkLast, setcheckLast] = useState<boolean>();
 
   const getBoards = async (pageNumber: number) => {
     const posts = await axios.get(
@@ -25,13 +26,17 @@ export function Main() {
     const newPosts = posts.data.content;
     setPost((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
     setPage((prevPage) => prevPage + 1);
+
+    setcheckLast(posts.data.last);
   };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          getBoards(page);
+          if (!checkLast) {
+            getBoards(page);
+          }
         }
       },
       { threshold: 0.5 }
@@ -72,14 +77,9 @@ export function Main() {
         <div className="flex justify-center text-[20px] h-[70px] items-center">
           새로 작성된 아티클을 확인해보세요
         </div>
-
-        {/**
-         * 투두 : 피그마처럼 3열 종대로
-         */}
         <div
           onClick={() => navigate("/detail")}
-          // className="flex flex-column w-[390px] mb-[5px] "
-          className="flex flex-wrap flex-column w-[390px]  "
+          className="flex flex-wrap flex-column w-[390px]"
         >
           {post
             ? post.map((item) => {
