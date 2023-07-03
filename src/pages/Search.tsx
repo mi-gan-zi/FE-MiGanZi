@@ -9,7 +9,13 @@ import { ReactComponent as Magnifier } from "../assets/magnifier.svg";
 import { ReactComponent as Down } from "../assets/down.svg";
 import { ReactComponent as Up } from "../assets/up.svg";
 import result from "../assets/no_result.svg";
-
+const tagsToBit = (tags: string[]) => {
+  const arr = Array(12).fill(0);
+  for (let i = 0; i < tags.length; i++) {
+    arr[Number(tags[i])] = 1;
+  }
+  return arr.join("");
+};
 export default function Search() {
   const [isPopUp, setIsPopUp] = useState(false);
   const [isMapOpen, setIsMapOpen] = useState(false);
@@ -17,15 +23,15 @@ export default function Search() {
   const [keyWord, setKeyWord] = useState("");
   const [lat, setLat] = useState<number>();
   const [lng, setLng] = useState<number>();
-  const tags = "000000000000";
-
+  const [tags, setTags] = useState<string[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
 
-  const setQueries = (y: number, x: number) => {
+  let bit = "";
+  bit = tagsToBit(tags);
+
+  const setCoordinate = (y: number, x: number) => {
     setLat(y);
     setLng(x);
-    setLat(37.315);
-    setLng(126.83);
   };
 
   const navigate = useNavigate();
@@ -33,16 +39,16 @@ export default function Search() {
 
   useEffect(() => {
     axios
-      .get(`${serverURL}/37.315/126.83/${tags}`) // ${lat}/${lng}/${tags}
+      .get(`${serverURL}/${lat}/${lng}/${bit}`) // /37.315/126.83/000000000000
       .then((res) => {
-        console.log("응답: " + res.data.content);
+        // console.log("응답: " + res.data.content);
         setPosts(res.data.content);
-      })
-      .catch((err) => {
-        console.error(err);
-        return;
       });
-  }, [serverURL, lat, lng, tags]);
+    // .catch((err) => {
+    //   console.error(err);
+    //   return;
+    // });
+  }, [serverURL, lat, lng, bit]);
 
   const handleInput = (e: React.MouseEvent) => {
     setIsPopUp(!isPopUp);
@@ -58,8 +64,8 @@ export default function Search() {
     setIsTagOpen(!isTagOpen);
   };
   const handleFilterReset = () => {
-    // TODO: 태그도 초기화 필요
     setKeyWord("");
+    setTags([]);
   };
 
   return (
@@ -88,7 +94,7 @@ export default function Search() {
             {!isMapOpen ? <Down /> : <Up />}
           </button>
         </div>
-        {isMapOpen && <MapMark setQueries={setQueries} />}
+        {isMapOpen && <MapMark setCoordinate={setCoordinate} />}
       </section>
       <section className="bg-white border-b-2 border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
@@ -97,7 +103,7 @@ export default function Search() {
             {!isTagOpen ? <Down /> : <Up />}
           </button>
         </div>
-        {isTagOpen ? <TagList /> : ""}
+        {isTagOpen ? <TagList setTags={setTags} /> : ""}
       </section>
       <section className="bg-white border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
