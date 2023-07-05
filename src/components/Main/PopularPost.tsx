@@ -19,7 +19,7 @@ const PopularPost = () => {
 
   const getPopularPost = async () => {
     const response = await axios.get(
-      `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/popular-post`
+      `${process.env.REACT_APP_ENDPOINT}user/board/popular-post`
     );
     setPopularPost(response.data);
   };
@@ -37,7 +37,7 @@ const PopularPost = () => {
       if (showNumber === 1) setShowNumber(5);
       setShowNumber((number) => number - 1);
     } else {
-      if (showNumber === 5) setShowNumber(1);
+      if (showNumber === 5) setShowNumber(0);
       setShowNumber((number) => number + 1);
     }
   };

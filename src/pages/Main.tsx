@@ -17,12 +17,7 @@ export function Main() {
 
   const getBoards = async (pageNumber: number) => {
     const posts = await axios.get(
-      `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/posts?page=${pageNumber}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_TESTAUTH}`,
-        },
-      }
+      `${process.env.REACT_APP_ENDPOINT}user/board/posts?page=${pageNumber}`
     );
     const newPosts = posts.data.content;
     setPost((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
@@ -53,6 +48,7 @@ export function Main() {
     };
   }, [page]);
 
+  const routePost = () => {};
   return (
     <>
       <>
