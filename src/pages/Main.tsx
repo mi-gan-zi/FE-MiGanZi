@@ -48,7 +48,9 @@ export function Main() {
     };
   }, [page]);
 
-  const routePost = () => {};
+  const routePost = (id: number) => {
+    navigate(`detail/${String(id)}`);
+  };
   return (
     <>
       <>
@@ -60,10 +62,7 @@ export function Main() {
         <div className="flex justify-center text-[20px] h-[70px] items-center">
           새로 작성된 아티클을 확인해보세요
         </div>
-        <div
-          onClick={() => navigate("/detail")}
-          className="flex flex-wrap flex-column w-[390px]"
-        >
+        <div className="flex flex-wrap flex-column w-[390px]">
           {post
             ? post.map((item) => {
                 return (
@@ -72,7 +71,7 @@ export function Main() {
                     alt="이미지"
                     className="w-[120px] h-[169px] my-[2px] mx-[1px]"
                     key={item.id}
-                    // onClick = {test(item.id)} 클릭 시 해당 게시글로 라우팅하는 함수
+                    onClick={() => routePost(item.id)}
                   />
                 );
               })
