@@ -11,6 +11,10 @@ export type Popular = {
   tags: string;
   viewCount: number;
 };
+interface ButtonProps {
+  onClick: () => void;
+  props: string;
+}
 
 const PopularPost = () => {
   const [popularPost, setPopularPost] = useState<Popular[] | null>(null);
@@ -32,7 +36,15 @@ const PopularPost = () => {
     showPostArray.push(value);
   }
 
-  console.log(showPostArray);
+  const changeImage = (props: string) => {
+    if (props === "prev") {
+      if (showNumber === 1) setShowNumber(5);
+      setShowNumber((number) => number - 1);
+    } else {
+      if (showNumber === 5) setShowNumber(1);
+      setShowNumber((number) => number + 1);
+    }
+  };
 
   return (
     <>
@@ -65,6 +77,18 @@ const PopularPost = () => {
             <div>{showPostArray[showNumber]?.tags}</div>
             <div>{showPostArray[showNumber]?.content}</div>
           </div>
+          <button
+            className="absolute top-[45%] p-[5px] text-2xl text-cityColor"
+            onClick={() => changeImage("prev")}
+          >
+            &lt;
+          </button>
+          <button
+            className="absolute top-[45%] p-[5px] right-[0px] text-2xl text-cityColor"
+            onClick={() => changeImage("post")}
+          >
+            &gt;
+          </button>
         </div>
       </div>
     </>
