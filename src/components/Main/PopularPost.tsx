@@ -14,6 +14,8 @@ export type Popular = {
 
 const PopularPost = () => {
   const [popularPost, setPopularPost] = useState<Popular[] | null>(null);
+  const showPostArray: any = [""];
+  const [showNumber, setShowNumber] = useState(1);
 
   const getPopularPost = async () => {
     const response = await axios.get(
@@ -22,40 +24,49 @@ const PopularPost = () => {
     setPopularPost(response.data);
   };
 
-  console.log(popularPost);
-
   useEffect(() => {
     getPopularPost();
   }, []);
 
+  for (const [key, value] of Object.entries(popularPost || "")) {
+    showPostArray.push(value);
+  }
+
+  console.log(showPostArray);
+
   return (
     <>
-      {popularPost
-        ? popularPost.map((item) => {
-            return (
-              <>
-                <div className="flex flex-row text-[14px] ml-[40px] h-[21px]">
-                  <div>{item.modifiedDate}</div>
-                  <div>|</div>
-                  <div>조회수 {item.viewCount}</div>
-                </div>
-                <div className="flex flex-row ml-[40px] h-[60px]">
-                  <img
-                    src="street1.jpg"
-                    alt="profile"
-                    className="w-[60px] h-[60px] rounded-full"
-                  ></img>
-                  <div className="flex items-center ml-[10px]">
-                    {item.nickname}
-                  </div>
-                </div>
-                <div className="ml-[40px] w-[350px] h-[467px]">
-                  <img src={item.imageUrl} alt="img" />
-                </div>
-              </>
-            );
-          })
-        : null}
+      <div>
+        <div className="flex flex-row text-[14px] ml-[40px] h-[21px]">
+          <div>{showPostArray[showNumber]?.modifiedDate}</div>
+          <div>|</div>
+          <div>조회수 {showPostArray[showNumber]?.viewCount}</div>
+        </div>
+        <div className="flex flex-row ml-[40px] h-[60px]">
+          <img
+            src="street1.jpg"
+            alt="profile"
+            className="w-[60px] h-[60px] rounded-full"
+          />
+          <div className="flex items-center ml-[10px]">
+            {showPostArray[showNumber]?.nickname}
+          </div>
+        </div>
+        <div className="ml-[40px] mt-[5px] relative">
+          <img
+            className="object-fill w-[350px] h-[467px]"
+            src={showPostArray[showNumber]?.imageUrl}
+            alt="postImage"
+          />
+          <div className="absolute top-[24px] left-[20px] text-cityColor">
+            {`🌐 ` + showPostArray[showNumber]?.address_name}
+          </div>
+          <div className="absolute bottom-[24px] left-[20px] text-cityColor">
+            <div>{showPostArray[showNumber]?.tags}</div>
+            <div>{showPostArray[showNumber]?.content}</div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
