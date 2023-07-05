@@ -11,10 +11,6 @@ export type Popular = {
   tags: string;
   viewCount: number;
 };
-interface ButtonProps {
-  onClick: () => void;
-  props: string;
-}
 
 const PopularPost = () => {
   const [popularPost, setPopularPost] = useState<Popular[] | null>(null);
