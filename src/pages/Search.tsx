@@ -22,14 +22,11 @@ export default function Search() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const navigate = useNavigate();
-  const serverURL = `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/find-near-post`;
 
   const getSearchList = useCallback(async () => {
-    // /37.315/126.83/000000000000
-    const res = await axios.get(`${serverURL}/${lat}/${lng}/${bit}`);
-    console.log(res.status); // 요청 성공 여부 확인
+    const res = await axios.get(`${process.env.REACT_APP_ENDPOINT}/user/board/find-near-post/${lat}/${lng}/${bit}`);
     setPosts(res.data.content);
-  }, [serverURL, lat, lng, bit]);
+  }, [lat, lng, bit]);
 
   useEffect(() => {
     tagsToBit(tags);
