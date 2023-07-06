@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import DaumPostCode from "react-daum-postcode";
 import axios from "axios";
@@ -10,47 +10,43 @@ import { ReactComponent as Down } from "../assets/down.svg";
 import { ReactComponent as Up } from "../assets/up.svg";
 import result from "../assets/no_result.svg";
 
-// const tagsToBit = (tags: string[]) => {
-//   const arr = Array(12).fill(0);
-//   for (let i = 0; i < tags.length; i++) {
-//     arr[Number(tags[i])] = 1;
-//   }
-//   return arr.join("");
-// };
 export default function Search() {
   const [isPopUp, setIsPopUp] = useState(false);
   const [isMapOpen, setIsMapOpen] = useState(true);
   const [isTagOpen, setIsTagOpen] = useState(false);
   const [keyWord, setKeyWord] = useState("");
-  const [lat, setLat] = useState<string>();
-  const [lng, setLng] = useState<string>();
+  const [lat, setLat] = useState<string>("");
+  const [lng, setLng] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
+  const [bit, setBit] = useState<string>("000000000000");
   const [posts, setPosts] = useState<Post[]>([]);
-
-  // let bit = "";
-  // bit = tagsToBit(tags);
 
   const setCoordinate = (y: string, x: string) => {
     setLat(y);
     setLng(x);
   };
+  const tagsToBit = (tags: string[]) => {
+    const arr = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"];
+    tags.forEach((index: string) => {
+      arr[parseInt(index)] = "1";
+    });
+    return setBit(arr.join(""));
+  };
 
   const navigate = useNavigate();
   const serverURL = `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/find-near-post`;
 
+  const getSearchList = useCallback(async () => {
+    // /37.315/126.83/000000000000
+    const res = await axios.get(`${serverURL}/${lat}/${lng}/${bit}`);
+    console.log(res.status); // 요청 성공 여부 확인
+    setPosts(res.data.content);
+  }, [serverURL, lat, lng, bit]);
+
   useEffect(() => {
-    lat &&
-      axios
-        .get(`${serverURL}/${lat}/${lng}/000000000000`) // /37.315/126.83/000000000000
-        .then((res) => {
-          // console.log("응답: " + res.data.content);
-          setPosts(res.data.content);
-        });
-    // .catch((err) => {
-    //   console.error(err);
-    //   return;
-    // });
-  }, [serverURL, lat, lng]);
+    tagsToBit(tags);
+    lat && lng && getSearchList();
+  }, [getSearchList, lat, lng, bit, tags]);
 
   const handleInput = (e: React.MouseEvent) => {
     setIsPopUp(!isPopUp);
@@ -67,7 +63,10 @@ export default function Search() {
   };
   const handleFilterReset = () => {
     setKeyWord("");
+    setLat("");
+    setLng("");
     setTags([]);
+    setBit("000000000000");
   };
 
   return (
@@ -81,7 +80,7 @@ export default function Search() {
         </div>
         {isMapOpen && (
           <div className="bg-white border-b-2 border-[#F5F4F3]">
-            <div className="z-50 w-[340px] m-[20px] px-[16px] py-[8px] flex justify-center items-center border-[1.2px] rounded-full border-[#0f0f0f]">
+            <div className="z-50 w-[340px] mb-[20px] mx-[20px] px-[16px] py-[8px] flex justify-center items-center border-[1.2px] rounded-full border-[#0f0f0f]">
               <Magnifier />
               <input
                 type="search"
