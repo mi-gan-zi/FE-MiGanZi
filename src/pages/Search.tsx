@@ -59,6 +59,7 @@ export default function Search() {
     setIsTagOpen(!isTagOpen);
   };
   const handleFilterReset = () => {
+    // TODO: 하위 컴포넌트 데이터까지 초기화 필요
     setKeyWord("");
     setLat("");
     setLng("");

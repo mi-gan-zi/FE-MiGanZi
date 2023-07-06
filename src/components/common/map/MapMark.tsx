@@ -27,9 +27,7 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
     keyword &&
       ps.keywordSearch(`${keyword}`, (data, status, _pagination) => {
         if (status === kakao.maps.services.Status.OK) {
-          // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가
           const bounds = new kakao.maps.LatLngBounds();
-
           let markers = [];
 
           for (var i = 0; i < data.length; i++) {
@@ -44,17 +42,16 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
             // @ts-ignore
             bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
           }
-          //도로명 주소 검색 결과
+          // TODO: 도로명 주소 검색 결과 마커 연결
           // let lat = Number(markers[0].position.lat);
           // let lng = Number(markers[0].position.lng);
 
-          // 검색된 장소 위치를 기준으로 지도 범위를 재설정
           // @ts-ignore
           map.setBounds(bounds);
         }
       });
     setAddress(null);
-    // TODO: 이전 마커 관련 이벤트 초기화
+    // TODO: 남아있는 이전 마커 이벤트 초기화
     // return () => managerRef.current?.remove(overlayData);
   }, [map, keyword]);
 
@@ -73,12 +70,10 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
       setOverlayData(manager.getData());
       searchAddrFromCoords(manager);
     }
-    // 주소-좌표 변환 객체를 생성
   }
 
   function searchAddrFromCoords(manager: any) {
     const geocoder = new kakao.maps.services.Geocoder();
-    // 좌표로 행정동 주소 정보를 요청
     geocoder.coord2Address(manager?.getData().marker[0].x, manager?.getData().marker[0].y, (result: any) =>
       setAddress(result[0].address.address_name)
     );
@@ -88,7 +83,6 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
     <>
       <Map
         center={{
-          // 지도의 중심좌표
           lat: 37.56685123050336,
           lng: 126.97864093204903,
         }}
@@ -96,7 +90,7 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
           width: "100%",
           height: "390px",
         }}
-        level={3} // 지도의 확대 레벨
+        level={3}
         onCreate={setMap}
       >
         <DrawingManager
@@ -104,8 +98,8 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
           drawingMode={[kakao.maps.drawing.OverlayType.MARKER]}
           guideTooltip={["draw", "drag"]}
           markerOptions={{
-            draggable: true, // 마커를 그리고 나서 드래그 가능하게
-            removable: false, // 마커를 삭제 버튼 없음
+            draggable: true,
+            removable: false,
           }}
           onStateChanged={() => drawOverlayData()}
         />
