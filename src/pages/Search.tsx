@@ -21,18 +21,6 @@ export default function Search() {
   const [bit, setBit] = useState<string>("000000000000");
   const [posts, setPosts] = useState<Post[]>([]);
 
-  const setCoordinate = (y: string, x: string) => {
-    setLat(y);
-    setLng(x);
-  };
-  const tagsToBit = (tags: string[]) => {
-    const arr = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"];
-    tags.forEach((index: string) => {
-      arr[parseInt(index)] = "1";
-    });
-    return setBit(arr.join(""));
-  };
-
   const navigate = useNavigate();
   const serverURL = `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/find-near-post`;
 
@@ -46,7 +34,19 @@ export default function Search() {
   useEffect(() => {
     tagsToBit(tags);
     lat && lng && getSearchList();
-  }, [getSearchList, lat, lng, bit, tags]);
+  }, [getSearchList, lat, lng, tags]);
+
+  const setCoordinate = (y: string, x: string) => {
+    setLat(y);
+    setLng(x);
+  };
+  const tagsToBit = (tags: string[]) => {
+    const arr = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"];
+    tags.forEach((index: string) => {
+      arr[parseInt(index)] = "1";
+    });
+    return setBit(arr.join(""));
+  };
 
   const handleInput = (e: React.MouseEvent) => {
     setIsPopUp(!isPopUp);
@@ -67,6 +67,7 @@ export default function Search() {
     setLng("");
     setTags([]);
     setBit("000000000000");
+    setPosts([]);
   };
 
   return (

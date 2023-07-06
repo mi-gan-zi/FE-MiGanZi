@@ -7,8 +7,8 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
     /*global kakao*/
     kakao.maps.drawing.DrawingManager<kakao.maps.drawing.OverlayType.MARKER>;
 
+  let managerRef = useRef<DrawingManagerType>(null);
   const [map, setMap] = useState<kakao.maps.Map>();
-  const managerRef = useRef<DrawingManagerType>(null);
   const [address, setAddress] = useState(null);
   const [overlayData, setOverlayData] = useState<ReturnType<DrawingManagerType["getData"]>>({
     arrow: [],
@@ -55,6 +55,7 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
       });
     setAddress(null);
     // TODO: 이전 마커 관련 이벤트 초기화
+    // return () => managerRef.current?.remove(overlayData);
   }, [map, keyword]);
 
   function selectOverlay(type: kakao.maps.drawing.OverlayType.MARKER) {
