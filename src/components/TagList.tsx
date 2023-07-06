@@ -7,7 +7,6 @@ type TagProps = {
 };
 
 const TagList = ({ setTags }: TagProps) => {
-  const arr = new Array<string>();
   let idArray: string[] = [];
 
   const onClickMark = (id: number, isClicked: boolean) => {
@@ -17,7 +16,7 @@ const TagList = ({ setTags }: TagProps) => {
       setTags && setTags((pre) => [...pre, id.toString()]);
     }
     if (isClicked === true) {
-      let index = arr.indexOf(id.toString());
+      let index = idArray.indexOf(id.toString());
       idArray.splice(index, 1);
       // @ts-ignore
       setTags && setTags((pre) => pre.filter((i) => i !== id.toString()));
