@@ -9,27 +9,28 @@ import { ReactComponent as Magnifier } from "../assets/magnifier.svg";
 import { ReactComponent as Down } from "../assets/down.svg";
 import { ReactComponent as Up } from "../assets/up.svg";
 import result from "../assets/no_result.svg";
-const tagsToBit = (tags: string[]) => {
-  const arr = Array(12).fill(0);
-  for (let i = 0; i < tags.length; i++) {
-    arr[Number(tags[i])] = 1;
-  }
-  return arr.join("");
-};
+
+// const tagsToBit = (tags: string[]) => {
+//   const arr = Array(12).fill(0);
+//   for (let i = 0; i < tags.length; i++) {
+//     arr[Number(tags[i])] = 1;
+//   }
+//   return arr.join("");
+// };
 export default function Search() {
   const [isPopUp, setIsPopUp] = useState(false);
-  const [isMapOpen, setIsMapOpen] = useState(false);
+  const [isMapOpen, setIsMapOpen] = useState(true);
   const [isTagOpen, setIsTagOpen] = useState(false);
   const [keyWord, setKeyWord] = useState("");
-  const [lat, setLat] = useState<number>();
-  const [lng, setLng] = useState<number>();
+  const [lat, setLat] = useState<string>();
+  const [lng, setLng] = useState<string>();
   const [tags, setTags] = useState<string[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
 
-  let bit = "";
-  bit = tagsToBit(tags);
+  // let bit = "";
+  // bit = tagsToBit(tags);
 
-  const setCoordinate = (y: number, x: number) => {
+  const setCoordinate = (y: string, x: string) => {
     setLat(y);
     setLng(x);
   };
@@ -38,17 +39,18 @@ export default function Search() {
   const serverURL = `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/find-near-post`;
 
   useEffect(() => {
-    axios
-      .get(`${serverURL}/${lat}/${lng}/${bit}`) // /37.315/126.83/000000000000
-      .then((res) => {
-        // console.log("응답: " + res.data.content);
-        setPosts(res.data.content);
-      });
+    lat &&
+      axios
+        .get(`${serverURL}/${lat}/${lng}/000000000000`) // /37.315/126.83/000000000000
+        .then((res) => {
+          // console.log("응답: " + res.data.content);
+          setPosts(res.data.content);
+        });
     // .catch((err) => {
     //   console.error(err);
     //   return;
     // });
-  }, [serverURL, lat, lng, bit]);
+  }, [serverURL, lat, lng]);
 
   const handleInput = (e: React.MouseEvent) => {
     setIsPopUp(!isPopUp);
@@ -71,30 +73,32 @@ export default function Search() {
   return (
     <div className="w-full flex flex-col justify-center content-center">
       <section className="bg-white border-b-2 border-[#F5F4F3]">
-        <div className="w-[350px] m-[20px] px-[16px] py-[8px] flex justify-center items-center border-[1.2px] rounded-full border-[#0f0f0f]">
-          <Magnifier />
-          <input
-            type="search"
-            placeholder="도로명 주소 검색"
-            className="w-full ml-2.5 font-medium focus:outline-none"
-            onClick={handleInput}
-            value={keyWord}
-          />
-        </div>
-        {isPopUp && (
-          <div className="px-[20px]">
-            <DaumPostCode onComplete={handleAddress} autoClose />
-          </div>
-        )}
-      </section>
-      <section className="bg-white border-b-2 border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
           <p className="px-[20px] text-xl font-bold">지도 탐색하기</p>
           <button className="px-[20px]" onClick={handleMapToggle}>
             {!isMapOpen ? <Down /> : <Up />}
           </button>
         </div>
-        {isMapOpen && <MapMark setCoordinate={setCoordinate} />}
+        {isMapOpen && (
+          <div className="bg-white border-b-2 border-[#F5F4F3]">
+            <div className="z-50 w-[340px] m-[20px] px-[16px] py-[8px] flex justify-center items-center border-[1.2px] rounded-full border-[#0f0f0f]">
+              <Magnifier />
+              <input
+                type="search"
+                placeholder="도로명 주소 검색"
+                className="w-full ml-2.5 font-medium focus:outline-none"
+                onClick={handleInput}
+                value={keyWord}
+              />
+            </div>
+            {isPopUp && (
+              <div className="px-[20px]">
+                <DaumPostCode onComplete={handleAddress} autoClose />
+              </div>
+            )}
+            <MapMark keyword={keyWord} setCoordinate={setCoordinate} />
+          </div>
+        )}
       </section>
       <section className="bg-white border-b-2 border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">

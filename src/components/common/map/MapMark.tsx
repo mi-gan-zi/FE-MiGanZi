@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { DrawingManager, Map } from "react-kakao-maps-sdk";
 import { ReactComponent as BluePin } from "assets/blue_pin.svg";
 
-const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (y: number, x: number) => void }) => {
+const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (y: string, x: string) => void }) => {
   type DrawingManagerType =
     /*global kakao*/
     kakao.maps.drawing.DrawingManager<kakao.maps.drawing.OverlayType.MARKER>;
@@ -27,8 +27,7 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
     keyword &&
       ps.keywordSearch(`${keyword}`, (data, status, _pagination) => {
         if (status === kakao.maps.services.Status.OK) {
-          // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-          // LatLngBounds 객체에 좌표를 추가
+          // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가
           const bounds = new kakao.maps.LatLngBounds();
 
           let markers = [];
@@ -48,7 +47,6 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
           //도로명 주소 검색 결과
           // let lat = Number(markers[0].position.lat);
           // let lng = Number(markers[0].position.lng);
-          // setCoordinate(lat, lng);
 
           // 검색된 장소 위치를 기준으로 지도 범위를 재설정
           // @ts-ignore
@@ -68,8 +66,8 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
   function drawOverlayData() {
     const manager = managerRef.current;
     if (manager !== null) {
-      let lng = manager.getData().marker[0].x;
-      let lat = manager.getData().marker[0].y;
+      let lng = manager.getData().marker[0].x.toString();
+      let lat = manager.getData().marker[0].y.toString();
       setCoordinate(lat, lng);
       setOverlayData(manager.getData());
       searchAddrFromCoords(manager);
