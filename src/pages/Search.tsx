@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import DaumPostCode from "react-daum-postcode";
 import axios from "axios";
@@ -12,37 +12,41 @@ import result from "../assets/no_result.svg";
 
 export default function Search() {
   const [isPopUp, setIsPopUp] = useState(false);
-  const [isMapOpen, setIsMapOpen] = useState(false);
+  const [isMapOpen, setIsMapOpen] = useState(true);
   const [isTagOpen, setIsTagOpen] = useState(false);
   const [keyWord, setKeyWord] = useState("");
-  const [lat, setLat] = useState<number>();
-  const [lng, setLng] = useState<number>();
-  const tags = "000000000000";
-
+  const [lat, setLat] = useState<string>("");
+  const [lng, setLng] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [bit, setBit] = useState<string>("000000000000");
   const [posts, setPosts] = useState<Post[]>([]);
-
-  const setQueries = (y: number, x: number) => {
-    setLat(y);
-    setLng(x);
-    setLat(37.315);
-    setLng(126.83);
-  };
 
   const navigate = useNavigate();
   const serverURL = `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/find-near-post`;
 
+  const getSearchList = useCallback(async () => {
+    // /37.315/126.83/000000000000
+    const res = await axios.get(`${serverURL}/${lat}/${lng}/${bit}`);
+    console.log(res.status); // 요청 성공 여부 확인
+    setPosts(res.data.content);
+  }, [serverURL, lat, lng, bit]);
+
   useEffect(() => {
-    axios
-      .get(`${serverURL}/37.315/126.83/${tags}`) // ${lat}/${lng}/${tags}
-      .then((res) => {
-        console.log("응답: " + res.data.content);
-        setPosts(res.data.content);
-      })
-      .catch((err) => {
-        console.error(err);
-        return;
-      });
-  }, [serverURL, lat, lng, tags]);
+    tagsToBit(tags);
+    lat && lng && getSearchList();
+  }, [getSearchList, lat, lng, tags]);
+
+  const setCoordinate = (y: string, x: string) => {
+    setLat(y);
+    setLng(x);
+  };
+  const tagsToBit = (tags: string[]) => {
+    const arr = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"];
+    tags.forEach((index: string) => {
+      arr[parseInt(index)] = "1";
+    });
+    return setBit(arr.join(""));
+  };
 
   const handleInput = (e: React.MouseEvent) => {
     setIsPopUp(!isPopUp);
@@ -58,29 +62,16 @@ export default function Search() {
     setIsTagOpen(!isTagOpen);
   };
   const handleFilterReset = () => {
-    // TODO: 태그도 초기화 필요
     setKeyWord("");
+    setLat("");
+    setLng("");
+    setTags([]);
+    setBit("000000000000");
+    setPosts([]);
   };
 
   return (
     <div className="w-full flex flex-col justify-center content-center">
-      <section className="bg-white border-b-2 border-[#F5F4F3]">
-        <div className="w-[350px] m-[20px] px-[16px] py-[8px] flex justify-center items-center border-[1.2px] rounded-full border-[#0f0f0f]">
-          <Magnifier />
-          <input
-            type="search"
-            placeholder="도로명 주소 검색"
-            className="w-full ml-2.5 font-medium focus:outline-none"
-            onClick={handleInput}
-            value={keyWord}
-          />
-        </div>
-        {isPopUp && (
-          <div className="px-[20px]">
-            <DaumPostCode onComplete={handleAddress} autoClose />
-          </div>
-        )}
-      </section>
       <section className="bg-white border-b-2 border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
           <p className="px-[20px] text-xl font-bold">지도 탐색하기</p>
@@ -88,7 +79,26 @@ export default function Search() {
             {!isMapOpen ? <Down /> : <Up />}
           </button>
         </div>
-        {isMapOpen && <MapMark setQueries={setQueries} />}
+        {isMapOpen && (
+          <div className="bg-white border-b-2 border-[#F5F4F3]">
+            <div className="z-50 w-[340px] mb-[20px] mx-[20px] px-[16px] py-[8px] flex justify-center items-center border-[1.2px] rounded-full border-[#0f0f0f]">
+              <Magnifier />
+              <input
+                type="search"
+                placeholder="도로명 주소 검색"
+                className="w-full ml-2.5 font-medium focus:outline-none"
+                onClick={handleInput}
+                value={keyWord}
+              />
+            </div>
+            {isPopUp && (
+              <div className="px-[20px]">
+                <DaumPostCode onComplete={handleAddress} autoClose />
+              </div>
+            )}
+            <MapMark keyword={keyWord} setCoordinate={setCoordinate} />
+          </div>
+        )}
       </section>
       <section className="bg-white border-b-2 border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
@@ -97,7 +107,7 @@ export default function Search() {
             {!isTagOpen ? <Down /> : <Up />}
           </button>
         </div>
-        {isTagOpen ? <TagList /> : ""}
+        {isTagOpen ? <TagList setTags={setTags} /> : ""}
       </section>
       <section className="bg-white border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
