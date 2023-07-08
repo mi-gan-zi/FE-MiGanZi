@@ -1,13 +1,14 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { DrawingManager, Map } from "react-kakao-maps-sdk";
 import { ReactComponent as BluePin } from "assets/blue_pin.svg";
 
-const MapMark = ({ setQueries }: { setQueries: (y: number, x: number) => void }) => {
+const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (y: string, x: string) => void }) => {
   type DrawingManagerType =
     /*global kakao*/
     kakao.maps.drawing.DrawingManager<kakao.maps.drawing.OverlayType.MARKER>;
 
-  const managerRef = useRef<DrawingManagerType>(null);
+  let managerRef = useRef<DrawingManagerType>(null);
+  const [map, setMap] = useState<kakao.maps.Map>();
   const [address, setAddress] = useState(null);
   const [overlayData, setOverlayData] = useState<ReturnType<DrawingManagerType["getData"]>>({
     arrow: [],
@@ -18,8 +19,42 @@ const MapMark = ({ setQueries }: { setQueries: (y: number, x: number) => void })
     polyline: [],
     rectangle: [],
   });
-  // TODO: 마커 삭제 후 로직 수정해야함. -> 마커 삭제 후 지도 클릭하면 좌표값이 없어서 에러뜸.
-  // console.log(overlayData.marker);
+
+  useEffect(() => {
+    if (!map) return;
+    const ps = new kakao.maps.services.Places();
+
+    keyword &&
+      ps.keywordSearch(`${keyword}`, (data, status, _pagination) => {
+        if (status === kakao.maps.services.Status.OK) {
+          const bounds = new kakao.maps.LatLngBounds();
+          let markers = [];
+
+          for (var i = 0; i < data.length; i++) {
+            // @ts-ignore
+            markers.push({
+              position: {
+                lat: data[i].y,
+                lng: data[i].x,
+              },
+              content: data[i].place_name,
+            });
+            // @ts-ignore
+            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+          }
+          // TODO: 도로명 주소 검색 결과 마커 연결
+          // let lat = Number(markers[0].position.lat);
+          // let lng = Number(markers[0].position.lng);
+
+          // @ts-ignore
+          map.setBounds(bounds);
+        }
+      });
+    setAddress(null);
+    // TODO: 남아있는 이전 마커 이벤트 초기화
+    // return () => managerRef.current?.remove(overlayData);
+  }, [map, keyword]);
+
   function selectOverlay(type: kakao.maps.drawing.OverlayType.MARKER) {
     const manager = managerRef.current;
     manager && manager.cancel();
@@ -29,19 +64,16 @@ const MapMark = ({ setQueries }: { setQueries: (y: number, x: number) => void })
   function drawOverlayData() {
     const manager = managerRef.current;
     if (manager !== null) {
-      let lng = manager.getData().marker[0].x;
-      let lat = manager.getData().marker[0].y;
-      setQueries(lat, lng);
+      let lng = manager.getData().marker[0].x.toString();
+      let lat = manager.getData().marker[0].y.toString();
+      setCoordinate(lat, lng);
       setOverlayData(manager.getData());
       searchAddrFromCoords(manager);
     }
-    // overlayData.marker[0] ? searchAddrFromCoords(manager) : console.log("ddd");
-    // 주소-좌표 변환 객체를 생성합니다
   }
 
   function searchAddrFromCoords(manager: any) {
     const geocoder = new kakao.maps.services.Geocoder();
-    // 좌표로 행정동 주소 정보를 요청합니다
     geocoder.coord2Address(manager?.getData().marker[0].x, manager?.getData().marker[0].y, (result: any) =>
       setAddress(result[0].address.address_name)
     );
@@ -50,9 +82,7 @@ const MapMark = ({ setQueries }: { setQueries: (y: number, x: number) => void })
   return (
     <>
       <Map
-        onClick={() => setTimeout(() => drawOverlayData(), 500)}
         center={{
-          // 지도의 중심좌표
           lat: 37.56685123050336,
           lng: 126.97864093204903,
         }}
@@ -60,16 +90,18 @@ const MapMark = ({ setQueries }: { setQueries: (y: number, x: number) => void })
           width: "100%",
           height: "390px",
         }}
-        level={3} // 지도의 확대 레벨
+        level={3}
+        onCreate={setMap}
       >
         <DrawingManager
           ref={managerRef}
           drawingMode={[kakao.maps.drawing.OverlayType.MARKER]}
           guideTooltip={["draw", "drag"]}
           markerOptions={{
-            draggable: true, // 마커를 그리고 나서 드래그 가능하게 합니다
-            removable: true, // 마커를 삭제 할 수 있도록 x 버튼이 표시됩니다
+            draggable: true,
+            removable: false,
           }}
+          onStateChanged={() => drawOverlayData()}
         />
       </Map>
 

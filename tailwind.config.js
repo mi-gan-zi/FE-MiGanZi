@@ -36,6 +36,9 @@ module.exports = {
         59: "4rem",
         90: "6rem",
       },
+      colors: {
+        cityColor: "#dfe6e9",
+      },
     },
 
     backgroundColor: {
