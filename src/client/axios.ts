@@ -19,9 +19,6 @@ export class Client {
 
     this.axiosInstance = axios.create({
       baseURL: this.baseURL,
-      headers: {
-        "Content-Type": "application/json",
-      },
     });
 
     this.axiosInstance.interceptors.request.use(
@@ -39,7 +36,12 @@ export class Client {
     url: string,
     options: AxiosRequestConfig = {}
   ): Promise<AxiosResponse<any>> {
-    const response: AxiosResponse<any> = await this.axiosInstance(url, options);
+    const response: AxiosResponse<any> = await this.axiosInstance(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+      },
+    });
     return response;
   }
 }
