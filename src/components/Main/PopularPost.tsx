@@ -1,5 +1,5 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 export type Popular = {
   address_name: string;
@@ -16,6 +16,8 @@ const PopularPost = () => {
   const [popularPost, setPopularPost] = useState<Popular[] | null>(null);
   const showPostArray: any = [""];
   const [showNumber, setShowNumber] = useState(1);
+  const START_PAGE = 0;
+  const END_PAGE = 5;
 
   const getPopularPost = async () => {
     const response = await axios.get(
@@ -34,16 +36,19 @@ const PopularPost = () => {
 
   const changeImage = (props: string) => {
     if (props === "prev") {
-      if (showNumber === 1) setShowNumber(5);
+      if (showNumber === 1) setShowNumber(END_PAGE);
       setShowNumber((number) => number - 1);
     } else {
-      if (showNumber === 5) setShowNumber(0);
+      if (showNumber === END_PAGE) setShowNumber(START_PAGE);
       setShowNumber((number) => number + 1);
     }
   };
 
   return (
     <>
+      <div className="text-[20px] h-[70px] border-b-2 flex items-center ml-[40px]">
+        유저가 뽑은 베스트 아티클
+      </div>
       <div>
         <div className="flex flex-row text-[14px] ml-[40px] h-[21px]">
           <div>{showPostArray[showNumber]?.modifiedDate}</div>
@@ -64,7 +69,7 @@ const PopularPost = () => {
           <div className="absolute top-[0%] bg-st-black w-full h-[80px] opacity-70" />
           <div className="absolute bottom-[0%] bg-st-black w-full h-[80px] opacity-70" />
           <img
-            className="object-fill w-[350px] h-[467px]"
+            className="object-fill w-[350px] h-[467px] "
             src={showPostArray[showNumber]?.imageUrl}
             alt="postImage"
           />
