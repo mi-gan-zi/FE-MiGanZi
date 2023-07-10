@@ -1,27 +1,25 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import DaumPostCode from "react-daum-postcode";
 import axios from "axios";
 import TagList from "components/TagList";
 import MapMark from "components/common/map/MapMark";
-import { Post } from "./Main";
+import PostList from "components/search/PostList";
+import NoSearchResult from "components/search/NoSearchResult";
 import { ReactComponent as Magnifier } from "../assets/magnifier.svg";
 import { ReactComponent as Down } from "../assets/down.svg";
 import { ReactComponent as Up } from "../assets/up.svg";
-import result from "../assets/no_result.svg";
+import { Post } from "../@types/post.type";
 
 export default function Search() {
-  const [isPopUp, setIsPopUp] = useState(false);
-  const [isMapOpen, setIsMapOpen] = useState(true);
-  const [isTagOpen, setIsTagOpen] = useState(false);
-  const [keyWord, setKeyWord] = useState("");
-  const [lat, setLat] = useState<string>("");
-  const [lng, setLng] = useState<string>("");
+  const [isPopUp, setIsPopUp] = useState<boolean>(false);
+  const [isMapOpen, setIsMapOpen] = useState<boolean>(true);
+  const [isTagOpen, setIsTagOpen] = useState<boolean>(false);
+  const [keyWord, setKeyWord] = useState<string>("");
+  const [lat, setLat] = useState<string | null>(null);
+  const [lng, setLng] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [bit, setBit] = useState<string>("000000000000");
   const [posts, setPosts] = useState<Post[]>([]);
-
-  const navigate = useNavigate();
 
   const getSearchList = useCallback(async () => {
     const res = await axios.get(`${process.env.REACT_APP_ENDPOINT}/user/board/find-near-post/${lat}/${lng}/${bit}`);
@@ -114,28 +112,7 @@ export default function Search() {
             필터 초기화
           </button>
         </div>
-        {posts.length > 0 ? (
-          <div className="w-[390px] flex flex-wrap flex-column ">
-            {posts.map((item) => {
-              return (
-                <img
-                  src={item.imageUrl}
-                  alt=""
-                  className="w-[120px] h-[169px] my-[2px] mx-[1px]"
-                  key={item.id}
-                  onClick={() => navigate(`/detail/${item.id}`)}
-                />
-              );
-            })}
-          </div>
-        ) : (
-          <div className="mb-[6rem] py-[20px] flex flex-col justify-center items-center">
-            <img alt="" src={result} />
-            <p className="text-lg font-semibold text-[#3D3D3D]">검색 값에 맞는 아티클이 없어요.</p>
-            <p className="mt-6 text-[#8B8B8B]">다른 키워드를 검색해보거나,</p>
-            <p className="mb-6 text-[#8B8B8B]">필터 초기화를 통해 미(간)지를 탐색해보세요.</p>
-          </div>
-        )}
+        {posts.length > 0 ? <PostList posts={posts} /> : <NoSearchResult />}
       </section>
     </div>
   );

@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-export type Post = {
-  id: number;
-  imageUrl: string;
-};
+import { Post } from "../../@types/post.type";
 
 export function AllPost() {
   const navigate = useNavigate();
@@ -15,9 +11,7 @@ export function AllPost() {
   const [checkLast, setcheckLast] = useState<boolean>();
 
   const getBoards = async (pageNumber: number) => {
-    const posts = await axios.get(
-      `${process.env.REACT_APP_ENDPOINT}user/board/posts?page=${pageNumber}`
-    );
+    const posts = await axios.get(`${process.env.REACT_APP_ENDPOINT}user/board/posts?page=${pageNumber}`);
     const newPosts = posts.data.content;
     setPost((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
     setPage((prevPage) => prevPage + 1);
@@ -53,9 +47,7 @@ export function AllPost() {
 
   return (
     <>
-      <div className="flex justify-center text-[20px] h-[70px] items-center">
-        새로 작성된 아티클을 확인해보세요
-      </div>
+      <div className="flex justify-center text-[20px] h-[70px] items-center">새로 작성된 아티클을 확인해보세요</div>
       <div className="flex flex-wrap flex-column w-[390px]">
         {post
           ? post.map((item) => {
