@@ -8,7 +8,7 @@ const Header = () => {
   console.log(currentTime);
   return (
     <>
-      <div className="w-[390px] flex items-center justify-between px-5 py-2 border-st-gray-03 mb-4 fixed bg-st-white">
+      <div className="w-[390px] flex items-center justify-between px-5 py-2 border-st-gray-03 mb-4 fixed top-[70px] rounded-t-3xl bg-st-white">
         <div className="time text-[14px] font-bold ">{currentTime}</div>
         <div>
           <HeaderIcon />

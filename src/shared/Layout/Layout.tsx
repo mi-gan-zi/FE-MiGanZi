@@ -8,7 +8,7 @@ import { url } from "inspector";
 
 const Layout = (props: { children: React.ReactNode }) => {
   return (
-    <div className="bg-st-white w-[390px] h-screen mx-auto overflow-y-scroll   flex-col justify-between">
+    <div className="bg-st-white w-[390px] h-[800px] mx-auto overflow-y-scroll flex-col justify-between rounded-3xl relative top-[25px]">
       <div className="overflow-y-scrokll">
         <Header />
         <div className="h-[60px]"></div>
