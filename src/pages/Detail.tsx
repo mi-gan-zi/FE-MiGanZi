@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Dispatch, SetStateAction, useState, useEffect } from "react";
+import { Dispatch, SetStateAction, useState, useEffect, useRef } from "react";
 import Player from "../components/common/player/Player";
 import { musicList } from "../@types/music.type";
 import { tagList } from "../@types/tag.type";
@@ -138,12 +138,16 @@ function CommentListItem({comment} : {comment: CommentDetail}) {
   );
 }
 
-function CommentList({comment} : {comment: CommentDetail[]} ) {
+function CommentList({comment, commentEndRef} : {
+  comment: CommentDetail[], 
+  commentEndRef: React.ForwardedRef<HTMLDivElement>
+  }) {
   return(
     <div className='w-[390px] h-[432px] overflow-auto scrollbar-hide'>
       {comment && comment.map((subItem, index) => (
         <CommentListItem comment={subItem} />
       ))}
+      <div ref = {commentEndRef}></div>
     </div>
   );
 }
@@ -154,7 +158,7 @@ function CommentInput({newComment,  setNewComment, onSendComment} : {
   onSendComment: () => void
 }) {
   return(
-    <div className = 'w-[390px] h-[85px] mb-[100px] relative'>
+    <div className = 'w-[390px] h-[85px] relative'>
       <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02'> 
         <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} 
             onChange={(event) => { setNewComment(event.target.value); console.log(event.target.value); }}/>    
@@ -164,21 +168,22 @@ function CommentInput({newComment,  setNewComment, onSendComment} : {
   );
 }
 
-function Comment({comment, commentNum, newComment, setNewComment, onSendComment} : {
+function Comment({comment, commentNum, newComment, setNewComment, onSendComment, commentEndRef} : {
   comment: CommentDetail[] | undefined,
   commentNum: number,
   newComment: string,
   setNewComment: (v: string) => void,
   onSendComment: () => void,
-  children: React.ReactNode;
+  children: React.ReactNode,
+  commentEndRef: React.ForwardedRef<HTMLDivElement>
 }) {
   return(
     <div>
-        <div className = 'w-[390px] h-[70px] mt-[32px] mb-[32px] relative'>
+        <div className = 'w-[390px] h-[70px] mt-[32px]  relative'>
           <p className="text-[20px] absolute left-[40px] top-[20px]">
           댓글 {commentNum}</p>
         </div>
-        {comment && <CommentList comment={comment}></CommentList>}
+        {comment && <CommentList comment={comment} commentEndRef={commentEndRef}></CommentList>}
         <CommentInput newComment={newComment} setNewComment={setNewComment} onSendComment={onSendComment}></CommentInput>
     </div>
   );
@@ -202,9 +207,11 @@ function Detail() {
   const [playTitle, setPlayTitle] = useState();
   const [imgURL, setImgURL] = useState<string>();
   const [isCheck, setIsCheck] = useState<boolean>(false);
+  const [userToken, setUserToken] = useState('');
   const { id } = useParams();
   const navigate = useNavigate();
-  
+  const commentEndRef = useRef<HTMLDivElement>(null);
+
   const getPost = async () => {
     try {
       const url = process.env.REACT_APP_ENDPOINT + "user/board/" + `${id}`;
@@ -241,7 +248,7 @@ function Detail() {
     formData.append('postId', `${id}`)
     try{
       const res = await axios.post(process.env.REACT_APP_ENDPOINT + "user/board/comment", 
-      formData, {headers:{Authorization: "Bearer " + localStorage.getItem("token")}}
+      formData, {headers:{Authorization: "Bearer " + userToken}}
       )
       getPost();
      }catch(err){
@@ -251,10 +258,20 @@ function Detail() {
 
   useEffect(() => {
     getPost();
+    const token = localStorage.getItem("token");
+    if (typeof token === 'string'){
+      setUserToken(token);
+    }
   }, []); 
 
   const onSendComment = () => {
-    postComment();
+    if (userToken != ''){
+      postComment();
+      {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' });}
+    }
+    else{
+      navigate('/login');
+    }
   }
 
   return(
@@ -274,7 +291,7 @@ function Detail() {
       <ImageInfo tags = {tags} info={content} location={addressName} ></ImageInfo>
       <div className='w-[390px] h-[14px] bg-st-gray-02'></div>
       <Comment comment = {comment} commentNum={commentNum} newComment={newComment} setNewComment={setNewComment}
-      onSendComment={onSendComment}> </Comment>  
+      onSendComment={onSendComment} commentEndRef={commentEndRef}> </Comment>  
     </>
   );
 }
