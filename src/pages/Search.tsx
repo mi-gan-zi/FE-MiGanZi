@@ -11,12 +11,12 @@ import { ReactComponent as Up } from "../assets/up.svg";
 import result from "../assets/no_result.svg";
 
 export default function Search() {
-  const [isPopUp, setIsPopUp] = useState(false);
-  const [isMapOpen, setIsMapOpen] = useState(true);
-  const [isTagOpen, setIsTagOpen] = useState(false);
-  const [keyWord, setKeyWord] = useState("");
-  const [lat, setLat] = useState<string>("");
-  const [lng, setLng] = useState<string>("");
+  const [isPopUp, setIsPopUp] = useState<boolean>(false);
+  const [isMapOpen, setIsMapOpen] = useState<boolean>(true);
+  const [isTagOpen, setIsTagOpen] = useState<boolean>(false);
+  const [keyWord, setKeyWord] = useState<string>("");
+  const [lat, setLat] = useState<string | null>(null);
+  const [lng, setLng] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [bit, setBit] = useState<string>("000000000000");
   const [posts, setPosts] = useState<Post[]>([]);
