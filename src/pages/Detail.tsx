@@ -1,26 +1,41 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import Player from "../components/common/player/Player2";
+import { Dispatch, SetStateAction, useState, useEffect, useRef } from "react";
+import Player from "../components/common/player/Player";
+import { musicList } from "../@types/music.type";
 import { tagList } from "../@types/tag.type";
-import moment from 'moment';
-import music1 from '../assets/SimpleSound.mp3';
-import exampleImg from '../assets/example.png';
 import  { ReactComponent as Send } from '../assets/Send.svg';
 import { ReactComponent as Userimg } from '../assets/Userimg.svg';
-import { ReactComponent as Play } from '../assets/player.svg';
-import { ReactComponent as ContentImg } from '../assets/Contentimg.svg';
 import { ReactComponent as Mark } from '../assets/Mark.svg';
 import { ReactComponent as CommentImg } from '../assets/Commentimg.svg';
 import { ReactComponent as Dot } from '../assets/Dot.svg';
-import axios, { AxiosResponse }from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-interface CommentType {
-  comment?: any[]
+interface PostDetail {
+  createdDate: string;
+  modifiedDate: string;
+  id: number
+  nickname: string;
+  viewCount: number;
+  commentCount: number;
+  content: string;
+  imageUrl: string;
+  addressName: string;
+  tag: string;
+  tagsNum: number;
+  musicId: string;
 }
 
+interface CommentDetail {
+  createdDate: string;
+  modifiedDate: string;
+  id: number;
+  nickname: string;
+  content: string;
+  userPost: string;
+}
 
-function Header({comment} : any) {
+function Header() {
   return(
     <div className = 'w-[390px] h-[70px] relative'>
           <p className='text-[20px] mt-[10px] font-bold absolute left-[40px]'>같이 감상하면 좋은 곡</p>
@@ -28,7 +43,13 @@ function Header({comment} : any) {
   );
 }
 
-function Content({userName, createdDate, imagePreview} : any) {
+function Content({userName, createdDate, imagePreview} :
+  {
+    userName: PostDetail['nickname'],
+    createdDate: PostDetail['createdDate'],
+    imagePreview: PostDetail['imageUrl'],
+  }
+  ) {
   return(
     <>
       <div className='w-[350px] h-[10px] bg-st-gray-10 mt-[32px] ml-[40px]'/>
@@ -49,8 +70,8 @@ function Content({userName, createdDate, imagePreview} : any) {
   );
 }
 
-function Tag({tags} : any) {
-  const example = "010000000000"
+function Tag({tags} : {tags: PostDetail['tag'] } ) {
+  //테스트용 const example = "010000000000"
   if(tags){
     return(
       <>
@@ -69,7 +90,11 @@ function Tag({tags} : any) {
   }
 }
 
-function ImageInfo({tags, info, location} : any) {
+function ImageInfo({tags, info, location} : {
+  tags: PostDetail['tag'],
+  info: PostDetail['content'],
+  location: PostDetail['addressName']
+}) {
   return(
     <div className = 'w-[390px] h-[284px] relative mt-[32px] mb-[32px]'>
       <div className = 'w-[330px] h-[138px] absolute left-[40px]'>
@@ -92,7 +117,7 @@ function ImageInfo({tags, info, location} : any) {
   );
 }
 
-function CommentListItem({comment} : any) {
+function CommentListItem({comment} : {comment: CommentDetail}) {
   return(
     <div className = 'w-[390px] h-[216px] relative'>
       <div className = 'w-[350px] h-[60px] absolute top-[24px] left-[20px]'>
@@ -113,65 +138,85 @@ function CommentListItem({comment} : any) {
   );
 }
 
-function CommentList({comment} : CommentType) {
+function CommentList({comment, commentEndRef} : {
+  comment: CommentDetail[], 
+  commentEndRef: React.ForwardedRef<HTMLDivElement>
+  }) {
   return(
     <div className='w-[390px] h-[432px] overflow-auto scrollbar-hide'>
       {comment && comment.map((subItem, index) => (
         <CommentListItem comment={subItem} />
       ))}
+      <div ref = {commentEndRef}></div>
     </div>
   );
 }
 
-function CommentInput({setComment, newComment,  setNewComment, onSend} : any) {
+function CommentInput({newComment,  setNewComment, onSendComment} : {
+  newComment: string,
+  setNewComment: (v: string) => void,
+  onSendComment: () => void
+}) {
   return(
-    <div className = 'w-[390px] h-[85px] mb-[100px] relative'>
+    <div className = 'w-[390px] h-[85px] relative'>
       <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02'> 
         <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} 
             onChange={(event) => { setNewComment(event.target.value); console.log(event.target.value); }}/>    
-        <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSend} />
+        <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSendComment} />
       </form>
     </div>
   );
 }
 
-function Comment({comment, commentNum, newComment, setNewComment, onSend} : any) {
+function Comment({comment, commentNum, newComment, setNewComment, onSendComment, commentEndRef} : {
+  comment: CommentDetail[] | undefined,
+  commentNum: number,
+  newComment: string,
+  setNewComment: (v: string) => void,
+  onSendComment: () => void,
+  children: React.ReactNode,
+  commentEndRef: React.ForwardedRef<HTMLDivElement>
+}) {
   return(
     <div>
-        <div className = 'w-[390px] h-[70px] mt-[32px] mb-[32px] relative'>
+        <div className = 'w-[390px] h-[70px] mt-[32px]  relative'>
           <p className="text-[20px] absolute left-[40px] top-[20px]">
           댓글 {commentNum}</p>
         </div>
-        <CommentList comment={comment}></CommentList>
-        <CommentInput newComment={newComment} setNewComment={setNewComment} onSend={onSend}></CommentInput>
+        {comment && <CommentList comment={comment} commentEndRef={commentEndRef}></CommentList>}
+        <CommentInput newComment={newComment} setNewComment={setNewComment} onSendComment={onSendComment}></CommentInput>
     </div>
   );
 }
 
 
 function Detail() {
-  const [audio] = useState(new Audio(music1));
   const [playing, setPlaying] = useState(false);
-  const [nickname, setNickname] = useState<AxiosResponse | null>(null); //작성자
-  const [imageUrl, setImageUrl] = useState<AxiosResponse | null>(null); //메인이미지
-  const [createdDate, setCreatedDate] = useState<AxiosResponse | null>(null); //생성날짜
-  const [addressName, setAddressName] = useState<AxiosResponse | null>(null); //위치
-  const [content, setContent] = useState<AxiosResponse | null>(null); //메인글
-  const [tags, setTags] = useState<AxiosResponse | null>(null); //메인글
-
-  const [comment, setComment] = useState<AxiosResponse | null>(null);
-  const [commentNum, setCommentNum] = useState(0); //댓글수
+  const [nickname, setNickname] = useState(''); 
+  const [imageUrl, setImageUrl] = useState(''); 
+  const [createdDate, setCreatedDate] = useState(''); 
+  const [addressName, setAddressName] = useState(''); 
+  const [content, setContent] = useState(''); 
+  const [tags, setTags] = useState(''); 
+  const [musicId, setMusicId] = useState(''); 
+  const [comment, setComment] = useState<CommentDetail[]>(); 
+  const [commentNum, setCommentNum] = useState(0); 
   const [newComment, setNewComment] = useState('');
-  const [totalTime, setTotalTime] = useState(0);
-  const [currentTime, setCurrentTime] = useState('');
+  const [song, setSong] = useState<string>();
+  const [artist, setArtist] = useState<string>("");
+  const [playTitle, setPlayTitle] = useState();
+  const [imgURL, setImgURL] = useState<string>();
+  const [isCheck, setIsCheck] = useState<boolean>(false);
+  const [userToken, setUserToken] = useState('');
   const { id } = useParams();
   const navigate = useNavigate();
+  const commentEndRef = useRef<HTMLDivElement>(null);
 
-  const callAPI = async () => {
+  const getPost = async () => {
     try {
-      const url = `https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/${id}`;
+      const url = process.env.REACT_APP_ENDPOINT + "user/board/" + `${id}`;
       const res = await axios.get(url);
-      console.log(res.data);
+      console.log(res.data); 
       setNickname(res.data.nickname);
       setImageUrl(res.data.imageUrl);
       setCreatedDate(res.data.createdDate);
@@ -179,69 +224,74 @@ function Detail() {
       setContent(res.data.content);
       setComment(res.data.userComments);
       setTags(res.data.tags);
-      setCommentNum(res.data.userComments.length)
+      setCommentNum(res.data.userComments.length);
 
+      musicList.filter((item) => {
+        if (item.id === parseInt(res.data.music_id)) {
+          setArtist(item.artist);
+          setSong(item.song);
+          setPlayTitle(item.playList);
+          setImgURL(item.imgURL);
+          setIsCheck(true);
+          setPlaying(false);
+          setMusicId(item.id.toString());
+        }
+      });
     } catch (err) {
       console.log("Error:", err);
     }
   };
 
-  const callAPI2 = async () => {
+  const postComment = async () => {
     const formData = new FormData();
     formData.append('content', newComment)
     formData.append('postId', `${id}`)
     try{
-      const res = await axios.post("https://port-0-java-springboot-teo-backend-7xwyjq992lljba9lba.sel4.cloudtype.app/user/board/comment", 
-      formData, {headers:{Authorization: "Bearer " + localStorage.getItem("token")}}
+      const res = await axios.post(process.env.REACT_APP_ENDPOINT + "user/board/comment", 
+      formData, {headers:{Authorization: "Bearer " + userToken}}
       )
-      callAPI();
+      getPost();
      }catch(err){
       console.log("Error:", err);
      }
   };
 
   useEffect(() => {
-    callAPI();
+    getPost();
+    const token = localStorage.getItem("token");
+    if (typeof token === 'string'){
+      setUserToken(token);
+    }
   }, []); 
 
-  useEffect(() => {
-    playing ? audio.play() : audio.pause();
-    if (playing){
-      setTotalTime(audio.duration);
-      audio.addEventListener('timeupdate',() => {   
-        setCurrentTime(audio.currentTime.toString());
-      });
+  const onSendComment = () => {
+    if (userToken != ''){
+      postComment();
+      {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' });}
     }
-  }, [playing]);
-
-  const onStartPlay = () => {
-    setPlaying(true);
-  }
-
-  const onStopPlay = () => {
-    setPlaying(false)
-  }
-
-  const onSend = () => {
-    /* setComment(state => [...state, {
-      commentuser: 'teo' ,
-      commentdate: "2023-06-26",
-      commentimg: '',
-      commentcontent: newComment
-    }]) */
-    callAPI2();
+    else{
+      navigate('/login');
+    }
   }
 
   return(
     <>   
       <Header></Header>
-      <Player onStartPlay={onStartPlay} onStopPlay={onStopPlay} playTime={currentTime}></Player>
+      <Player
+        playing={playing}
+        setPlaying={setPlaying}
+        playList={playTitle}
+        song={song}
+        artist={artist}
+        imgURL={imgURL}
+        setIsCheck={setIsCheck}
+      />
       <div className='w-[390px] h-[14px] bg-st-gray-02 mt-[32px]'></div>
       <Content userName={nickname} createdDate={createdDate} imagePreview={imageUrl}></Content>
       <ImageInfo tags = {tags} info={content} location={addressName} ></ImageInfo>
       <div className='w-[390px] h-[14px] bg-st-gray-02'></div>
       <Comment comment = {comment} commentNum={commentNum} newComment={newComment} setNewComment={setNewComment}
-      onSend={onSend}> </Comment>  
+      onSendComment={onSendComment} commentEndRef={commentEndRef}> </Comment>  
     </>
   );
 }
