@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import Player from "../components/common/player/Player2";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
+import Player from "../components/common/player/Player";
+import { musicList } from "../@types/music.type";
 import { tagList } from "../@types/tag.type";
-import music1 from '../assets/SimpleSound.mp3';
 import  { ReactComponent as Send } from '../assets/Send.svg';
 import { ReactComponent as Userimg } from '../assets/Userimg.svg';
 import { ReactComponent as Mark } from '../assets/Mark.svg';
@@ -186,20 +186,22 @@ function Comment({comment, commentNum, newComment, setNewComment, onSendComment}
 
 
 function Detail() {
-  const [audio] = useState(new Audio(music1));
   const [playing, setPlaying] = useState(false);
-  const [nickname, setNickname] = useState(''); //작성자
-  const [imageUrl, setImageUrl] = useState(''); //메인이미지
-  const [createdDate, setCreatedDate] = useState(''); //생성날짜
-  const [addressName, setAddressName] = useState(''); //위치
-  const [content, setContent] = useState(''); //메인글
-  const [tags, setTags] = useState(''); //태그
-  const [musicId, setMusicId] = useState(''); //뮤직정보
-  const [comment, setComment] = useState<CommentDetail[]>(); //댓글 정보
-  const [commentNum, setCommentNum] = useState(0); //댓글수
+  const [nickname, setNickname] = useState(''); 
+  const [imageUrl, setImageUrl] = useState(''); 
+  const [createdDate, setCreatedDate] = useState(''); 
+  const [addressName, setAddressName] = useState(''); 
+  const [content, setContent] = useState(''); 
+  const [tags, setTags] = useState(''); 
+  const [musicId, setMusicId] = useState(''); 
+  const [comment, setComment] = useState<CommentDetail[]>(); 
+  const [commentNum, setCommentNum] = useState(0); 
   const [newComment, setNewComment] = useState('');
-  const [totalTime, setTotalTime] = useState(0);
-  const [currentTime, setCurrentTime] = useState('');
+  const [song, setSong] = useState<string>();
+  const [artist, setArtist] = useState<string>("");
+  const [playTitle, setPlayTitle] = useState();
+  const [imgURL, setImgURL] = useState<string>();
+  const [isCheck, setIsCheck] = useState<boolean>(false);
   const { id } = useParams();
   const navigate = useNavigate();
   
@@ -213,9 +215,21 @@ function Detail() {
       setCreatedDate(res.data.createdDate);
       setAddressName(res.data.addressName);
       setContent(res.data.content);
-      setComment(res.data.userComments.sort(function(a: CommentDetail, b:CommentDetail){ return new Date(a.createdDate) > new Date(b.createdDate)}));
+      setComment(res.data.userComments);
       setTags(res.data.tags);
       setCommentNum(res.data.userComments.length);
+
+      musicList.filter((item) => {
+        if (item.id === parseInt(res.data.music_id)) {
+          setArtist(item.artist);
+          setSong(item.song);
+          setPlayTitle(item.playList);
+          setImgURL(item.imgURL);
+          setIsCheck(true);
+          setPlaying(false);
+          setMusicId(item.id.toString());
+        }
+      });
     } catch (err) {
       console.log("Error:", err);
     }
@@ -239,24 +253,6 @@ function Detail() {
     getPost();
   }, []); 
 
-  useEffect(() => {
-    playing ? audio.play() : audio.pause();
-    if (playing){
-      setTotalTime(audio.duration);
-      audio.addEventListener('timeupdate',() => {   
-        setCurrentTime(audio.currentTime.toString());
-      });
-    }
-  }, [playing]);
-
-  const onStartPlay = () => {
-    setPlaying(true);
-  }
-
-  const onStopPlay = () => {
-    setPlaying(false)
-  }
-
   const onSendComment = () => {
     postComment();
   }
@@ -264,7 +260,15 @@ function Detail() {
   return(
     <>   
       <Header></Header>
-      <Player onStartPlay={onStartPlay} onStopPlay={onStopPlay} playTime={currentTime}></Player>
+      <Player
+        playing={playing}
+        setPlaying={setPlaying}
+        playList={playTitle}
+        song={song}
+        artist={artist}
+        imgURL={imgURL}
+        setIsCheck={setIsCheck}
+      />
       <div className='w-[390px] h-[14px] bg-st-gray-02 mt-[32px]'></div>
       <Content userName={nickname} createdDate={createdDate} imagePreview={imageUrl}></Content>
       <ImageInfo tags = {tags} info={content} location={addressName} ></ImageInfo>
