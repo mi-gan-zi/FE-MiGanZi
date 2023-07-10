@@ -8,7 +8,7 @@ import NoSearchResult from "components/search/NoSearchResult";
 import { ReactComponent as Magnifier } from "../assets/magnifier.svg";
 import { ReactComponent as Down } from "../assets/down.svg";
 import { ReactComponent as Up } from "../assets/up.svg";
-import { Post } from "./Main";
+import { Post } from "../@types/post.type";
 
 export default function Search() {
   const [isPopUp, setIsPopUp] = useState<boolean>(false);
