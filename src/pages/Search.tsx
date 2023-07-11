@@ -37,11 +37,11 @@ export default function Search() {
     setLng(x);
   };
 
-  const handleInput = (e: React.MouseEvent) => {
+  const handleSearchBar = (e: React.MouseEvent) => {
     setIsPopUp(!isPopUp);
     setKeyWord("");
   };
-  const handleAddress = (data: any) => {
+  const handleInputAddress = (data: any) => {
     setKeyWord(data.address);
   };
   const handleMapToggle = () => {
@@ -77,13 +77,13 @@ export default function Search() {
                 type="search"
                 placeholder="도로명 주소 검색"
                 className="w-full ml-2.5 font-medium focus:outline-none"
-                onClick={handleInput}
+                onClick={handleSearchBar}
                 value={keyWord}
               />
             </div>
             {isPopUp && (
               <div className="px-[20px]">
-                <DaumPostCode onComplete={handleAddress} autoClose />
+                <DaumPostCode onComplete={handleInputAddress} autoClose />
               </div>
             )}
             <MapMark keyword={keyWord} setCoordinate={setCoordinate} />
