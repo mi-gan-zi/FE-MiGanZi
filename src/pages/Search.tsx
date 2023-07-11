@@ -5,6 +5,7 @@ import TagList from "components/TagList";
 import MapMark from "components/common/map/MapMark";
 import PostList from "components/search/PostList";
 import NoSearchResult from "components/search/NoSearchResult";
+import { tagsToBit } from "utils/tagsToBit";
 import { ReactComponent as Magnifier } from "../assets/magnifier.svg";
 import { ReactComponent as Down } from "../assets/down.svg";
 import { ReactComponent as Up } from "../assets/up.svg";
@@ -27,20 +28,13 @@ export default function Search() {
   }, [lat, lng, bit]);
 
   useEffect(() => {
-    tagsToBit(tags);
+    setBit(tagsToBit(tags));
     lat && lng && getSearchList();
   }, [getSearchList, lat, lng, tags]);
 
   const setCoordinate = (y: string, x: string) => {
     setLat(y);
     setLng(x);
-  };
-  const tagsToBit = (tags: string[]) => {
-    const arr = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"];
-    tags.forEach((index: string) => {
-      arr[parseInt(index)] = "1";
-    });
-    return setBit(arr.join(""));
   };
 
   const handleInput = (e: React.MouseEvent) => {
