@@ -3,6 +3,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Post } from "../../@types/post.type";
 
+/**
+ * @todo 자동으로 캐러셀 넘어가도록, 버튼 지우기
+ */
+
 export function AllPost() {
   const navigate = useNavigate();
   const [post, setPost] = useState<Post[] | null>(null);
@@ -11,7 +15,9 @@ export function AllPost() {
   const [checkLast, setcheckLast] = useState<boolean>();
 
   const getBoards = async (pageNumber: number) => {
-    const posts = await axios.get(`${process.env.REACT_APP_ENDPOINT}user/board/posts?page=${pageNumber}`);
+    const posts = await axios.get(
+      `${process.env.REACT_APP_ENDPOINT}user/board/posts?page=${pageNumber}`
+    );
     const newPosts = posts.data.content;
     setPost((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
     setPage((prevPage) => prevPage + 1);
@@ -47,7 +53,9 @@ export function AllPost() {
 
   return (
     <>
-      <div className="flex justify-center text-[20px] h-[70px] items-center">새로 작성된 아티클을 확인해보세요</div>
+      <div className="flex justify-center text-[20px] h-[70px] items-center">
+        새로 작성된 아티클을 확인해보세요
+      </div>
       <div className="flex flex-wrap flex-column w-[390px]">
         {post
           ? post.map((item) => {

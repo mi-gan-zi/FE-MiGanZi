@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Popular } from "../../@types/post.type";
 
-export type Popular = {
-  address_name: string;
-  content: string;
-  id: number;
-  imageUrl: string;
-  modifiedDate: string;
-  nickname: string;
-  tags: string;
-  viewCount: number;
-};
+/**
+ * @todo 디자인 투두
+ * 1. 이미지 태그 위에 linear gradient 추가하기  리니어 : 30퍼
+ */
 
 const PopularPost = () => {
   const [popularPost, setPopularPost] = useState<Popular[] | null>(null);
