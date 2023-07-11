@@ -1,18 +1,16 @@
-import React, { useEffect, useState, useCallback } from "react";
-import DaumPostCode from "react-daum-postcode";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import TagList from "components/TagList";
 import MapMark from "components/common/map/MapMark";
+import SearchBar from "components/search/SearchBar";
 import PostList from "components/search/PostList";
 import NoSearchResult from "components/search/NoSearchResult";
 import { tagsToBit } from "utils/tagsToBit";
-import { ReactComponent as Magnifier } from "../assets/magnifier.svg";
 import { ReactComponent as Down } from "../assets/down.svg";
 import { ReactComponent as Up } from "../assets/up.svg";
 import { Post } from "../@types/post.type";
 
 export default function Search() {
-  const [isPopUp, setIsPopUp] = useState<boolean>(false);
   const [isMapOpen, setIsMapOpen] = useState<boolean>(true);
   const [isTagOpen, setIsTagOpen] = useState<boolean>(false);
   const [keyWord, setKeyWord] = useState<string>("");
@@ -35,14 +33,6 @@ export default function Search() {
   const setCoordinate = (y: string, x: string) => {
     setLat(y);
     setLng(x);
-  };
-
-  const handleSearchBar = (e: React.MouseEvent) => {
-    setIsPopUp(!isPopUp);
-    setKeyWord("");
-  };
-  const handleInputAddress = (data: any) => {
-    setKeyWord(data.address);
   };
   const handleMapToggle = () => {
     setIsMapOpen(!isMapOpen);
@@ -71,21 +61,7 @@ export default function Search() {
         </div>
         {isMapOpen && (
           <div className="bg-white border-b-2 border-[#F5F4F3]">
-            <div className="z-50 w-[340px] mb-[20px] mx-[20px] px-[16px] py-[8px] flex justify-center items-center border-[1.2px] rounded-full border-[#0f0f0f]">
-              <Magnifier />
-              <input
-                type="search"
-                placeholder="도로명 주소 검색"
-                className="w-full ml-2.5 font-medium focus:outline-none"
-                onClick={handleSearchBar}
-                value={keyWord}
-              />
-            </div>
-            {isPopUp && (
-              <div className="px-[20px]">
-                <DaumPostCode onComplete={handleInputAddress} autoClose />
-              </div>
-            )}
+            <SearchBar keyword={keyWord} setKeyword={setKeyWord} />
             <MapMark keyword={keyWord} setCoordinate={setCoordinate} />
           </div>
         )}
