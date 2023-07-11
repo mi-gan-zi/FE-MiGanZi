@@ -22,7 +22,7 @@ export default function Search() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const getSearchList = useCallback(async () => {
-    const res = await axios.get(`${process.env.REACT_APP_ENDPOINT}/user/board/find-near-post/${lat}/${lng}/${bit}`);
+    const res = await axios.get(`${process.env.REACT_APP_ENDPOINT}user/board/find-near-post/${lat}/${lng}/${bit}`);
     setPosts(res.data.content);
   }, [lat, lng, bit]);
 
