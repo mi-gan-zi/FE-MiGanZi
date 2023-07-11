@@ -18,6 +18,7 @@ export default function SearchBar({ keyword, setKeyword }: { keyword: string; se
     <>
       <div className="z-50 w-[340px] mb-[20px] mx-[20px] px-[16px] py-[8px] flex justify-center items-center border-[1.2px] rounded-full border-[#0f0f0f]">
         <Magnifier />
+        {/* FIXME: input의 onClick -> onChange 관련 에러 해결 필요 */}
         <input
           type="search"
           placeholder="도로명 주소 검색"
