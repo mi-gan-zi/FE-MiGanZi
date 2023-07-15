@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Popular } from "../../@types/post.type";
-
-/**
- * @todo 디자인 투두
- * 1. 이미지 태그 위에 linear gradient 추가하기  리니어 : 30퍼
- */
+import useInterval from "./useInterval";
 
 const PopularPost = () => {
   const [popularPost, setPopularPost] = useState<Popular[] | null>(null);
   const showPostArray: any = [""];
   const [showNumber, setShowNumber] = useState(1);
-  const START_PAGE = 0;
+  const START_PAGE = 1;
   const END_PAGE = 5;
 
   const getPopularPost = async () => {
@@ -29,15 +25,10 @@ const PopularPost = () => {
     showPostArray.push(value);
   }
 
-  const changeImage = (props: string) => {
-    if (props === "prev") {
-      if (showNumber === 1) setShowNumber(END_PAGE);
-      setShowNumber((number) => number - 1);
-    } else {
-      if (showNumber === END_PAGE) setShowNumber(START_PAGE);
-      setShowNumber((number) => number + 1);
-    }
-  };
+  useInterval(() => setShowNumber((number) => number + 1), 3000);
+  if (showNumber > END_PAGE) {
+    setShowNumber(START_PAGE);
+  }
 
   return (
     <>
@@ -75,18 +66,6 @@ const PopularPost = () => {
             <div>{showPostArray[showNumber]?.tags}</div>
             <div>{showPostArray[showNumber]?.content}</div>
           </div>
-          <button
-            className="absolute top-[45%] p-[5px] text-2xl text-cityColor"
-            onClick={() => changeImage("prev")}
-          >
-            &lt;
-          </button>
-          <button
-            className="absolute top-[45%] p-[5px] right-[0px] text-2xl text-cityColor"
-            onClick={() => changeImage("post")}
-          >
-            &gt;
-          </button>
         </div>
       </div>
     </>
