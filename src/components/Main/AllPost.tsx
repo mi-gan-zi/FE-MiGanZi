@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Post } from "../../@types/post.type";
 
 /**
- * @todo 자동으로 캐러셀 넘어가도록, 버튼 지우기
+ *  디자인 투두
+ * 1. 이미지 태그 위에 linear gradient 추가하기  리니어 : 30퍼
  */
 
 export function AllPost() {
@@ -18,6 +19,7 @@ export function AllPost() {
     const posts = await axios.get(
       `${process.env.REACT_APP_ENDPOINT}user/board/posts?page=${pageNumber}`
     );
+
     const newPosts = posts.data.content;
     setPost((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
     setPage((prevPage) => prevPage + 1);
