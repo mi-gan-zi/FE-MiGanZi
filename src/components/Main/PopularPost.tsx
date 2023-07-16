@@ -52,8 +52,10 @@ const PopularPost = () => {
           </div>
         </div>
         <div className="ml-[40px] mt-[5px] relative">
-          <div className="absolute top-[0%] bg-st-black w-full h-[80px] opacity-70" />
-          <div className="absolute bottom-[0%] bg-st-black w-full h-[80px] opacity-70" />
+          <div
+            className="absolute top-[0%] bg-st-black w-full h-full opacity-30"
+            style={{ background: `linear-gradient(to bottom, black, white)` }}
+          />
           <img
             className="object-fill w-[350px] h-[467px] "
             src={showPostArray[showNumber]?.imageUrl}

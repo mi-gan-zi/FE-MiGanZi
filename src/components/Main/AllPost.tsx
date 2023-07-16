@@ -3,11 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Post } from "../../@types/post.type";
 
-/**
- *  디자인 투두
- * 1. 이미지 태그 위에 linear gradient 추가하기  리니어 : 30퍼
- */
-
 export function AllPost() {
   const navigate = useNavigate();
   const [post, setPost] = useState<Post[] | null>(null);
