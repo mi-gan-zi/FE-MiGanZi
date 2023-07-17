@@ -5,7 +5,6 @@ import Player from "../components/common/player/Player";
 import { musicList } from "../@types/music.type";
 import { tagList } from "../@types/tag.type";
 import  { ReactComponent as Send } from '../assets/Send.svg';
-import { ReactComponent as Userimg } from '../assets/Userimg.svg';
 import { ReactComponent as Mark } from '../assets/Mark.svg';
 import { ReactComponent as CommentImg } from '../assets/Commentimg.svg';
 import { ReactComponent as Dot } from '../assets/Dot.svg';
@@ -43,11 +42,12 @@ function Header() {
   );
 }
 
-function Content({userName, createdDate, imagePreview} :
+function Content({userName, createdDate, imagePreview, viewCount} :
   {
     userName: PostDetail['nickname'],
     createdDate: PostDetail['createdDate'],
     imagePreview: PostDetail['imageUrl'],
+    viewCount: PostDetail['viewCount'],
   }
   ) {
   return(
@@ -55,11 +55,11 @@ function Content({userName, createdDate, imagePreview} :
       <div className='w-[350px] h-[10px] bg-st-gray-10 mt-[32px] ml-[40px]'/>
       <div className = 'w-[390px] h-[566px] relative'>
         <div className = 'w-[330px] h-[21px] absolute right-[20px]'>
-          <p style={{borderLeft: '1px soild black'}}>{createdDate}</p> 
-          <p></p>
+          <span style={{borderLeft: '1px soild black'}}>{createdDate}</span> 
+          <span className="border-l-2 ml-[5px] pl-[5px] ">{viewCount}</span>
         </div>
         <div className = 'w-[330px] h-[60px] absolute top-[30px]  relative'>
-          <Userimg className="absolute left-[40px]"></Userimg>
+          <img src='https://storage.googleapis.com/miganzi-bucket/profile_image.png' className="h-[60px] w-[60px] absolute left-[40px]"></img>
           <p  className="absolute left-[120px] top-[20px] ">{userName}</p>
         </div>
         <div className = 'w-[350px] h-[467px] absolute top-[100px] right-[0px]'>
@@ -152,9 +152,9 @@ function CommentList({comment, commentEndRef} : {
   );
 }
 
-function CommentInput({newComment,  setNewComment, onSendComment} : {
+function CommentInput({newComment, setNewComment, onSendComment} : {
   newComment: string,
-  setNewComment: (v: string) => void,
+  setNewComment: Dispatch<SetStateAction<string>>,
   onSendComment: () => void
 }) {
   return(
@@ -172,7 +172,7 @@ function Comment({comment, commentNum, newComment, setNewComment, onSendComment,
   comment: CommentDetail[] | undefined,
   commentNum: number,
   newComment: string,
-  setNewComment: (v: string) => void,
+  setNewComment: Dispatch<SetStateAction<string>>,
   onSendComment: () => void,
   children: React.ReactNode,
   commentEndRef: React.ForwardedRef<HTMLDivElement>
@@ -198,6 +198,7 @@ function Detail() {
   const [addressName, setAddressName] = useState(''); 
   const [content, setContent] = useState(''); 
   const [tags, setTags] = useState(''); 
+  const [viewCount, setViewCount] = useState(0);
   const [musicId, setMusicId] = useState(''); 
   const [comment, setComment] = useState<CommentDetail[]>(); 
   const [commentNum, setCommentNum] = useState(0); 
@@ -225,6 +226,7 @@ function Detail() {
       setComment(res.data.userComments);
       setTags(res.data.tags);
       setCommentNum(res.data.userComments.length);
+      setViewCount(res.data.viewCount);
 
       musicList.filter((item) => {
         if (item.id === parseInt(res.data.music_id)) {
@@ -287,7 +289,7 @@ function Detail() {
         setIsCheck={setIsCheck}
       />
       <div className='w-[390px] h-[14px] bg-st-gray-02 mt-[32px]'></div>
-      <Content userName={nickname} createdDate={createdDate} imagePreview={imageUrl}></Content>
+      <Content userName={nickname} createdDate={createdDate} imagePreview={imageUrl} viewCount={viewCount}></Content>
       <ImageInfo tags = {tags} info={content} location={addressName} ></ImageInfo>
       <div className='w-[390px] h-[14px] bg-st-gray-02'></div>
       <Comment comment = {comment} commentNum={commentNum} newComment={newComment} setNewComment={setNewComment}
