@@ -7,14 +7,16 @@ const Header = () => {
   const currentTime = new Date().toTimeString().split(" ")[0].slice(0, 5);
   console.log(currentTime);
   return (
-    <div className="w-full flex items-center justify-between px-5 py-2 border-st-gray-03 mb-4">
-      <div className="time text-[14px] font-bold ">{currentTime}</div>
-      <div>
-        <HeaderIcon />
+    <>
+      <div className="w-[390px] flex items-center justify-between px-5 py-2 border-st-gray-03 mb-4 fixed top-[70px] rounded-t-3xl bg-st-white">
+        <div className="time text-[14px] font-bold ">{currentTime}</div>
+        <div>
+          <HeaderIcon />
+        </div>
+        {/* <Pre className="cursor-pointer" onClick={() => navigate(-1)}></Pre> */}
+        {/* <p className="translate-x-4">header</p> */}
       </div>
-      {/* <Pre className="cursor-pointer" onClick={() => navigate(-1)}></Pre> */}
-      {/* <p className="translate-x-4">header</p> */}
-    </div>
+    </>
   );
 };
 

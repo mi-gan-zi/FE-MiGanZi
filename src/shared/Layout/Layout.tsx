@@ -8,38 +8,19 @@ import { url } from "inspector";
 
 const Layout = (props: { children: React.ReactNode }) => {
   return (
-    <>
-      <div
-        className="w-[1920px] h-[1080px] bg-center bg-cover bg-no-repeat flex items-center overflow-hidden "
-        style={{
-          backgroundImage: `url(${backpng})`,
-          zIndex: -99,
-          objectFit: "cover",
-        }}
-      >
-        {/* <BackSVG className="w-full h-full -z-50 absolute inset-0 "></BackSVG> */}
-        <div className="w-[390px] h-[900px] mx-auto  z-50 bg-st-white flex-col flex justify-between">
-          <div className="overflow-y-scroll">
-            <Header />
-            <main>{props.children}</main>
-          </div>
-          <div>
-            <Footer />
-          </div>
-        </div>
-        {/* <div
-        className="w-full h-full bg-st-gray-07 z-[-200px] absolute inset-0 "
-        style={{
-          zIndex: -200,
-          minWidth: "100vw",
-          // minHeight: "",
-          backgroundSize: "contain",
-        }}
-      > */}
-        {/* </BackSVG> */}
+    <div className="bg-st-white w-[390px] h-[800px] mx-auto overflow-y-scroll flex-col justify-between rounded-3xl relative top-[25px]">
+      <div className="overflow-y-scrokll">
+        <Header />
+        <div className="h-[60px]"></div>
+        <main>{props.children}</main>
       </div>
-    </>
+      <Footer />
+    </div>
   );
 };
 
 export default Layout;
+/**
+ * 1. width 사이즈가 390일 때 Header hidden
+ * 2.
+ */

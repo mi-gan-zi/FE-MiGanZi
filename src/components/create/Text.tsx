@@ -1,12 +1,17 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
-export const Text = () => {
+type ContentProps = {
+  setContent: Dispatch<SetStateAction<string>>;
+};
+
+export const Text = ({ setContent }: ContentProps) => {
   return (
     <div className="w-[390px] h-[178px] px-5">
       <div className="w-[350px] h-[70px] font-bold text-xl flex items-center">
         <h1>장소 설명 입력</h1>
       </div>
       <textarea
+        onChange={(e) => setContent(e.target.value)}
         placeholder="그 날 장소에서 느꼈던 추억을 남겨주세요.
 최대 4줄로 작성해주세요.
 

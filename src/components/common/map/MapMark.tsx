@@ -1,107 +1,127 @@
-import { useRef, useState } from "react"
-import { DrawingManager, Map, MapMarker,} from "react-kakao-maps-sdk"
+import { useRef, useState, useEffect } from "react";
+import { DrawingManager, Map } from "react-kakao-maps-sdk";
+import { ReactComponent as BluePin } from "assets/blue_pin.svg";
 
-const MapMark= () => {
-  type DrawingManagerType = kakao.maps.drawing.DrawingManager<
- kakao.maps.drawing.OverlayType.MARKER
->
+const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (y: string, x: string) => void }) => {
+  type DrawingManagerType =
+    /*global kakao*/
+    kakao.maps.drawing.DrawingManager<kakao.maps.drawing.OverlayType.MARKER>;
 
-const managerRef = useRef<DrawingManagerType>(null)
+  let managerRef = useRef<DrawingManagerType>(null);
+  const [map, setMap] = useState<kakao.maps.Map>();
+  const [address, setAddress] = useState(null);
+  const [overlayData, setOverlayData] = useState<ReturnType<DrawingManagerType["getData"]>>({
+    arrow: [],
+    circle: [],
+    ellipse: [],
+    marker: [],
+    polygon: [],
+    polyline: [],
+    rectangle: [],
+  });
 
-const [overlayData, setOverlayData] = useState<
-  ReturnType<DrawingManagerType["getData"]>
->({
-  arrow: [],
-  circle: [],
-  ellipse: [],
-  marker: [],
-  polygon: [],
-  polyline: [],
-  rectangle: [],
-})
+  useEffect(() => {
+    if (!map) return;
+    const ps = new kakao.maps.services.Places();
 
-function selectOverlay(
-  type:
-    kakao.maps.drawing.OverlayType.MARKER
-) {
-  const manager = managerRef.current
-  manager && manager.cancel()
-  manager &&  manager.select(type)
-}
+    keyword &&
+      ps.keywordSearch(`${keyword}`, (data, status, _pagination) => {
+        if (status === kakao.maps.services.Status.OK) {
+          const bounds = new kakao.maps.LatLngBounds();
+          let markers = [];
 
-function drawOverlayData() {
-  const manager = managerRef.current
-  console.log(manager?.getData().marker[0].x)
-  console.log(manager?.getData().marker[0].y)
-  manager && setOverlayData(manager.getData())
+          for (var i = 0; i < data.length; i++) {
+            // @ts-ignore
+            markers.push({
+              position: {
+                lat: data[i].y,
+                lng: data[i].x,
+              },
+              content: data[i].place_name,
+            });
+            // @ts-ignore
+            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+          }
+          // TODO: 도로명 주소 검색 결과 마커 연결
+          // let lat = Number(markers[0].position.lat);
+          // let lng = Number(markers[0].position.lng);
 
-// 주소-좌표 변환 객체를 생성합니다
-const geocoder = new kakao.maps.services.Geocoder();
+          // @ts-ignore
+          map.setBounds(bounds);
+        }
+      });
+    setAddress(null);
+    // TODO: 남아있는 이전 마커 이벤트 초기화
+    // return () => managerRef.current?.remove(overlayData);
+  }, [map, keyword]);
 
-searchAddrFromCoords(manager, geocoder)
-}
+  function selectOverlay(type: kakao.maps.drawing.OverlayType.MARKER) {
+    const manager = managerRef.current;
+    manager && manager.cancel();
+    manager && manager.select(type);
+  }
 
-function searchAddrFromCoords(manager:any,geocoder:any) {
-  // 좌표로 행정동 주소 정보를 요청합니다
-  geocoder.coord2Address(manager?.getData().marker[0].x, manager?.getData().marker[0].y,(result:any)=>console.log(result[0].address));         
-}
+  function drawOverlayData() {
+    const manager = managerRef.current;
+    if (manager !== null) {
+      let lng = manager.getData().marker[0].x.toString();
+      let lat = manager.getData().marker[0].y.toString();
+      setCoordinate(lat, lng);
+      setOverlayData(manager.getData());
+      searchAddrFromCoords(manager);
+    }
+  }
 
-return (
-  <>
-    <Map
-      center={{
-        // 지도의 중심좌표
-        lat: 33.450701,
-        lng: 126.570667,
-      }}
-      style={{
-        width: "100%",
-        height: "450px",
-      }}
-      level={3} // 지도의 확대 레벨
-    >
-      <DrawingManager
-        ref={managerRef}
-        drawingMode={[
-          kakao.maps.drawing.OverlayType.MARKER,    
-        ]}
-        guideTooltip={["draw", "drag", "edit"]}
-        markerOptions={{
-          // 마커 옵션입니다
-          draggable: true, // 마커를 그리고 나서 드래그 가능하게 합니다
-          removable: true, // 마커를 삭제 할 수 있도록 x 버튼이 표시됩니다
+  function searchAddrFromCoords(manager: any) {
+    const geocoder = new kakao.maps.services.Geocoder();
+    geocoder.coord2Address(manager?.getData().marker[0].x, manager?.getData().marker[0].y, (result: any) =>
+      setAddress(result[0].address.address_name)
+    );
+  }
+
+  return (
+    <>
+      <Map
+        center={{
+          lat: 37.56685123050336,
+          lng: 126.97864093204903,
         }}
-       
-      />
-    </Map>
-    <div
-      style={{
-        display: "flex",
-        gap: "8px",
-      }}
-    >
-     
-      <button
-        onClick={(e) => {
-          selectOverlay(kakao.maps.drawing.OverlayType.MARKER)
+        style={{
+          width: "100%",
+          height: "390px",
         }}
+        level={3}
+        onCreate={setMap}
       >
-        마커
-      </button>
-     
-    </div>
-    <div
-      style={{
-        position: "relative",
-      }}
-    >
-     
-      <div>
-        <button onClick={drawOverlayData}>가져오기</button>
+        <DrawingManager
+          ref={managerRef}
+          drawingMode={[kakao.maps.drawing.OverlayType.MARKER]}
+          guideTooltip={["draw", "drag"]}
+          markerOptions={{
+            draggable: true,
+            removable: false,
+          }}
+          onStateChanged={() => drawOverlayData()}
+        />
+      </Map>
+
+      <div className="px-3 py-5 flex justify-between items-center">
+        <div className="gap-2 flex flex-row items-center">
+          {address ? <BluePin /> : ""}
+          <div className="font-medium text-st-gray-07 ">{address}</div>
+        </div>
+        <button
+          className="px-3 py-1.5 text-[14px] text-[#fff] rounded bg-active-blue"
+          onClick={(e) => {
+            selectOverlay(kakao.maps.drawing.OverlayType.MARKER);
+          }}
+          disabled={address ? true : false}
+        >
+          마커 찍기
+        </button>
       </div>
-    </div>
-  </>
-)
-}
+    </>
+  );
+};
 
 export default MapMark;

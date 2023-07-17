@@ -1,22 +1,23 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
-interface MarkersType {
+type MarkersType = {
   position: { lat: string; lng: string };
-  content: string;
-}
+  content?: string;
+};
 type KeywordType = {
   keyWord?: string;
-  // setKeyWord: Dispatch<SetStateAction<string>>;
+  setMarkes: any; // setKeyWord: Dispatch<SetStateAction<string>>;
 };
-export default function useKeywordMap(props: KeywordType) {
-  const { keyWord } = props;
+export default function KeywordMap(props: KeywordType) {
+  const { keyWord, setMarkes } = props;
   const [info, setInfo] = useState();
   const [markers, setMarkers] = useState<MarkersType[]>([]);
   const [map, setMap] = useState();
 
   useEffect(() => {
     if (!map) return;
+    /*global kakao*/
     const ps = new kakao.maps.services.Places();
 
     ps.keywordSearch(`${keyWord}`, (data, status, _pagination) => {
@@ -24,6 +25,7 @@ export default function useKeywordMap(props: KeywordType) {
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
         const bounds = new kakao.maps.LatLngBounds();
+        console.log(bounds);
         let markers = [];
 
         for (var i = 0; i < data.length; i++) {
@@ -38,8 +40,10 @@ export default function useKeywordMap(props: KeywordType) {
           // @ts-ignore
           bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
         }
+        // setMarkes(markers);
+        // console.log(markers[0].position);
+        setMarkes(markers[0].position);
         setMarkers(markers);
-
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
         // @ts-ignore
         map.setBounds(bounds);

@@ -27,15 +27,18 @@ export default function Player(props: PropsType) {
   const [current, setCurrentTime] = useState(0);
   const [audio, setAudio] = useState(new Audio(playList));
   const [playId, setPlayId] = useState();
+
   useEffect(() => {
-    playing ? audio.play() : audio.pause();
-    if (playing) {
-      setTotalTime(audio.duration);
-      audio.addEventListener("timeupdate", () => {
-        setCurrentTime(audio.currentTime);
-      });
+    if (audio) {
+      playing ? audio.play() : audio.pause();
+      if (playing) {
+        setTotalTime(audio.duration);
+        audio.addEventListener("timeupdate", () => {
+          setCurrentTime(audio.currentTime);
+        });
+      }
     }
-  }, [playing, targetId]);
+  }, [playing, targetId, audio]);
   useEffect(() => {
     // if (playList) {
     setAudio(new Audio(playList));

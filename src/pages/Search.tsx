@@ -1,25 +1,38 @@
-import { useState } from "react";
-import DaumPostCode from "react-daum-postcode";
+import { useEffect, useState, useCallback } from "react";
+import axios from "axios";
 import TagList from "components/TagList";
-import { ReactComponent as Magnifier } from "../assets/magnifier.svg";
+import MapMark from "components/common/map/MapMark";
+import SearchBar from "components/search/SearchBar";
+import PostList from "components/search/PostList";
+import NoSearchResult from "components/search/NoSearchResult";
+import { tagsToBit } from "utils/tagsToBit";
 import { ReactComponent as Down } from "../assets/down.svg";
 import { ReactComponent as Up } from "../assets/up.svg";
-import result from "../assets/no_result.svg";
-import map from "../assets/mapIMG.png";
-// import useKeywordMap from "components/common/keyword_map/useKeywordMap";
+import { Post } from "../@types/post.type";
 
 export default function Search() {
-  const [isPopUp, setIsPopUp] = useState(false);
-  const [isMapOpen, setIsMapOpen] = useState(false);
-  const [isTagOpen, setIsTagOpen] = useState(false);
-  const [keyWord, setKeyWord] = useState("");
+  const [isMapOpen, setIsMapOpen] = useState<boolean>(true);
+  const [isTagOpen, setIsTagOpen] = useState<boolean>(false);
+  const [keyWord, setKeyWord] = useState<string>("");
+  const [lat, setLat] = useState<string | null>(null);
+  const [lng, setLng] = useState<string | null>(null);
+  const [tags, setTags] = useState<string[]>([]);
+  const [bit, setBit] = useState<string>("000000000000");
+  const [posts, setPosts] = useState<Post[]>([]);
 
-  const handleInput = (e: React.MouseEvent) => {
-    setIsPopUp(!isPopUp);
-    setKeyWord("");
-  };
-  const handleAddress = (data: any) => {
-    setKeyWord(data.address);
+  const getSearchList = useCallback(async () => {
+    const res = await axios.get(`${process.env.REACT_APP_ENDPOINT}user/board/find-near-post/${lat}/${lng}/${bit}`);
+    setPosts(res.data.content);
+  }, [lat, lng, bit]);
+
+  useEffect(() => {
+    setBit(tagsToBit(tags));
+    lat && lng && getSearchList();
+  }, [getSearchList, lat, lng, tags]);
+
+  const setCoordinate = (y: string, x: string) => {
+    setLat(y);
+    setLng(x);
   };
   const handleMapToggle = () => {
     setIsMapOpen(!isMapOpen);
@@ -28,29 +41,17 @@ export default function Search() {
     setIsTagOpen(!isTagOpen);
   };
   const handleFilterReset = () => {
-    // TODO: 태그도 초기화 필요
+    // TODO: 하위 컴포넌트 데이터까지 초기화 필요
     setKeyWord("");
+    setLat("");
+    setLng("");
+    setTags([]);
+    setBit("000000000000");
+    setPosts([]);
   };
 
   return (
     <div className="w-full flex flex-col justify-center content-center">
-      <section className="bg-white border-b-2 border-[#F5F4F3]">
-        <div className="w-[350px] m-[20px] px-[16px] py-[8px] flex justify-center items-center border-[1.2px] rounded-full border-[#0f0f0f]">
-          <Magnifier />
-          <input
-            type="search"
-            placeholder="도로명 주소 검색"
-            className="w-full ml-2.5 font-medium focus:outline-none"
-            onClick={handleInput}
-            value={keyWord}
-          />
-        </div>
-        {isPopUp && (
-          <div className="px-[20px]">
-            <DaumPostCode onComplete={handleAddress} autoClose />
-          </div>
-        )}
-      </section>
       <section className="bg-white border-b-2 border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
           <p className="px-[20px] text-xl font-bold">지도 탐색하기</p>
@@ -59,15 +60,11 @@ export default function Search() {
           </button>
         </div>
         {isMapOpen && (
-          <div
-            className="w-full h-60 opacity-50 flex justify-center items-center text-lg font-semibold"
-            style={{ backgroundImage: `url(${map})` }}
-          >
-            준비중...
+          <div className="bg-white border-b-2 border-[#F5F4F3]">
+            <SearchBar keyword={keyWord} setKeyword={setKeyWord} />
+            <MapMark keyword={keyWord} setCoordinate={setCoordinate} />
           </div>
         )}
-        {/* TODO: 추후 변경 필요. 이미지 -> 지도에서 직접 핀 찍는 기능*/}
-        {/* <div className="mb-5 flex">{useKeywordMap({ keyWord })}</div> */}
       </section>
       <section className="bg-white border-b-2 border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
@@ -76,21 +73,16 @@ export default function Search() {
             {!isTagOpen ? <Down /> : <Up />}
           </button>
         </div>
-        {isTagOpen ? <TagList /> : ""}
+        {isTagOpen ? <TagList setTags={setTags} /> : ""}
       </section>
       <section className="bg-white border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
           <p className="px-[20px] text-xl font-bold">아티클 둘러보기</p>
           <button className="px-[20px] text-sm font-medium text-[#F22222]" onClick={handleFilterReset}>
-            초기화
+            필터 초기화
           </button>
         </div>
-        <div className="py-[20px] flex flex-col justify-center items-center">
-          <img alt="" src={result} />
-          <p className="text-lg font-semibold text-[#3D3D3D]">검색 값에 맞는 아티클이 없어요.</p>
-          <p className="mt-6 text-[#8B8B8B]">다른 키워드를 검색해보거나,</p>
-          <p className="mb-6 text-[#8B8B8B]">필터 초기화를 통해 미(간)지를 탐색해보세요.</p>
-        </div>
+        {posts.length > 0 ? <PostList posts={posts} /> : <NoSearchResult />}
       </section>
     </div>
   );

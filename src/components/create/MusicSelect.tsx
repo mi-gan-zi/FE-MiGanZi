@@ -1,11 +1,16 @@
 import Player from "components/common/player/Player";
-import React, { useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import MadeleineLove from "assets/music/MadeleineLove.mp3";
 import Winter from "assets/music/Winter.mp3";
 import sawal from "assets/music/sawal.mp3";
 import single from "assets/music/single.mp3";
 import feel from "assets/music/feel.mp3";
-export default function MusicSelect() {
+
+type MusicIdProps = {
+  setMusicId: Dispatch<SetStateAction<string>>;
+};
+
+export default function MusicSelect({ setMusicId }: MusicIdProps) {
   const [playing, setPlaying] = useState(false);
   const [song, setSong] = useState<string>();
   const [artist, setArtist] = useState<string>("");
@@ -68,6 +73,7 @@ export default function MusicSelect() {
         setImgURL(id.imgURL);
         setIsCheck(isChecked);
         setPlaying(false);
+        setMusicId(id.id.toString());
       }
     });
   };

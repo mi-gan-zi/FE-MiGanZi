@@ -23,7 +23,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write --cache .",
+    "lint": "eslint --cache ."
   },
   "eslintConfig": {
     "extends": [
@@ -44,8 +46,10 @@
     ]
   },
   "devDependencies": {
+    "eslint-config-prettier": "^8.8.0",
     "file-loader": "^6.2.0",
     "moment": "^2.29.4",
+    "prettier": "^2.8.8",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "^3.3.2",
     "url-loader": "^4.1.1"
