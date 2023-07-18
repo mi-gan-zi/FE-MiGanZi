@@ -4,14 +4,19 @@ import { ReactComponent as Pre } from "../../assets/pre.svg";
 export type NextProps = {
   setNextMove: Dispatch<SetStateAction<number>>;
   image: boolean;
+  testMapDataHandle: (e: any) => Promise<void>;
+  nextMove:number
 };
 
-export default function Head({ setNextMove, image }: NextProps) {
-  const onClickNextButton = () => {
+export default function Head({ setNextMove, image, testMapDataHandle, nextMove }: NextProps) {
+  const onClickNextButton = (e:any) => {
     if (image) {
       alert("사진을 업로드 해주세요!");
     } else {
       setNextMove((pre) => pre + 1);
+    }
+    if(nextMove >= 3){
+      testMapDataHandle(e)
     }
   };
   return (
