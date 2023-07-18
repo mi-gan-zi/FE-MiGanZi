@@ -83,7 +83,7 @@ export default function Container() {
 
   return (
     <>
-      <Head image={image} setNextMove={setNextMove} />
+      <Head nextMove={nextMove} image={image} setNextMove={setNextMove} testMapDataHandle={testMapDataHandle}/>
       {/* <form onSubmit={testMapDataHandle} encType="multipart/form-data"> */}
       {nextMove === 1 && <MusicSelect setMusicId={setMusicId} />}
       {nextMove === 2 && (
@@ -91,7 +91,6 @@ export default function Container() {
       )}
       {nextMove === 3 && (
         <Description
-          testMapDataHandle={testMapDataHandle}
           setMarkes={setMarkes}
           setTags={setTags}
           setContent={setContent}
