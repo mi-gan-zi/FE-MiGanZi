@@ -20,7 +20,7 @@ export default function Head({ setNextMove, image, testMapDataHandle, nextMove }
     }
   };
   return (
-    <div className="w-full pb-4 flex items-center justify-between px-5 border-b-[1px] border-st-gray-03">
+    <div className="w-full pb-4 flex items-center justify-between px-5 border-b-[1px] border-st-gray-03 fixed top-0 left-0 right-0">
       <div className="flex">
         <Pre
           onClick={() => setNextMove((pre) => pre - 1)}

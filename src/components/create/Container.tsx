@@ -82,7 +82,7 @@ export default function Container() {
   };
 
   return (
-    <>
+    <div className="relative">
       <Head nextMove={nextMove} image={image} setNextMove={setNextMove} testMapDataHandle={testMapDataHandle}/>
       {/* <form onSubmit={testMapDataHandle} encType="multipart/form-data"> */}
       {nextMove === 1 && <MusicSelect setMusicId={setMusicId} />}
@@ -97,6 +97,6 @@ export default function Container() {
         />
       )}
       {/* </form> */}
-    </>
+    </div>
   );
 }
