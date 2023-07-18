@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Popular } from "../../@types/post.type";
-import useInterval from "./useInterval";
+import useInterval from "../../hooks/useInterval";
 
 const PopularPost = () => {
   const [popularPost, setPopularPost] = useState<Popular[] | null>(null);
@@ -9,6 +10,7 @@ const PopularPost = () => {
   const [showNumber, setShowNumber] = useState(1);
   const START_PAGE = 1;
   const END_PAGE = 5;
+  const navigate = useNavigate();
 
   const getPopularPost = async () => {
     const response = await axios.get(
@@ -29,6 +31,10 @@ const PopularPost = () => {
   if (showNumber > END_PAGE) {
     setShowNumber(START_PAGE);
   }
+
+  const routePost = (id: number) => {
+    navigate(`detail/${String(id)}`);
+  };
 
   return (
     <>
@@ -52,12 +58,15 @@ const PopularPost = () => {
           </div>
         </div>
         <div className="ml-[40px] mt-[5px] relative">
-          <div className="absolute top-[0%] bg-st-black w-full h-[80px] opacity-70" />
-          <div className="absolute bottom-[0%] bg-st-black w-full h-[80px] opacity-70" />
+          <div
+            className="absolute top-[0%] bg-st-black w-full h-full opacity-30"
+            style={{ background: `linear-gradient(to bottom, black, white)` }}
+          />
           <img
             className="object-fill w-[350px] h-[467px] "
             src={showPostArray[showNumber]?.imageUrl}
             alt="postImage"
+            onClick={() => routePost(showPostArray[showNumber]?.id)}
           />
           <div className="absolute top-[24px] left-[20px] text-cityColor">
             {`🌐 ` + showPostArray[showNumber]?.address_name}

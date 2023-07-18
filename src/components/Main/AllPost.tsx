@@ -1,57 +1,32 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Post } from "../../@types/post.type";
-
-/**
- *  디자인 투두
- * 1. 이미지 태그 위에 linear gradient 추가하기  리니어 : 30퍼
- */
+import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 
 export function AllPost() {
   const navigate = useNavigate();
   const [post, setPost] = useState<Post[] | null>(null);
-  const ref = useRef(null);
   const [page, setPage] = useState(0);
   const [checkLast, setcheckLast] = useState<boolean>();
-
-  const getBoards = async (pageNumber: number) => {
-    const posts = await axios.get(
-      `${process.env.REACT_APP_ENDPOINT}user/board/posts?page=${pageNumber}`
-    );
-
-    const newPosts = posts.data.content;
-    setPost((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
-    setPage((prevPage) => prevPage + 1);
-
-    setcheckLast(posts.data.last);
-  };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          if (!checkLast) {
-            getBoards(page);
-          }
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
-  }, [page]);
 
   const routePost = (id: number) => {
     navigate(`detail/${String(id)}`);
   };
+
+  const getData = async () => {
+    const posts = await axios.get(
+      `${process.env.REACT_APP_ENDPOINT}user/board/posts?page=${page}`
+    );
+    const newPosts = posts.data.content;
+    setPost((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
+    setPage((prevPage) => prevPage + 1);
+    setcheckLast(posts.data.last);
+  };
+
+  const target = useIntersectionObserver(async (entry: any, observer: any) => {
+    await getData();
+  });
 
   return (
     <>
@@ -73,7 +48,7 @@ export function AllPost() {
             })
           : null}
       </div>
-      <div ref={ref} className="h-[90px]" />
+      {checkLast ? null : <div ref={target} className="h-[90px]" />}
     </>
   );
 }
