@@ -7,12 +7,11 @@ import TagList from "components/TagList";
 import { MarkType } from "./Container";
 
 export default function Description({
-  testMapDataHandle,
   setMarkes,
   setContent,
   setTags,
 }: {
-  testMapDataHandle: (e: any) => Promise<void>;
+
   setMarkes: Dispatch<SetStateAction<MarkType>>;
   setContent: Dispatch<SetStateAction<string>>;
   setTags: Dispatch<SetStateAction<string[]>>;
@@ -64,7 +63,7 @@ export default function Description({
       {/* <div className="flex">{useKeywordMap({ keyWord })}</div> */}
       <UseKeywordMap keyWord={keyWord} setMarkes={setMarkes} />
       <div className="border-t-[1px] border-st-gray-03 flex justify-center ">
-        <button
+        {/* <button
           className={
             " w-[350px] h-[50px] text-st-white font-bold  mt-2 rounded-md " +
             (keyWord ? "bg-[#007DF0] " : "bg-st-gray-05")
@@ -73,7 +72,7 @@ export default function Description({
           // disabled
         >
           다음으로
-        </button>
+        </button> */}
       </div>
     </div>
   );
