@@ -1,16 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import createAxiosInstance from "utils/axiosConfig";
+import { LogOutModal } from "./LogOutModal";
 
 export const Container = () => {
+  const [enabled, setEnabled] = useState(false);
+  const [logout, setLogout] = useState(false);
   const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");
   const token = localStorage.getItem("token");
+  const axios = createAxiosInstance();
 
   useEffect(() => {
     if (!token) {
       navigate("/login");
     }
   }, []);
+
+  const logOut = async () => {
+    const res = await axios.post("user/logout", {});
+    if (res.status === 200) {
+      setLogout(true);
+      const logoutTime = setTimeout(() => {
+        setLogout(false);
+        localStorage.removeItem("token");
+        localStorage.removeItem("nickname");
+        localStorage.removeItem("refresh-token");
+        navigate("/login");
+      }, 2000);
+      clearTimeout(logoutTime);
+    }
+  };
   return (
     <div>
       <div className="w-full h-[62px] flex items-center justify-start text-st-gray-10 text-xl font-semibold px-5">
@@ -43,8 +63,26 @@ export const Container = () => {
         >
           비밀번호 변경
         </div>
-        <div className="py-4 text-base font-normal cursor-pointer">
-          알림설정
+        <div className="flex items-center justify-between">
+          <div className="py-4 text-base font-normal cursor-pointer">
+            알림설정
+          </div>
+          <div className="flex">
+            <label className="inline-flex relative items-center mr-5 cursor-pointer">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={enabled}
+                readOnly
+              />
+              <div
+                onClick={() => {
+                  setEnabled(!enabled);
+                }}
+                className="w-11 h-6 bg-st-gray-03 rounded-full peer  peer-focus:ring-green-300  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after: bg-st-white after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
+              ></div>
+            </label>
+          </div>
         </div>
       </div>
       <div className="w-full h-[14px] bg-st-gray-02"></div>
@@ -56,10 +94,16 @@ export const Container = () => {
         >
           내가 쓴 글
         </div>
-        <div className="py-4 text-base font-normal cursor-pointer">
+        <div
+          onClick={() => navigate("/mycommets")}
+          className="py-4 text-base font-normal cursor-pointer"
+        >
           내가 쓴 댓글
         </div>
-        <div className="py-4 text-base font-normal text-[#f22222] cursor-pointer">
+        <div
+          onClick={logOut}
+          className="py-4 text-base font-normal text-[#f22222] cursor-pointer"
+        >
           로그아웃
         </div>
         <div
@@ -69,6 +113,7 @@ export const Container = () => {
           회원탈퇴
         </div>
       </div>
+      {logout && <LogOutModal />}
     </div>
   );
 };

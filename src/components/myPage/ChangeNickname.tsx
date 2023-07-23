@@ -16,18 +16,24 @@ export const ChangeNickname = () => {
   }, [nickname]);
 
   const changeNickname = async () => {
-    const nickname = ref.current?.value;
-
-    const nicknameData = new FormData();
-    nickname && nicknameData.append("newNickname", nickname);
-    try {
-      const res = await axios.post("user/update-nickname", nicknameData);
-      localStorage.removeItem("nickname");
-      nickname && localStorage.setItem("nickname", nickname);
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-      setMessage("중복된 닉네임입니다.");
+    const nickname_content = ref.current?.value;
+    const formData = new FormData();
+    if (!nickname_content) {
+      alert("새로운 닉네임을 입력해주세요.");
+    } else {
+      formData.append("newNickname", nickname_content);
+      try {
+        const res = await axios.post("user/update-nickname", formData);
+        console.log(res);
+        localStorage.clear();
+        localStorage.setItem("nickname", res.data.data.nickname);
+        localStorage.setItem("token", res.data.data.accessToken);
+        localStorage.setItem("refresh-token", res.data.data.refreshToken);
+        alert(`${res.data.data.nickname}님으로 변경되셨습니다.`);
+      } catch (err) {
+        console.log(err);
+        setMessage("중복된 닉네임입니다.");
+      }
     }
   };
 

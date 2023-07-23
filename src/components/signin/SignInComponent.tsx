@@ -27,7 +27,7 @@ const SignInComponent = () => {
           process.env.REACT_APP_ENDPOINT + "user/login",
           formData
         );
-
+        console.log(res);
         if (res.status === 200) {
           localStorage.setItem("token", res.data.data.accessToken);
           localStorage.setItem("refresh-token", res.data.data.refreshToken);
