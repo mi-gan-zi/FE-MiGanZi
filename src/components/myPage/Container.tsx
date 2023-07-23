@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Container = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="w-full h-[62px] flex items-center justify-start text-st-gray-10 text-xl font-semibold px-5">
@@ -14,12 +16,19 @@ export const Container = () => {
           src="https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg"
         />
         <p>닉네임</p>
-        <button>프로필 변경</button>
+        <button className="px-8 rounded-[100px] flex items-center justify-center border border-st-gray-03 bg-st-gray-01 text-st-gray-05">
+          프로필 변경
+        </button>
       </div>
       <div className="w-full h-[14px] bg-st-gray-02"></div>
       <div className="px-5 py-4">
         <div className="py-4 text-xl font-semibold">개인정보</div>
-        <div className="py-4 text-base font-normal">닉네임 변경</div>
+        <div
+          className="py-4 text-base font-normal cursor-pointer"
+          onClick={() => navigate("/nickname/1")}
+        >
+          닉네임 변경
+        </div>
         <div className="py-4 text-base font-normal">비밀번호 변경</div>
         <div className="py-4 text-base font-normal">알림설정</div>
       </div>

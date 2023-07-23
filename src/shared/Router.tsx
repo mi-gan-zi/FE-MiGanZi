@@ -7,6 +7,7 @@ import Create from "../pages/Create";
 import Layout from "./Layout/Layout";
 import SignUp from "../pages/SignUp";
 import { MyPage } from "pages/MyPage";
+import { ChangeNickname } from "components/myPage/ChangeNickname";
 export default function Router() {
   return (
     <BrowserRouter>
@@ -19,6 +20,7 @@ export default function Router() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/create" element={<Create />} />
           <Route path="/user/:id" element={<MyPage />} />
+          <Route path="/nickname/:id" element={<ChangeNickname />} />
           <Route path="*" element={<Main />} />
         </Routes>
       </Layout>
