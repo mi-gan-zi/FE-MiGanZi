@@ -19,11 +19,14 @@ export function UserProvider({ children, userService }: UserProviderProps) {
   const [getPageNum, setGetPageNum] = useState<number>(0);
   const hasPageNum = (page: number) => {
     setGetPageNum(getPageNum);
+    console.log(getPageNum);
   };
   useEffect(() => {
-    userService.getPost(getPageNum).then(setUserData);
-  }, []);
+    // userService.getPost(getPageNum).then(setUserData);
+  }, [getPageNum]);
   return (
-    <UserContext.Provider value={{ userData }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ userData, hasPageNum }}>
+      {children}
+    </UserContext.Provider>
   );
 }

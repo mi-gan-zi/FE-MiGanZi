@@ -4,22 +4,22 @@ const reissueToken = async () => {
   try {
     const response = await axios.post(`${process.env.REACT_APP_ENDPOINT}user/reissue`, {
     },{headers:{
-      Authorization: `Bearer`+localStorage.getItem("refreshToken")
+      Authorization: `Bearer `+localStorage.getItem("refresh-token")
     }});
     console.log(response)
-    const newToken = response.data.token; 
-    return newToken;
+    return response;
   } catch (error) {
     throw new Error("토큰 발급에 실패했습니다.");
   }
 };
 
 const createAxiosInstance = (): AxiosInstance => {
+  const token = localStorage.getItem("token");
   const instance = axios.create({
     baseURL: process.env.REACT_APP_ENDPOINT,
     headers: {
-      "Content-Type": "application/json",
-      Authorization: "",
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`
     },
   });
 
@@ -28,12 +28,12 @@ const createAxiosInstance = (): AxiosInstance => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     } else {
-      try {
-        const newToken = await reissueToken();
-        config.headers.Authorization = `Bearer ${newToken}`;
-      } catch (error) {
-        throw new Error("토큰 발급에 실패했습니다.");
-      }
+      // try {
+      //   const newToken = await reissueToken();
+      //   config.headers.Authorization = `Bearer ${newToken}`;
+      // } catch (error) {
+      //   throw new Error("토큰 발급에 실패했습니다.");
+      // }
     }
 
     return config;
@@ -44,12 +44,15 @@ const createAxiosInstance = (): AxiosInstance => {
       return response;
     },
     async (error) => {
-      if (error.response && error.response.status === 401) {
+      if (error.response && error.response.status === 401  ) {
         try {
-          const newToken = await reissueToken();
-          localStorage.removeItem("token");
-          localStorage.setItem("token", newToken)
-          error.config.headers.Authorization = `Bearer ${newToken}`;
+          const response = await reissueToken();
+          console.log(response)
+          localStorage.clear();
+          localStorage.setItem("refresh-token", response.data.data.refreshToken)
+          localStorage.setItem("token", response.data.data.accessToken)
+          localStorage.setItem("nickname", response.data.data.nickname)
+          error.config.headers.Authorization = `Bearer ${response.data.data.accessToken}`;
           return axios.request(error.config);
         } catch (reissueError) {
           throw new Error("토큰 발급에 실패했습니다.");

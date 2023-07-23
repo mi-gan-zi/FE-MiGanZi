@@ -27,6 +27,9 @@ export const Header = () => {
     if (location === "myposts") {
       setTitle("내가 쓴 글");
     }
+    if (location === "mycommets") {
+      setTitle("내가 쓴 댓글");
+    }
   };
 
   useEffect(() => {

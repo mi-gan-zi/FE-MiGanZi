@@ -5,8 +5,8 @@ import Description from "./Description";
 import MusicSelect from "./MusicSelect";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { CreateService } from "services/createService";
-import { Client } from "client/axios";
+// import { CreateService } from "services/createService";
+// import { Client } from "client/axios";
 export interface MarkType {
   lat: string;
   lng: string;
@@ -73,10 +73,9 @@ export default function Container() {
         { headers }
       );
       console.log(res);
-      if (res.data === "OK") {
-        alert("게시글 업로드에 성공하셨습니다!");
-        navigate("/");
-      }
+
+      alert("게시글 업로드에 성공하셨습니다!");
+      navigate("/");
     } catch (e) {
       console.log(e);
     }

@@ -1,15 +1,17 @@
 import axios from "axios";
 import { validPassword } from "components/common/utils/vaild";
 import React, { useEffect, useRef, useState } from "react";
+import createAxiosInstance from "utils/axiosConfig";
 import { Header } from "./Header";
 
 export const ChangePassword = () => {
-  const [pwMsg, setPwMsg] = useState("");
+  const [pwMsg, setPwMsg] = useState("소문자, 대문자, 숫자 포함 8자 이상");
   const [confirmMsg, setConfirmMsg] = useState("");
   const password_ref = useRef<HTMLInputElement>(null);
   const confirm_ref = useRef<HTMLInputElement>(null);
   const password = password_ref.current?.value;
   const confirm = confirm_ref.current?.value;
+  const axios = createAxiosInstance();
 
   useEffect(() => {
     if (password && !validPassword(password)) {
@@ -26,21 +28,24 @@ export const ChangePassword = () => {
     const confirm = confirm_ref.current?.value;
     if (password !== confirm) {
       setConfirmMsg("비밀번호와 일치하지 않습니다.");
-      return false;
     } else {
       setConfirmMsg("");
-      return true;
     }
   };
 
   const onClickSave = async () => {
     const password = password_ref.current?.value;
-    if (checkPassword()) {
-      try {
-        // const res = await axios.post()
-      } catch (err) {
-        console.log(err);
-      }
+    const formData = new FormData();
+    password && formData.append("newPassword", password);
+
+    try {
+      const res = await axios.post("user/update-password", formData);
+      console.log(res);
+      alert(res.data.data);
+      setPwMsg("");
+      setConfirmMsg("");
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -51,6 +56,7 @@ export const ChangePassword = () => {
         <div className="h-[160px]">
           <div className="w-full py-5 text-xl font-bold">비밀번호</div>
           <input
+            type="password"
             ref={password_ref}
             className="w-[350px] border border-st-gray-05 px-3 py-[10px]"
             placeholder="비밀번호 입력"
@@ -62,6 +68,7 @@ export const ChangePassword = () => {
         <div>
           <div className="w-full py-5 text-xl font-bold">비밀번호 재확인</div>
           <input
+            type="password"
             ref={confirm_ref}
             className="w-[350px] border border-st-gray-05 px-3 py-[10px]"
             placeholder="비밀번호 입력"
