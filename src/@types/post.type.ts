@@ -3,6 +3,11 @@ export interface Post {
   imageUrl: string;
 }
 
+export interface IPost {
+  id: number;
+  imageUrl: string;
+}
+
 export type Popular = {
   address_name: string;
   content: string;
