@@ -34,7 +34,7 @@ const Footer = () => {
       setOnSearch(false);
       setOnUpload(true);
       setOnUser(false);
-    } else if (location === "/login" || location === "signup") {
+    } else if (location.split("/")[1] === "user") {
       setOnMain(false);
       setOnSearch(false);
       setOnUpload(false);
@@ -73,7 +73,7 @@ const Footer = () => {
       </div>
       <div
         onClick={() => {
-          navigate("/login");
+          navigate("/user/1");
         }}
         className="w-[98px] flex py-[4px] px-[4px] flex-col justify-center items-center"
       >
