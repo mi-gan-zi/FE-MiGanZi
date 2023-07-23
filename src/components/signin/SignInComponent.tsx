@@ -22,16 +22,20 @@ const SignInComponent = () => {
     } else {
       formData.append("nickname", nickname);
       formData.append("password", password);
-      const res = await axios.post(
-        process.env.REACT_APP_ENDPOINT + "user/login",
-        formData
-      );
-      console.log(res);
-      if (res.status === 200) {
-        localStorage.setItem("token", res.data);
-        localStorage.setItem("nickname", nickname);
-        alert("미(간)지에 오신 걸 환영합니다." + nickname + "님");
-        navigate("/");
+      try {
+        const res = await axios.post(
+          process.env.REACT_APP_ENDPOINT + "user/login",
+          formData
+        );
+
+        if (res.status === 200) {
+          localStorage.setItem("token", res.data.data.accessToken);
+          localStorage.setItem("nickname", nickname);
+          alert("미(간)지에 오신 걸 환영합니다." + nickname + "님");
+          navigate("/");
+        }
+      } catch (err) {
+        alert("닉네임과 비밀번호를 다시 확인해주세요!");
       }
     }
   };
