@@ -1,4 +1,4 @@
-import axios from "axios";
+import createAxiosInstance from "utils/axiosConfig";
 import { vaildNick } from "components/common/utils/vaild";
 import React, { useEffect, useRef, useState } from "react";
 import { Header } from "./Header";
@@ -7,6 +7,7 @@ export const ChangeNickname = () => {
   const ref = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState<string>("");
   const nickname = ref.current?.value;
+  const axios = createAxiosInstance();
 
   useEffect(() => {
     if (nickname && !vaildNick(nickname)) {
@@ -16,17 +17,11 @@ export const ChangeNickname = () => {
 
   const changeNickname = async () => {
     const nickname = ref.current?.value;
-    const headers = {
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    };
+
     const nicknameData = new FormData();
     nickname && nicknameData.append("newNickname", nickname);
     try {
-      const res = await axios.post(
-        process.env.REACT_APP_ENDPOINT + "user/update-nickname",
-        nicknameData,
-        { headers }
-      );
+      const res = await axios.post("user/update-nickname", nicknameData);
       localStorage.removeItem("nickname");
       nickname && localStorage.setItem("nickname", nickname);
       console.log(res);

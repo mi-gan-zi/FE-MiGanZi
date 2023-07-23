@@ -37,17 +37,26 @@ export const Container = () => {
         >
           비밀번호 변경
         </div>
-        <div className="py-4 text-base font-normal">알림설정</div>
+        <div className="py-4 text-base font-normal cursor-pointer">
+          알림설정
+        </div>
       </div>
       <div className="w-full h-[14px] bg-st-gray-02"></div>
       <div className="px-5 py-4">
         <div className="py-4 text-xl font-semibold">내 활동</div>
-        <div className="py-4 text-base font-normal">내가 쓴 글</div>
-        <div className="py-4 text-base font-normal">내가 쓴 댓글</div>
-        <div className="py-4 text-base font-normal text-[#f22222]">
+        <div className="py-4 text-base font-normal cursor-pointer">
+          내가 쓴 글
+        </div>
+        <div className="py-4 text-base font-normal cursor-pointer">
+          내가 쓴 댓글
+        </div>
+        <div className="py-4 text-base font-normal text-[#f22222] cursor-pointer">
           로그아웃
         </div>
-        <div className="py-4 text-base font-normal text-st-gray-05">
+        <div
+          onClick={() => navigate("/delete")}
+          className="py-4 text-base font-normal text-st-gray-05 cursor-pointer"
+        >
           회원탈퇴
         </div>
       </div>

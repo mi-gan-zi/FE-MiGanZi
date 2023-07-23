@@ -67,7 +67,7 @@ export default function Container() {
 
     try {
       const res = await axios.post(
-        process.env.REACT_APP_ENDPOINT + "user/board/post",
+        process.env.REACT_APP_ENDPOINT + "user/board/post/write",
         formData,
         { headers }
       );
@@ -83,7 +83,12 @@ export default function Container() {
 
   return (
     <>
-      <Head nextMove={nextMove} image={image} setNextMove={setNextMove} testMapDataHandle={testMapDataHandle}/>
+      <Head
+        nextMove={nextMove}
+        image={image}
+        setNextMove={setNextMove}
+        testMapDataHandle={testMapDataHandle}
+      />
       {/* <form onSubmit={testMapDataHandle} encType="multipart/form-data"> */}
       {nextMove === 1 && <MusicSelect setMusicId={setMusicId} />}
       {nextMove === 2 && (

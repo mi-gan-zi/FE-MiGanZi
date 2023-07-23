@@ -14,6 +14,9 @@ export const Header = () => {
     if (location === "password") {
       setTitle("비밀번호 변경");
     }
+    if (location === "delete") {
+      setTitle("회원탈퇴");
+    }
   };
 
   useEffect(() => {

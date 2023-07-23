@@ -9,6 +9,7 @@ import SignUp from "../pages/SignUp";
 import { MyPage } from "pages/MyPage";
 import { ChangeNickname } from "components/myPage/ChangeNickname";
 import { ChangePassword } from "components/myPage/ChangePassword";
+import { DeleteUser } from "components/myPage/DeleteUser";
 export default function Router() {
   return (
     <BrowserRouter>
@@ -23,6 +24,7 @@ export default function Router() {
           <Route path="/user" element={<MyPage />} />
           <Route path="/nickname" element={<ChangeNickname />} />
           <Route path="/password" element={<ChangePassword />} />
+          <Route path="/delete" element={<DeleteUser />} />
           <Route path="*" element={<Main />} />
         </Routes>
       </Layout>
