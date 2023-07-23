@@ -48,8 +48,8 @@ const createAxiosInstance = (): AxiosInstance => {
         try {
           const response = await reissueToken();
           console.log(response)
-          localStorage.clear();
-          localStorage.setItem("refresh-token", response.data.data.refreshToken)
+          localStorage.removeItem("token");
+          localStorage.removeItem("nickname");
           localStorage.setItem("token", response.data.data.accessToken)
           localStorage.setItem("nickname", response.data.data.nickname)
           error.config.headers.Authorization = `Bearer ${response.data.data.accessToken}`;
