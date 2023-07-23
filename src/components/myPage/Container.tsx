@@ -41,7 +41,7 @@ export const Container = () => {
         <img
           alt="user"
           className="w-[90px] h-[90px] rounded-[50%]"
-          src="https://blog.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg"
+          src="https://storage.googleapis.com/miganzi-bucket/profile_image.png"
         />
         <p>{nickname}</p>
         <button className="px-8 rounded-[100px] flex items-center justify-center border border-st-gray-03 bg-st-gray-01 text-st-gray-05">
