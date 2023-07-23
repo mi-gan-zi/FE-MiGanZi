@@ -5,6 +5,8 @@ import { Post } from "../../@types/post.type";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import { ReactComponent as NonImage } from "../../assets/non_image.svg";
 import { useUser } from "context/userContext";
+import InfinityPost from "components/common/post/InfinityPost";
+import { useNavigate } from "react-router-dom";
 
 export const MyPosts = () => {
   const [posts, setPosts] = useState<Post[] | null>(null);
@@ -12,27 +14,24 @@ export const MyPosts = () => {
   const [checkLast, setcheckLast] = useState<boolean>();
   const [total, setTotal] = useState<number>(0);
   const axios = createAxiosInstance();
-  // const { userData, hasPageNum } = useUser();
+  const navigate = useNavigate();
 
   const getPosts = async () => {
-    const res = await axios.get(`user/my-page/posts?page=${pageNumber}`);
-    console.log(res);
-    setTotal(res.data.numberOfPosts);
+    const res = await axios.get(`user/my-page/posts?page=0`);
+    setTotal(res.data.postsDto.numberOfPosts);
     const newPosts = res.data.postsDto.content;
     setPosts((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
     setPageNumber((prevPage) => prevPage + 1);
     setcheckLast(res.data.postsDto.last);
   };
 
-  useEffect(() => {
-    getPosts();
-    // hasPageNum(pageNumber);
-  }, []);
-
-  // console.log(userData);
   const target = useIntersectionObserver(async (entry: any, observer: any) => {
     await getPosts();
   });
+
+  useEffect(() => {
+    getPosts();
+  }, []);
 
   return (
     <div>
@@ -55,6 +54,21 @@ export const MyPosts = () => {
                 글 작성하기
               </button>
             </div>
+          </div>
+        )}
+        {total !== 0 && (
+          <div className="flex flex-wrap flex-column w-[390px]">
+            {posts?.map((item) => {
+              return (
+                <img
+                  src={item.imageUrl}
+                  alt="이미지"
+                  className="w-[120px] h-[169px] my-[2px] mx-[1px] hover:scale-110 transition-transform ease-in-out duration-500"
+                  key={item.id}
+                  onClick={() => navigate(`/detail/${item.id}`)}
+                />
+              );
+            })}
           </div>
         )}
         {checkLast ? null : <div ref={target} className="h-[90px]" />}

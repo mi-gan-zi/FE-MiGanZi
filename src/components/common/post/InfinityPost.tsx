@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
-import { IPost } from "../../../@types/post.type";
+import { Post } from "../../../@types/post.type";
 
 export function InfinityPost(url: any): React.ReactElement {
   const navigate = useNavigate();
-  const [post, setPost] = useState<IPost[] | null>(null);
+  const [post, setPost] = useState<Post[] | null>(null);
   const [page, setPage] = useState(0);
   const [checkLast, setcheckLast] = useState<boolean>();
   const index = url.url.indexOf("=");
@@ -29,6 +29,8 @@ export function InfinityPost(url: any): React.ReactElement {
   const target = useIntersectionObserver(async (entry: any, observer: any) => {
     await getData();
   });
+
+  console.log(post);
 
   return (
     <>

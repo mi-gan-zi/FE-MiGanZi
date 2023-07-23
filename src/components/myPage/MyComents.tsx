@@ -1,9 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Header } from "./Header";
 import { ReactComponent as NonImage } from "../../assets/non_image.svg";
+import createAxiosInstance from "utils/axiosConfig";
+import { Post } from "../../@types/post.type";
+import useIntersectionObserver from "hooks/useIntersectionObserver";
 
 export const MyComents = () => {
+  const [posts, setPosts] = useState<Post[] | null>(null);
   const [total, setTotal] = useState<number>(0);
+  const axios = createAxiosInstance();
+  const [pageNumber, setPageNumber] = useState<number>(0);
+  const [checkLast, setcheckLast] = useState<boolean>();
+
+  const getComments = async () => {
+    const res = await axios.get(`user/my-page/comments`);
+    console.log(res);
+    setTotal(res.data.myCommentsDto.content.length);
+    const newPosts = res.data.myCommentsDto.content;
+    setPosts((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
+    setPageNumber((prevPage) => prevPage + 1);
+    setcheckLast(res.data.myCommentsDto.last);
+  };
+
+  const target = useIntersectionObserver(async (entry: any, observer: any) => {
+    await getComments();
+  });
+
+  useEffect(() => {
+    getComments();
+  }, []);
 
   return (
     <div>
