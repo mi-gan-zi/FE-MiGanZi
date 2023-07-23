@@ -30,7 +30,7 @@ const SignInComponent = () => {
 
         if (res.status === 200) {
           localStorage.setItem("token", res.data.data.accessToken);
-          localStorage.setItem("nickname", nickname);
+          localStorage.setItem("nickname", res.data.data.nickname);
           alert("미(간)지에 오신 걸 환영합니다." + nickname + "님");
           navigate("/");
         }

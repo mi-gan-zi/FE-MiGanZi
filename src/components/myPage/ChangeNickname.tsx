@@ -1,24 +1,39 @@
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import { vaildNick } from "components/common/utils/vaild";
+import React, { useEffect, useRef, useState } from "react";
 import { Header } from "./Header";
 
 export const ChangeNickname = () => {
   const ref = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState<string>("");
+  const nickname = ref.current?.value;
 
-  const changeNickname = () => {
+  useEffect(() => {
+    if (nickname && !vaildNick(nickname)) {
+      setMessage("닉네임이 형식에 맞지 않습니다.");
+    }
+  }, [nickname]);
+
+  const changeNickname = async () => {
     const nickname = ref.current?.value;
     const headers = {
       Authorization: "Bearer " + localStorage.getItem("token"),
     };
     const nicknameData = new FormData();
     nickname && nicknameData.append("newNickname", nickname);
-    const res = axios.post(
-      process.env.REACT_APP_ENDPOINT + "user/update-nickname",
-      nicknameData,
-      { headers }
-    );
-    console.log(res);
+    try {
+      const res = await axios.post(
+        process.env.REACT_APP_ENDPOINT + "user/update-nickname",
+        nicknameData,
+        { headers }
+      );
+      localStorage.removeItem("nickname");
+      nickname && localStorage.setItem("nickname", nickname);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+      setMessage("중복된 닉네임입니다.");
+    }
   };
 
   return (
@@ -41,7 +56,7 @@ export const ChangeNickname = () => {
             중복확인
           </button>
         </div>
-        <p></p>
+        <p className="text-[#F22222] text-xs font-medium mt-2">{message}</p>
       </div>
     </div>
   );

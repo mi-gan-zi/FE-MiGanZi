@@ -73,7 +73,7 @@ const Footer = () => {
       </div>
       <div
         onClick={() => {
-          navigate("/user/1");
+          navigate("/user");
         }}
         className="w-[98px] flex py-[4px] px-[4px] flex-col justify-center items-center"
       >

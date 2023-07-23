@@ -11,6 +11,9 @@ export const Header = () => {
     if (location === "nickname") {
       setTitle("닉네임 변경");
     }
+    if (location === "password") {
+      setTitle("비밀번호 변경");
+    }
   };
 
   useEffect(() => {
