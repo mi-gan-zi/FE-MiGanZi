@@ -79,12 +79,13 @@ export const Container = () => {
                 onClick={() => {
                   setEnabled(!enabled);
                 }}
-                className="w-11 h-6 bg-st-gray-03 rounded-full peer  peer-focus:ring-green-300  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after: bg-st-white after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
+                className="w-11 h-6 bg-st-gray-03 rounded-full peer  peer-focus:bg-active-blue  peer-checked:after:translate-x-full peer-checked:after:border-st-white peer-checked:after:bg-st-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
               ></div>
             </label>
           </div>
         </div>
       </div>
+
       <div className="w-full h-[14px] bg-st-gray-02"></div>
       <div className="px-5 py-4">
         <div className="py-4 text-xl font-semibold">내 활동</div>
