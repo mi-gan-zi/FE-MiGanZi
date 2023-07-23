@@ -8,7 +8,7 @@ interface AdaptAxiosRequestConfig extends AxiosRequestConfig {
   headers: AxiosRequestHeaders;
 }
 
-export class Client {
+export class AxioisClient {
   private baseURL: string;
   private tokenRepository: any;
   private axiosInstance: AxiosInstance;

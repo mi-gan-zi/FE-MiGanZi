@@ -1,22 +1,23 @@
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import Layout from "shared/Layout/Layout";
-import { BrowserRouter } from "react-router-dom";
 import { LocalTokenRepository } from "repository/LocalTokenRepository";
-import { Client } from "client/axios";
-import { CreateService } from "services/createService";
+import { AxioisClient } from "client/axios";
+import { UserService } from "services/apis/user";
+import { UserProvider } from "context/userContext";
 
-const endpoint = process.env.REACT_APP_ENDPOINT;
-
+const localTokenRepository = new LocalTokenRepository();
+const axiosClient = new AxioisClient(
+  `${process.env.REACT_APP_ENDPOIN}`,
+  localTokenRepository.get()
+);
+const userService = new UserService(axiosClient);
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-const localTokenRepository = new LocalTokenRepository();
-const client = new Client(endpoint!, localTokenRepository);
 
 root.render(
-  <App />
-  // <React.StrictMode>
-  // </React.StrictMode>
+  <UserProvider userService={userService}>
+    <App />
+  </UserProvider>
 );
