@@ -5,8 +5,6 @@ import Description from "./Description";
 import MusicSelect from "./MusicSelect";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { CreateService } from "services/createService";
-import { Client } from "client/axios";
 export interface MarkType {
   lat: string;
   lng: string;
@@ -66,6 +64,7 @@ export default function Container() {
     formData.append("music_id", musicId);
     formData.append("tags", seletTags);
     nickname && formData.append("nickname", nickname);
+
     try {
       const res = await axios.post(
         process.env.REACT_APP_ENDPOINT + "user/board/post",
