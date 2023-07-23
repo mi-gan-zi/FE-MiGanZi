@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Container = () => {
   const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");
+  const token = localStorage.getItem("token");
 
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
   return (
     <div>
       <div className="w-full h-[62px] flex items-center justify-start text-st-gray-10 text-xl font-semibold px-5">
@@ -44,7 +50,10 @@ export const Container = () => {
       <div className="w-full h-[14px] bg-st-gray-02"></div>
       <div className="px-5 py-4">
         <div className="py-4 text-xl font-semibold">내 활동</div>
-        <div className="py-4 text-base font-normal cursor-pointer">
+        <div
+          onClick={() => navigate("/myposts")}
+          className="py-4 text-base font-normal cursor-pointer"
+        >
           내가 쓴 글
         </div>
         <div className="py-4 text-base font-normal cursor-pointer">

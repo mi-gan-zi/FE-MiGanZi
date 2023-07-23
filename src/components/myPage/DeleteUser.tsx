@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import createAxiosInstance from "utils/axiosConfig";
 import { Header } from "./Header";
 
 export const DeleteUser = () => {
+  const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");
   const axios = createAxiosInstance();
 
@@ -13,6 +15,7 @@ export const DeleteUser = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("refresh-token");
       localStorage.removeItem("nickname");
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
