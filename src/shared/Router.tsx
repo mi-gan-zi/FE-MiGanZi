@@ -12,6 +12,7 @@ import { ChangePassword } from "components/myPage/ChangePassword";
 import { DeleteUser } from "components/myPage/DeleteUser";
 import { MyPosts } from "components/myPage/MyPosts";
 import { MyComents } from "components/myPage/MyComents";
+import { Alarm } from "pages/Alarm";
 export default function Router() {
   return (
     <BrowserRouter>
@@ -29,6 +30,7 @@ export default function Router() {
           <Route path="/delete" element={<DeleteUser />} />
           <Route path="/myposts" element={<MyPosts />} />
           <Route path="/mycommets" element={<MyComents />} />
+          <Route path="/alarms" element={<Alarm />} />
           <Route path="*" element={<Main />} />
         </Routes>
       </Layout>
