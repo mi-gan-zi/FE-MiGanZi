@@ -25,18 +25,26 @@ export default function ImageUpLoad({ setImage, setImageFile }: ImageProps) {
   const handleCreateIMG = (e: any) => {
     const dropFile = e.dataTransfer?.files[0];
     const file = ref.current?.files?.[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImg(reader.result as string);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
-      setImageFile(e.target.files[0]);
-      setImage(false);
-    } else if (dropFile) {
-      reader.readAsDataURL(dropFile);
-      setImageFile(e.target.files[0]);
-      setImage(false);
+    const maxSizeInBytes = 3 * 1024 * 1024; // 3MB
+    if (
+      (file && file.size > maxSizeInBytes) ||
+      dropFile.size > maxSizeInBytes
+    ) {
+      alert("이미지 용량은 3MB이하로 올려주세요.");
+    } else {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImg(reader.result as string);
+      };
+      if (file) {
+        reader.readAsDataURL(file);
+        setImageFile(e.target.files[0]);
+        setImage(false);
+      } else if (dropFile) {
+        reader.readAsDataURL(dropFile);
+        setImageFile(e.target.files[0]);
+        setImage(false);
+      }
     }
   };
 
