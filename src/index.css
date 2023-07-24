@@ -6,16 +6,15 @@
   font-family: "suit-variable";
   src: url("../src/assets/font/SUIT-Variable.woff2");
 }
+* {
+  box-sizing: border-box;
+}
 body {
-  margin: 0;
   font-family: suit-variable, sans-serif;
-  background-image: url(../src/assets/background.png);
-  background-size: contain;
-  height: 100%;
-  min-width: 1700px;
-  padding: 55px 0px;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-image: url(assets//background/backgroundSVG.svg);
+  background-size: 1920px auto;
+  /* height: 100vh; */
+  /* background-repeat: no-repeat; */
 }
 body::-webkit-scrollbar {
   display: none;

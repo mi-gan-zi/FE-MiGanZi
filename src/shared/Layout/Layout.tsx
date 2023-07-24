@@ -4,13 +4,14 @@ import Header from "./Header";
 
 const Layout = (props: { children: React.ReactNode }) => {
   return (
-    <div className="bg-st-white w-[390px]  mx-auto overflow-y-scroll ">
-      <Header />
-      <div className="overflow-y-scroll  h-screen bg-st-gray-09 scroll">
-        <div className="h-[60px]"></div>
+    <div className="bg-st-white w-[390px] h-screen  mx-auto">
+      <div className="overflow-y-scroll  scroll h-screen pb-28">
+        <Header />
         <main>{props.children}</main>
       </div>
-      <Footer />
+      <div className="fixed bottom-0 w-[390px]  bg-st-white pt-2">
+        <Footer />
+      </div>
     </div>
   );
 };

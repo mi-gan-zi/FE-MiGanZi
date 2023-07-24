@@ -42,10 +42,17 @@ const Footer = () => {
   ];
 
   return (
-    <ul className="flex">
+    <ul className="flex justify-between ">
       {footerList.map((listItem, idx) => (
-        <li key={idx} className="h-[6rem] bg-st-gray-03 ">
+        <li
+          key={idx}
+          className={
+            "h-[6rem] mx-auto text-[14px] " +
+            (path === listItem.path ? "" : "text-st-gray-04")
+          }
+        >
           <div
+            className="flex-col flex justify-center items-center cursor-pointer"
             onClick={() => {
               navigate(`${listItem.path}`);
             }}

@@ -13,7 +13,6 @@ export default function Create() {
   }, []);
   return (
     <>
-      <Footer />
       <Container />
     </>
   );
