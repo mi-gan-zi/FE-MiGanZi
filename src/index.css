@@ -17,7 +17,12 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
 }
-
+body::-webkit-scrollbar {
+  display: none;
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
