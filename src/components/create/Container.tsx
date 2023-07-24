@@ -64,12 +64,12 @@ export default function Container() {
     formData.append("tags", seletTags);
     nickname && formData.append("nickname", nickname);
     try {
-      const res = await axios.post(
+      const response = await axios.post(
         process.env.REACT_APP_ENDPOINT + "user/board/post/write",
         formData,
         { headers }
       );
-      console.log(res);
+      console.log("리스폰", response);
 
       alert("게시글 업로드에 성공하셨습니다!");
       navigate("/");
@@ -86,7 +86,6 @@ export default function Container() {
         setNextMove={setNextMove}
         testMapDataHandle={testMapDataHandle}
       />
-      {/* <form onSubmit={testMapDataHandle} encType="multipart/form-data"> */}
       {nextMove === 1 && <MusicSelect setMusicId={setMusicId} />}
       {nextMove === 2 && (
         <ImageUpLoad setImage={setImage} setImageFile={setImageFile} />
@@ -98,7 +97,6 @@ export default function Container() {
           setContent={setContent}
         />
       )}
-      {/* </form> */}
     </>
   );
 }
