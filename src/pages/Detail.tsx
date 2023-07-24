@@ -19,7 +19,7 @@ interface PostDetail {
   commentCount: number;
   content: string;
   imageUrl: string;
-  addressName: string;
+  address_name: string;
   tag: string;
   tagsNum: number;
   musicId: string;
@@ -93,7 +93,7 @@ function Tag({tags} : {tags: PostDetail['tag'] } ) {
 function ImageInfo({tags, info, location} : {
   tags: PostDetail['tag'],
   info: PostDetail['content'],
-  location: PostDetail['addressName']
+  location: PostDetail['address_name']
 }) {
   return(
     <div className = 'w-[390px] h-[284px] relative mt-[32px] mb-[32px]'>
@@ -101,7 +101,7 @@ function ImageInfo({tags, info, location} : {
         <div className = 'w-[330px] h-[26px] flex flex-row items-start gap-[10px]'>
           <Tag tags={tags} ></Tag>
         </div>
-        <div className = 'w-[330px] h-[96px] mt-[16px] overflow-auto scrollbar-hide'>{info}
+        <div className = 'w-[330px] h-[96px] mt-[16px] overflow-auto scrollbar-hide'>
         {info} 
         </div>
       </div>
@@ -192,13 +192,6 @@ function Comment({comment, commentNum, newComment, setNewComment, onSendComment,
 
 function Detail() {
   const [playing, setPlaying] = useState(false);
-  const [nickname, setNickname] = useState(''); 
-  const [imageUrl, setImageUrl] = useState(''); 
-  const [createdDate, setCreatedDate] = useState(''); 
-  const [addressName, setAddressName] = useState(''); 
-  const [content, setContent] = useState(''); 
-  const [tags, setTags] = useState(''); 
-  const [viewCount, setViewCount] = useState(0);
   const [musicId, setMusicId] = useState(''); 
   const [comment, setComment] = useState<CommentDetail[]>(); 
   const [commentNum, setCommentNum] = useState(0); 
@@ -213,20 +206,29 @@ function Detail() {
   const navigate = useNavigate();
   const commentEndRef = useRef<HTMLDivElement>(null);
 
+  const [post, setPost] = useState<PostDetail>({
+    createdDate: '',
+    modifiedDate: '',
+    id: 0,
+    nickname: '',
+    viewCount: 0,
+    commentCount: 0,
+    content: '',
+    imageUrl: '',
+    address_name: '',
+    tag: '',
+    tagsNum: 0,
+    musicId: '',
+  });
+
   const getPost = async () => {
     try {
       const url = process.env.REACT_APP_ENDPOINT + "user/board/" + `${id}`;
       const res = await axios.get(url);
       console.log(res.data); 
-      setNickname(res.data.nickname);
-      setImageUrl(res.data.imageUrl);
-      setCreatedDate(res.data.createdDate);
-      setAddressName(res.data.addressName);
-      setContent(res.data.content);
+      setPost(res.data);
       setComment(res.data.userComments);
-      setTags(res.data.tags);
       setCommentNum(res.data.userComments.length);
-      setViewCount(res.data.viewCount);
 
       musicList.filter((item) => {
         if (item.id === parseInt(res.data.music_id)) {
@@ -246,11 +248,17 @@ function Detail() {
 
   const postComment = async () => {
     const formData = new FormData();
-    formData.append('content', newComment)
-    formData.append('postId', `${id}`)
+    formData.append('content', newComment);
+    formData.append('postId', `${id}`);
+    const headers = {
+      Authorization: "Bearer " + userToken,
+      "Content-Type": "multipart/form-data",
+      processData: false,
+    };
+
     try{
-      const res = await axios.post(process.env.REACT_APP_ENDPOINT + "user/board/comment", 
-      formData, {headers:{Authorization: "Bearer " + userToken}}
+      const res = await axios.post(process.env.REACT_APP_ENDPOINT + "user/board/comment/write", 
+      formData, {headers}
       )
       getPost();
      }catch(err){
@@ -260,7 +268,7 @@ function Detail() {
 
   useEffect(() => {
     getPost();
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (typeof token === 'string'){
       setUserToken(token);
     }
@@ -289,8 +297,8 @@ function Detail() {
         setIsCheck={setIsCheck}
       />
       <div className='w-[390px] h-[14px] bg-st-gray-02 mt-[32px]'></div>
-      <Content userName={nickname} createdDate={createdDate} imagePreview={imageUrl} viewCount={viewCount}></Content>
-      <ImageInfo tags = {tags} info={content} location={addressName} ></ImageInfo>
+      <Content userName={post.nickname} createdDate={post.createdDate} imagePreview={post.imageUrl} viewCount={post.viewCount}></Content>
+      <ImageInfo tags = {post.tag} info={post.content} location={post.address_name} ></ImageInfo>
       <div className='w-[390px] h-[14px] bg-st-gray-02'></div>
       <Comment comment = {comment} commentNum={commentNum} newComment={newComment} setNewComment={setNewComment}
       onSendComment={onSendComment} commentEndRef={commentEndRef}> </Comment>  
