@@ -57,7 +57,10 @@ const PopularPost = () => {
             {showPostArray[showNumber]?.nickname}
           </div>
         </div>
-        <div className="ml-[40px] mt-[5px] relative">
+        <div
+          className="ml-[40px] mt-[5px] relative cursor-pointer"
+          onClick={() => routePost(showPostArray[showNumber].id)}
+        >
           <div
             className="absolute top-[0%] bg-st-black w-full h-full opacity-30"
             style={{ background: `linear-gradient(to bottom, black, white)` }}
@@ -66,7 +69,6 @@ const PopularPost = () => {
             className="object-fill w-[350px] h-[467px] "
             src={showPostArray[showNumber]?.imageUrl}
             alt="postImage"
-            onClick={() => routePost(showPostArray[showNumber]?.id)}
           />
           <div className="absolute top-[24px] left-[20px] text-cityColor">
             {`🌐 ` + showPostArray[showNumber]?.address_name}

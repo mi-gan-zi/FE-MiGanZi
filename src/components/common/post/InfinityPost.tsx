@@ -42,7 +42,7 @@ export function InfinityPost(url: any): React.ReactElement {
                 <img
                   src={item.imageUrl}
                   alt="이미지"
-                  className="w-[120px] h-[169px] my-[2px] mx-[1px] hover:scale-110 transition-transform ease-in-out duration-500"
+                  className="w-[120px] h-[169px] my-[2px] mx-[1px] hover:scale-110 transition-transform ease-in-out duration-500 cursor-pointer"
                   key={item.id}
                   onClick={() => routePost(item.id)}
                 />
