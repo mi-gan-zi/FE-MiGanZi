@@ -30,7 +30,7 @@ export const AlarmPost = () => {
   useEffect(() => {
     getAlarms();
   }, []);
-  console.log(alarms);
+  console.log(alarms.length);
 
   return (
     <div className="px-5">
@@ -38,7 +38,7 @@ export const AlarmPost = () => {
         <Pre onClick={() => navigate(-1)} className="cursor-pointer"></Pre>
         <p className="text-xl font-semibold">알림</p>
       </div>
-      {alarms.length === 0 && (
+      {alarms.length <= 1 && (
         <div className="w-full h-[560px] flex flex-col items-center justify-center">
           <NonImage />
           <div className="h-[75px] flex flex-col items-center justify-between">
@@ -51,9 +51,9 @@ export const AlarmPost = () => {
           </div>
         </div>
       )}
-      {alarms.length !== 0 &&
-        alarms.map((alarm: any) => {
-          return <AlarmComponent key={alarm.id} post={alarm} />;
+      {alarms.length > 1 &&
+        alarms?.map((alarm: any) => {
+          return <AlarmComponent key={alarm?.id} post={alarm} />;
         })}
     </div>
   );
