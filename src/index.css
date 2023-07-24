@@ -6,23 +6,22 @@
   font-family: "suit-variable";
   src: url("../src/assets/font/SUIT-Variable.woff2");
 }
-body {
-  margin: 0;
-  font-family: suit-variable, sans-serif;
-  background-image: url(../src/assets/background.png);
-  min-width: 1700px;
-  padding: 55px 0px;
-  height: 100vh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  vertical-align: top;
-  position: relative;
-  left: 0;
-  right: 0;
-  top: 0px;
-  overflow: hidden;
+* {
+  box-sizing: border-box;
 }
-
+body {
+  font-family: suit-variable, sans-serif;
+  background-image: url(assets//background/backgroundSVG.svg);
+  background-size: 1920px auto;
+  /* height: 100vh; */
+  /* background-repeat: no-repeat; */
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

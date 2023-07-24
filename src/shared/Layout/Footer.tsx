@@ -1,86 +1,75 @@
-import React, { useEffect, useState } from "react";
-import { ReactComponent as Main } from "../../assets/footer_main.svg";
-import { ReactComponent as Search } from "../../assets/footer_search.svg";
-import { ReactComponent as Upload } from "../../assets/footer_upload.svg";
-import { ReactComponent as User } from "../../assets/footer_mypage.svg";
-
-import { ReactComponent as OnMain } from "../../assets/footer_main_on.svg";
-import { ReactComponent as OnSearch } from "../../assets/footer_search_on.svg";
-import { ReactComponent as OnUpload } from "../../assets/footer_upload_on.svg";
-import { ReactComponent as OnUser } from "../../assets/footer_mypage_on.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  main,
+  search,
+  upload,
+  user,
+  hoMain,
+  hoSearch,
+  hoUpload,
+  hoUser,
+} from "assets/footerListIcon/index";
 
 const Footer = () => {
-  const [onMain, setOnMain] = useState(false);
-  const [onSearch, setOnSearch] = useState(false);
-  const [onUpload, setOnUpload] = useState(false);
-  const [onUser, setOnUser] = useState(false);
   const navigate = useNavigate();
-  const location = window.location.pathname;
-
-  useEffect(() => {
-    if (location === "/") {
-      setOnMain(true);
-      setOnSearch(false);
-      setOnUpload(false);
-      setOnUser(false);
-    } else if (location === "/search") {
-      setOnMain(false);
-      setOnSearch(true);
-      setOnUpload(false);
-      setOnUser(false);
-    } else if (location === "/create") {
-      setOnMain(false);
-      setOnSearch(false);
-      setOnUpload(true);
-      setOnUser(false);
-    } else if (location.split("/")[1] === "user") {
-      setOnMain(false);
-      setOnSearch(false);
-      setOnUpload(false);
-      setOnUser(true);
-    }
-  }, [location]);
+  const location = useLocation();
+  const path = location.pathname;
+  const footerList = [
+    {
+      path: "/",
+      name: "메인",
+      img: `${main}`,
+      hoverImg: `${hoMain}`,
+    },
+    {
+      path: "/search",
+      name: "검색",
+      img: `${search}`,
+      hoverImg: `${hoSearch}`,
+    },
+    {
+      path: "/create",
+      name: "업로드",
+      img: `${upload}`,
+      hoverImg: `${hoUpload}`,
+    },
+    {
+      path: "/user",
+      name: "마이페이지",
+      img: `${user}`,
+      hoverImg: `${hoUser}`,
+    },
+  ];
 
   return (
-    <div className="h-[6rem] mt-5 bg-st-gray-02  flex fixed w-[390px] bottom-[70px]  rounded-b-3xl">
-      <div
-        onClick={() => {
-          navigate("/");
-        }}
-        className="w-[98px] flex py-[4px] px-[4px] flex-col justify-center items-center"
-      >
-        {onMain ? <OnMain /> : <Main />}
-        <p className="text-st-gray-05 text-sm">메인</p>
-      </div>
-      <div
-        onClick={() => {
-          navigate("/search");
-        }}
-        className="w-[98px] flex py-[4px] px-[4px] flex-col justify-center items-center"
-      >
-        {onSearch ? <OnSearch /> : <Search />}
-        <p className="text-st-gray-05 text-sm">검색</p>
-      </div>
-      <div
-        onClick={() => {
-          navigate("/create");
-        }}
-        className="w-[98px] flex py-[4px] px-[4px] flex-col justify-center items-center"
-      >
-        {onUpload ? <OnUpload /> : <Upload />}
-        <p className="text-st-gray-05 text-sm">업로드</p>
-      </div>
-      <div
-        onClick={() => {
-          navigate("/user");
-        }}
-        className="w-[98px] flex py-[4px] px-[4px] flex-col justify-center items-center"
-      >
-        {onUser ? <OnUser /> : <User />}
-        <p className="text-st-gray-05 text-sm">마이페이지</p>
-      </div>
-    </div>
+    <ul className="flex justify-between ">
+      {footerList.map((listItem, idx) => (
+        <li
+          key={idx}
+          className={
+            "h-[6rem] mx-auto text-[14px] " +
+            (path === listItem.path ? "" : "text-st-gray-04")
+          }
+        >
+          <div
+            className="flex-col flex justify-center items-center cursor-pointer"
+            onClick={() => {
+              navigate(`${listItem.path}`);
+            }}
+          >
+            <img
+              src={
+                path === listItem.path
+                  ? `${listItem.hoverImg}`
+                  : `${listItem.img}`
+              }
+              alt="main"
+            />
+            <div>{listItem.name}</div>
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 };
 

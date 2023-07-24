@@ -5,8 +5,6 @@ import Description from "./Description";
 import MusicSelect from "./MusicSelect";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// import { CreateService } from "services/createService";
-// import { Client } from "client/axios";
 export interface MarkType {
   lat: string;
   lng: string;
@@ -20,10 +18,9 @@ export default function Container() {
    * 1~5까지 음악
    */
   const [musicId, setMusicId] = useState<string>("0");
-  /**image 파일 선택 여부 -> 헤더 다음으로 막기 위함 */
   const [image, setImage] = useState(false);
-  /**image 파일 담기 위한 state */
   const [imageFile, setImageFile] = useState<any>();
+  //TODO: geonavigator 이용해서 초기값 설정
   const [mark, setMarkes] = useState<MarkType>({ lat: "1", lng: "1" });
   const [tags, setTags] = useState<string[]>([]);
   const [seletTags, setSeletTags] = useState<string>("000000000000");
@@ -40,11 +37,11 @@ export default function Container() {
   }, [nextMove]);
 
   function updateValue(a: string, b: string[]) {
-    const arr = a.split(""); // 문자열을 배열로 변환
+    const arr = a.split("");
     b.forEach((index: string) => {
-      arr[parseInt(index)] = "1"; // 특정 인덱스 값을 "1"로 변경
+      arr[parseInt(index)] = "1";
     });
-    return setSeletTags(arr.join("")); // 배열을 문자열로 변환하여 리턴
+    return setSeletTags(arr.join(""));
   }
 
   const testMapDataHandle = async (e: any) => {

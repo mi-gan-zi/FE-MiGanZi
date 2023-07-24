@@ -1,5 +1,5 @@
 export class LocalTokenRepository {
-  private TOKEN_KEY = "ACCESS_TOKEN";
+  private TOKEN_KEY = "refresh-token";
 
   set(token: string) {
     localStorage.setItem(this.TOKEN_KEY, token);
