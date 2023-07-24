@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { Popular } from "../../@types/post.type";
 import useInterval from "../../hooks/useInterval";
+import createAxiosInstance from "utils/axiosConfig";
 
 const PopularPost = () => {
-  const [popularPost, setPopularPost] = useState<Popular[] | null>(null);
-  const showPostArray: any = [""];
-  const [showNumber, setShowNumber] = useState(1);
   const START_PAGE = 1;
   const END_PAGE = 5;
+  const showPostArray: any = [""];
+  const [popularPost, setPopularPost] = useState<Popular[] | null>(null);
+  const [showNumber, setShowNumber] = useState(START_PAGE);
   const navigate = useNavigate();
+  const axios = createAxiosInstance();
 
   const getPopularPost = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_ENDPOINT}user/board/popular-post`
-      );
+      const response = await axios.get(`user/board/popular-post`, {
+        headers: {
+          Authorization: ``,
+        },
+      });
       setPopularPost(response.data);
     } catch (e) {
       throw new Error(`Popular post ERROR ! , ${e}`);
