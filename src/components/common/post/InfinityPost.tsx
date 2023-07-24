@@ -30,8 +30,6 @@ export function InfinityPost(url: any): React.ReactElement {
     await getData();
   });
 
-  console.log(post);
-
   return (
     <>
       <div className="flex justify-center text-[20px] h-[70px] items-center">
@@ -44,7 +42,7 @@ export function InfinityPost(url: any): React.ReactElement {
                 <img
                   src={item.imageUrl}
                   alt="이미지"
-                  className="w-[120px] h-[169px] my-[2px] mx-[1px] hover:scale-110 transition-transform ease-in-out duration-500 cursor-pointer"
+                  className="w-[126px] h-[169px] my-[2px] mx-[2px] hover:scale-110 transition-transform ease-in-out duration-500 cursor-pointer"
                   key={item.id}
                   onClick={() => routePost(item.id)}
                 />
