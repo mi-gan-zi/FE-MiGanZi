@@ -14,7 +14,7 @@ export interface Music {
   
 export const musicList: Music[] = [
     {
-        id: 1,
+        id: 0,
         song: "Madeleine_Love",
         artist: "CHEEZE(치즈)",
         imgURL:
@@ -22,7 +22,7 @@ export const musicList: Music[] = [
         playList: MadeleineLove,
     } as Music,
     {
-        id: 2,
+        id: 1,
         song: "A Winter Story",
         artist: "Remedios",
         imgURL:
@@ -30,7 +30,7 @@ export const musicList: Music[] = [
         playList: Winter,
     } as Music,
     {
-        id: 3,
+        id: 2,
         song: "7102",
         artist: "김 사월",
         imgURL:
@@ -38,7 +38,7 @@ export const musicList: Music[] = [
         playList: sawal,
     } as Music,
     {
-        id: 4,
+        id: 3,
         song: "민들레",
         artist: "우효(OOHYO)",
         imgURL:
@@ -46,7 +46,7 @@ export const musicList: Music[] = [
         playList: single,
     } as Music,
     {
-        id: 5,
+        id: 4,
         song: "Feel Alright",
         artist: "짙은",
         imgURL:
