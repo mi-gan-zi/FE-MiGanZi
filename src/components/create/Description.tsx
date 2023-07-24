@@ -1,4 +1,4 @@
-import { PinIcon, SearchIcon, WihteSearchIcon } from "assets/Icon";
+import { PinIcon, WihteSearchIcon } from "assets/Icon";
 import UseKeywordMap from "components/common/keyword_map/useKeywordMap";
 import { Dispatch, SetStateAction, useState } from "react";
 import DaumPostCode from "react-daum-postcode";
