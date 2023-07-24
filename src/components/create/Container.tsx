@@ -25,7 +25,7 @@ export default function Container() {
   const [tags, setTags] = useState<string[]>([]);
   const [seletTags, setSeletTags] = useState<string>("000000000000");
   const [content, setContent] = useState<string>("-");
-
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,17 +64,20 @@ export default function Container() {
     formData.append("tags", seletTags);
     nickname && formData.append("nickname", nickname);
     try {
+      setIsLoading(true);
       const response = await axios.post(
         process.env.REACT_APP_ENDPOINT + "user/board/post/write",
         formData,
         { headers }
       );
-      console.log("리스폰", response);
+      console.log("5", response);
 
       alert("게시글 업로드에 성공하셨습니다!");
       navigate("/");
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -85,6 +88,7 @@ export default function Container() {
         image={image}
         setNextMove={setNextMove}
         testMapDataHandle={testMapDataHandle}
+        isLoading={isLoading}
       />
       {nextMove === 1 && <MusicSelect setMusicId={setMusicId} />}
       {nextMove === 2 && (
