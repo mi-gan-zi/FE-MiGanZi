@@ -16,10 +16,10 @@ export const AlarmPost = () => {
   const getAlarms = async () => {
     const res = await axios.get("pubsub/user-alert");
     console.log(res.data);
-    const newPosts = res.data.content;
+    const newPosts = res.data.data.content;
     setAlarms((prevPosts: any) => Array.from(prevPosts || []).concat(newPosts));
     setPageNumber((prevPage) => prevPage + 1);
-    setcheckLast(res.data.last);
+    setcheckLast(res.data.data.last);
     return newPosts;
   };
 
@@ -30,7 +30,6 @@ export const AlarmPost = () => {
   useEffect(() => {
     getAlarms();
   }, []);
-  console.log(alarms.length);
 
   return (
     <div className="px-5">
@@ -38,7 +37,7 @@ export const AlarmPost = () => {
         <Pre onClick={() => navigate(-1)} className="cursor-pointer"></Pre>
         <p className="text-xl font-semibold">알림</p>
       </div>
-      {alarms.length <= 1 && (
+      {alarms.length < 1 && (
         <div className="w-full h-[560px] flex flex-col items-center justify-center">
           <NonImage />
           <div className="h-[75px] flex flex-col items-center justify-between">
@@ -52,8 +51,8 @@ export const AlarmPost = () => {
         </div>
       )}
       {alarms.length > 1 &&
-        alarms?.map((alarm: any) => {
-          return <AlarmComponent key={alarm?.id} post={alarm} />;
+        alarms?.map((alarm: any, i: number) => {
+          return <AlarmComponent key={i} post={alarm} />;
         })}
     </div>
   );
