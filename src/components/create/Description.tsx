@@ -11,7 +11,6 @@ export default function Description({
   setContent,
   setTags,
 }: {
-
   setMarkes: Dispatch<SetStateAction<MarkType>>;
   setContent: Dispatch<SetStateAction<string>>;
   setTags: Dispatch<SetStateAction<string[]>>;
@@ -53,27 +52,15 @@ export default function Description({
             </p>
           )}
         </div>
+        {isPopUp && (
+          <div>
+            <DaumPostCode onComplete={handleAddress} autoClose />
+          </div>
+        )}
       </div>
-      {isPopUp && (
-        <div>
-          <DaumPostCode onComplete={handleAddress} autoClose />
-        </div>
-      )}
 
-      {/* <div className="flex">{useKeywordMap({ keyWord })}</div> */}
       <UseKeywordMap keyWord={keyWord} setMarkes={setMarkes} />
-      <div className="border-t-[1px] border-st-gray-03 flex justify-center ">
-        {/* <button
-          className={
-            " w-[350px] h-[50px] text-st-white font-bold  mt-2 rounded-md " +
-            (keyWord ? "bg-[#007DF0] " : "bg-st-gray-05")
-          }
-          onClick={testMapDataHandle}
-          // disabled
-        >
-          다음으로
-        </button> */}
-      </div>
+      <div className="border-t-[1px] border-st-gray-03 flex justify-center "></div>
     </div>
   );
 }

@@ -5,28 +5,26 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { UserService } from "services/apis/user";
+import { Apis } from "services/apis/apis";
 const UserContext = createContext<any>(null);
 export const useUser = () => useContext(UserContext);
 
 interface UserProviderProps {
   children: ReactNode;
-  userService: UserService;
+  Apis: Apis;
 }
 
-export function UserProvider({ children, userService }: UserProviderProps) {
+export function UserProvider({ children, Apis }: UserProviderProps) {
   const [userData, setUserData] = useState<any>({});
-  const [getPageNum, setGetPageNum] = useState<number>(0);
-  const hasPageNum = (page: number) => {
-    setGetPageNum(getPageNum);
-    console.log(getPageNum);
-  };
+  const [createData, setCreateData] = useState<any>({});
+  // const hasPageNum = (page:) => {
+  //   setGetPageNum(getPageNum);
+  //   console.log(getPageNum);
+  // };
   useEffect(() => {
-    // userService.getPost(getPageNum).then(setUserData);
-  }, [getPageNum]);
+    Apis.createPost(createData).then(setUserData);
+  }, []);
   return (
-    <UserContext.Provider value={{ userData, hasPageNum }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={{ userData }}>{children}</UserContext.Provider>
   );
 }

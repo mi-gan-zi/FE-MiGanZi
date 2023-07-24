@@ -74,6 +74,14 @@ const SignInComponent = () => {
             type="password"
             className="w-[350px] h-[50px] border border-st-gray-09 rounded-lg py-[13px] px-[16px] mb-4 focus:outline-none"
           />
+          <div className="border-t border-st-gray-03 w-[327px] flex items-center justify-center pt-[20px] text-st-gray-06">
+            <p>
+              미(간)지에 처음이신가요?
+              <a href="./signup" className="underline cursor-pointer">
+                회원가입하기
+              </a>
+            </p>
+          </div>
           <div className="flex justify-between mb-4">
             <div>
               <input type="checkbox" className="mr-2" />
@@ -85,14 +93,6 @@ const SignInComponent = () => {
             Log in
           </button>
         </form>
-        <div className="border-t border-st-gray-03 w-[327px] flex items-center justify-center pt-[20px] text-st-gray-06">
-          <p>
-            미(간)지에 처음이신가요?
-            <a href="./signup" className="underline cursor-pointer">
-              회원가입하기
-            </a>
-          </p>
-        </div>
       </div>
       {/* <div className="h-[182px] w-full flex flex-col items-center justify-between">
         <button
