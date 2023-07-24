@@ -76,8 +76,8 @@ export const MyPosts = () => {
             </div>
           )}
         </div>
+        {/* {checkLast ? null : <div ref={target} className="h-[90px]" />} */}
       </div>
-      {checkLast ? null : <div ref={target} className="h-[90px]" />}
     </>
   );
 };

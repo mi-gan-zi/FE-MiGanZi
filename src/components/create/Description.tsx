@@ -23,6 +23,8 @@ export default function Description({
     setIsPopUp(!isPopUp);
   };
 
+  console.log(keyWord);
+
   return (
     <div className="flex flex-col gap-4">
       <div className="py-5">

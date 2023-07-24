@@ -4,6 +4,7 @@ import { ReactComponent as NonImage } from "../../assets/non_image.svg";
 import createAxiosInstance from "utils/axiosConfig";
 import { Post } from "../../@types/post.type";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
+import { AlarmComponent } from "components/common/alarm/AlarmComponet";
 
 export const MyComents = () => {
   const [posts, setPosts] = useState<Post[] | null>(null);
@@ -50,6 +51,8 @@ export const MyComents = () => {
             </div>
           </div>
         )}
+        {total !== 0 &&
+          posts?.map((post: any) => <AlarmComponent post={post} />)}
       </div>
     </div>
   );
