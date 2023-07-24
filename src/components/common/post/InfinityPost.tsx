@@ -17,13 +17,17 @@ export function InfinityPost(url: any): React.ReactElement {
   };
 
   const getData = async () => {
-    const posts = await axios.get(
-      `${process.env.REACT_APP_ENDPOINT}${API_ADDRESS}${page}`
-    );
-    const newPosts = posts.data.content;
-    setPost((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
-    setPage((prevPage) => prevPage + 1);
-    setcheckLast(posts.data.last);
+    try {
+      const posts = await axios.get(
+        `${process.env.REACT_APP_ENDPOINT}${API_ADDRESS}${page}`
+      );
+      const newPosts = posts.data.content;
+      setPost((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
+      setPage((prevPage) => prevPage + 1);
+      setcheckLast(posts.data.last);
+    } catch (e) {
+      throw new Error(`getData ERROR! , ${e}`);
+    }
   };
 
   const target = useIntersectionObserver(async (entry: any, observer: any) => {

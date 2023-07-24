@@ -13,10 +13,14 @@ const PopularPost = () => {
   const navigate = useNavigate();
 
   const getPopularPost = async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_ENDPOINT}user/board/popular-post`
-    );
-    setPopularPost(response.data);
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_ENDPOINT}user/board/popular-post`
+      );
+      setPopularPost(response.data);
+    } catch (e) {
+      throw new Error(`Popular post ERROR ! , ${e}`);
+    }
   };
 
   useEffect(() => {
