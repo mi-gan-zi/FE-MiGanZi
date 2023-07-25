@@ -1,13 +1,25 @@
+import constants from "utils/consts/LocalLepo";
 export class LocalTokenRepository {
-  private TOKEN_KEY = "refresh-token";
+  private refresh_token = constants.REFRESH_KEY;
+  private token = constants.TOKEN_KEY;
+  private nickname = constants.NiCK_NAME_KEY;
 
-  set(token: string) {
-    localStorage.setItem(this.TOKEN_KEY, token);
+  setRefresh(refresh_token: string) {
+    localStorage.setItem(this.refresh_token, refresh_token);
   }
+
+  setToken(token: string) {
+    localStorage.setItem(this.refresh_token, token);
+  }
+
+  setNickName(nickname: string) {
+    localStorage.setItem(this.nickname, nickname);
+  }
+
   get(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+    return localStorage.getItem(this.token);
   }
   remove() {
-    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.token);
   }
 }

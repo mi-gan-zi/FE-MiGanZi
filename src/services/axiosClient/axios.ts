@@ -8,14 +8,15 @@ interface AdaptAxiosRequestConfig extends AxiosRequestConfig {
   headers: AxiosRequestHeaders;
 }
 
-export class AxioisClient {
-  private baseURL: string;
-  private tokenRepository: any;
+export class AxiosClient {
+  get(url: string) {
+    throw new Error("Method not implemented.");
+  }
+  private baseURL?: string;
   private axiosInstance: AxiosInstance;
 
-  constructor(baseURL: string, tokenRepository: any) {
+  constructor(baseURL: string | undefined) {
     this.baseURL = baseURL;
-    this.tokenRepository = tokenRepository;
 
     this.axiosInstance = axios.create({
       baseURL: this.baseURL,
@@ -23,20 +24,19 @@ export class AxioisClient {
 
     this.axiosInstance.interceptors.request.use(
       (config: AdaptAxiosRequestConfig) => {
-        config.headers.Authorization = "Bearer " + this.tokenRepository.get();
         return config;
       },
-      (error: any) => {
+      (error) => {
         return Promise.reject(error);
       }
     );
   }
 
-  async axios(
+  async axios<T>(
     url: string,
     options: AxiosRequestConfig = {}
-  ): Promise<AxiosResponse<any>> {
-    const response: AxiosResponse<any> = await this.axiosInstance(url, {
+  ): Promise<AxiosResponse<T>> {
+    const response: AxiosResponse<T> = await this.axiosInstance(url, {
       ...options,
       headers: {
         ...options.headers,

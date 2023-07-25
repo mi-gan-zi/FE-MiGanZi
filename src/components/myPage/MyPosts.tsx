@@ -4,7 +4,6 @@ import { Header } from "./Header";
 import { Post } from "../../@types/post.type";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import { ReactComponent as NonImage } from "../../assets/non_image.svg";
-import { useUser } from "context/userContext";
 import InfinityPost from "components/common/post/InfinityPost";
 import { useNavigate } from "react-router-dom";
 
