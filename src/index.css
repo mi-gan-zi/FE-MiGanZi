@@ -26,3 +26,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+@layer components {
+  .postButton {
+    @apply w-[12px] h-[12px] rounded-full mr-[5px];
+  }
+  .postButtonNonClick {
+    @apply border-2 border-[#c1c1c1];
+  }
+  .postButtonClick {
+    @apply border-2 border-[#74b9ff];
+  }
+}

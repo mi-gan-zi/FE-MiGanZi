@@ -17,4 +17,5 @@ export type Popular = {
   nickname: string;
   tags: string;
   viewCount: number;
+  profileImage: string;
 };
