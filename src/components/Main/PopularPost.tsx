@@ -12,9 +12,6 @@ const PopularPost = () => {
   const [showNumber, setShowNumber] = useState(START_PAGE);
   const navigate = useNavigate();
   const axios = createAxiosInstance();
-  const postButton = " w-[12px] h-[12px] rounded-full mr-[5px]";
-  const postButtonNonClick = " border-2 border-[#c1c1c1]";
-  const postButtonClick = " border-2 border-[#74b9ff]";
 
   const getPopularPost = async () => {
     try {
@@ -101,9 +98,9 @@ const PopularPost = () => {
                   className={
                     `${
                       index === showNumber
-                        ? `${postButton + postButtonClick}`
-                        : `${postButton + postButtonNonClick}`
-                    }` + " cursor-pointer"
+                        ? `postButtonClick`
+                        : `postButtonNonClick`
+                    }` + " postButton cursor-pointer"
                   }
                   onClick={() => handleCarousel(index)}
                 />
