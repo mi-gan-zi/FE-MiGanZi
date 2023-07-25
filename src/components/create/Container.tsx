@@ -5,6 +5,7 @@ import Description from "./Description";
 import MusicSelect from "./MusicSelect";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { reissueToken } from "utils/axiosConfig";
 export interface MarkType {
   lat: string;
   lng: string;
@@ -46,7 +47,7 @@ export default function Container() {
 
   const testMapDataHandle = async (e: any) => {
     e.preventDefault();
-
+    reissueToken();
     const headers = {
       Authorization: "Bearer " + localStorage.getItem("token"),
       "Content-Type": "multipart/form-data",
