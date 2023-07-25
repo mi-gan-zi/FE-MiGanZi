@@ -46,39 +46,6 @@ export default function Container() {
 
   const testMapDataHandle = async (e: any) => {
     e.preventDefault();
-    reissueToken();
-    const headers = {
-      Authorization: "Bearer " + localStorage.getItem("token"),
-      "Content-Type": "multipart/form-data",
-      processData: false,
-    };
-    const formData = new FormData();
-    const nickname = localStorage.getItem("nickname");
-
-    updateValue(seletTags, tags);
-    formData.append("imageFile", imageFile);
-    formData.append("lat", mark.lat);
-    formData.append("lng", mark.lng);
-    formData.append("content", content);
-    formData.append("music_id", musicId);
-    formData.append("tags", seletTags);
-    nickname && formData.append("nickname", nickname);
-    try {
-      setIsLoading(true);
-      const response = await axios.post(
-        process.env.REACT_APP_ENDPOINT + "user/board/post/write",
-        formData,
-        { headers }
-      );
-      console.log("5", response);
-
-      alert("게시글 업로드에 성공하셨습니다!");
-      navigate("/");
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   return (

@@ -1,19 +1,14 @@
-import { useAxios } from "context/AxiosContext";
-import React, { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { getBoard } from "services/apis/getAPIs";
 
 export default function TestDetail() {
-  const axiosClient = useAxios();
-  const getPost = async () => {
-    try {
-      const url = `user/board/${1}`;
-      const res = await axiosClient.axios(url);
-      console.log(res);
-    } catch (err) {
-      console.log("Error:", err);
-    }
-  };
-  useEffect(() => {
-    getPost();
-  }, []);
-  return <div>ddsfdf</div>;
+  const { data, isLoading } = useQuery({
+    queryKey: ["board"],
+    queryFn: () => getBoard("1"),
+  });
+  console.log(data);
+  console.log(isLoading);
+  useEffect(() => {}, []);
+  return <div>test page</div>;
 }
