@@ -1,4 +1,6 @@
 import axios, { AxiosInstance } from "axios";
+import { LocalTokenRepository } from "repository/LocalTokenRepository";
+const locakTokenRepo = new LocalTokenRepository();
 
 export const reissueToken = async () => {
   try {
@@ -52,7 +54,6 @@ const createAxiosInstance = (): AxiosInstance => {
       if (error.response && error.response.status === 401) {
         try {
           const response = await reissueToken();
-          console.log(response);
           localStorage.removeItem("token");
           localStorage.removeItem("nickname");
           localStorage.setItem("token", response.data.data.accessToken);

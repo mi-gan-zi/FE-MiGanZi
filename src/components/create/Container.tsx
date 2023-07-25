@@ -21,7 +21,6 @@ export default function Container() {
   const [musicId, setMusicId] = useState<string>("0");
   const [image, setImage] = useState(false);
   const [imageFile, setImageFile] = useState<any>();
-  //TODO: geonavigator 이용해서 초기값 설정
   const [mark, setMarkes] = useState<MarkType>({ lat: "1", lng: "1" });
   const [tags, setTags] = useState<string[]>([]);
   const [seletTags, setSeletTags] = useState<string>("000000000000");

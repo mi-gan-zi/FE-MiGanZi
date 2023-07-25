@@ -10,12 +10,10 @@ interface AdaptAxiosRequestConfig extends AxiosRequestConfig {
 
 export class AxioisClient {
   private baseURL: string;
-  private tokenRepository: any;
   private axiosInstance: AxiosInstance;
 
-  constructor(baseURL: string, tokenRepository: any) {
+  constructor(baseURL: string) {
     this.baseURL = baseURL;
-    this.tokenRepository = tokenRepository;
 
     this.axiosInstance = axios.create({
       baseURL: this.baseURL,
@@ -23,20 +21,20 @@ export class AxioisClient {
 
     this.axiosInstance.interceptors.request.use(
       (config: AdaptAxiosRequestConfig) => {
-        config.headers.Authorization = "Bearer " + this.tokenRepository.get();
+        config.headers.Authorization = "Bearer ";
         return config;
       },
-      (error: any) => {
+      (error) => {
         return Promise.reject(error);
       }
     );
   }
 
-  async axios(
+  async axios<T>(
     url: string,
     options: AxiosRequestConfig = {}
-  ): Promise<AxiosResponse<any>> {
-    const response: AxiosResponse<any> = await this.axiosInstance(url, {
+  ): Promise<AxiosResponse<T>> {
+    const response: AxiosResponse<T> = await this.axiosInstance(url, {
       ...options,
       headers: {
         ...options.headers,
