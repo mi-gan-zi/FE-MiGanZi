@@ -5,13 +5,16 @@ import useInterval from "../../hooks/useInterval";
 import createAxiosInstance from "utils/axiosConfig";
 
 const PopularPost = () => {
-  const START_PAGE = 1;
-  const END_PAGE = 5;
-  const showPostArray: any = [""];
+  const START_PAGE = 0;
+  const END_PAGE = 4;
+  const showPostArray: Popular[] = [];
   const [popularPost, setPopularPost] = useState<Popular[] | null>(null);
   const [showNumber, setShowNumber] = useState(START_PAGE);
   const navigate = useNavigate();
   const axios = createAxiosInstance();
+  const postButton = " w-[12px] h-[12px] rounded-full mr-[5px]";
+  const postButtonNonClick = " border-2 border-[#c1c1c1]";
+  const postButtonClick = " border-2 border-[#74b9ff]";
 
   const getPopularPost = async () => {
     try {
@@ -41,6 +44,10 @@ const PopularPost = () => {
 
   const routePost = (id: number) => {
     navigate(`detail/${String(id)}`);
+  };
+
+  const handleCarousel = (id: number) => {
+    setShowNumber(id);
   };
 
   return (
@@ -84,6 +91,25 @@ const PopularPost = () => {
             <div>{showPostArray[showNumber]?.tags}</div>
             <div>{showPostArray[showNumber]?.content}</div>
           </div>
+        </div>
+        <div className="flex flex-row justify-center ml-[40px] mt-[7px]">
+          {showPostArray.map((item: any, index: number) => {
+            return (
+              <>
+                <div
+                  key={index}
+                  className={
+                    `${
+                      index === showNumber
+                        ? `${postButton + postButtonClick}`
+                        : `${postButton + postButtonNonClick}`
+                    }` + " cursor-pointer"
+                  }
+                  onClick={() => handleCarousel(index)}
+                />
+              </>
+            );
+          })}
         </div>
       </div>
     </>
