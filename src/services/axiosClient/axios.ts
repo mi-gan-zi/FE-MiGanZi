@@ -24,7 +24,6 @@ export class AxiosClient {
 
     this.axiosInstance.interceptors.request.use(
       (config: AdaptAxiosRequestConfig) => {
-        config.headers.Authorization = "Bearer ";
         return config;
       },
       (error) => {

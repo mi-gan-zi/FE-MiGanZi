@@ -6,7 +6,7 @@ export default function TestDetail() {
   const getPost = async () => {
     try {
       const url = `user/board/${1}`;
-      const res = await axiosClient.get(url);
+      const res = await axiosClient.axios(url);
       console.log(res);
     } catch (err) {
       console.log("Error:", err);
