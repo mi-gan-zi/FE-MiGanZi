@@ -8,11 +8,14 @@ interface AdaptAxiosRequestConfig extends AxiosRequestConfig {
   headers: AxiosRequestHeaders;
 }
 
-export class AxioisClient {
-  private baseURL: string;
+export class AxiosClient {
+  get(url: string) {
+    throw new Error("Method not implemented.");
+  }
+  private baseURL?: string;
   private axiosInstance: AxiosInstance;
 
-  constructor(baseURL: string) {
+  constructor(baseURL: string | undefined) {
     this.baseURL = baseURL;
 
     this.axiosInstance = axios.create({

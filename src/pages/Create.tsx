@@ -1,7 +1,7 @@
 import Container from "components/create/Container";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Footer from "shared/Layout/Footer";
+import Footer from "components/common/Layout/Footer";
 
 export default function Create() {
   const navigate = useNavigate();

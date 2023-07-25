@@ -1,4 +1,4 @@
-import constants from "utils/constans/LocalLepo";
+import constants from "utils/consts/LocalLepo";
 export class LocalTokenRepository {
   private refresh_token = constants.REFRESH_KEY;
   private token = constants.TOKEN_KEY;
