@@ -56,7 +56,7 @@ const PopularPost = () => {
         </div>
         <div className="flex flex-row ml-[40px] h-[60px]">
           <img
-            src="https://storage.googleapis.com/miganzi-bucket/profile_image.png"
+            src={showPostArray[showNumber]?.profileImage}
             alt="profile"
             className="w-[60px] h-[60px] rounded-full"
           />
