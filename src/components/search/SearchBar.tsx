@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import { ReactComponent as Magnifier } from "../../assets/magnifier.svg";
 
-export default function SearchBar({ keyword, setKeyword }: { keyword: string; setKeyword: (data: string) => void }) {
+export default function SearchBar({
+  keyword,
+  setKeyword,
+}: {
+  keyword: string;
+  setKeyword: (data: string) => void;
+}) {
   const [isPopUp, setIsPopUp] = useState<boolean>(false);
 
   const handleSearchBar = (e: React.MouseEvent) => {

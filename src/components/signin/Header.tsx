@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ReactComponent as Pre } from "../../assets/pre.svg";
 import { useNavigate } from "react-router-dom";
-import { HeaderIcon } from "assets/Icon";
+
 const Header = () => {
   const navigate = useNavigate();
   const [msg, setMsg] = useState<string>("");
