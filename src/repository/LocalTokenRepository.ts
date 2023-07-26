@@ -21,15 +21,12 @@ export class LocalTokenRepository {
 
   getAccess(): string | null {
     const accessToken = localStorage.getItem(this.access_token);
-    const refreshToken = localStorage.getItem(this.refresh_token);
+    const refreshToken = null || localStorage.getItem(this.refresh_token);
     const getExpierTimeStr = localStorage.getItem(this.expier_time);
-    console.log(getExpierTimeStr);
     if (!getExpierTimeStr || !accessToken) return null;
 
     const expierToNum = Number(getExpierTimeStr);
-    console.log(expierToNum);
     const currentTime = Date.now();
-    console.log(currentTime);
 
     const timeElapsed = currentTime - expierToNum;
     const isExpier = Math.floor(timeElapsed / 1000) > 1800;

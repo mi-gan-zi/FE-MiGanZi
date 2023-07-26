@@ -47,20 +47,18 @@ export const postLogout = async () => {
   try {
     const url = `user/logout`;
     const access_token = localTokenRepoInstance.getAccess();
-    console.log(access_token);
     const headers = {
       Authorization: `Bearer ${access_token}`,
     };
-    const response = await axiosClient
+    await axiosClient
       .post(url, headers)
       .then(() => localTokenRepoInstance.remove());
-    console.log(response);
   } catch (error) {
     throw new Error(`POST Logout Error: ${error}`);
   }
 };
 
-export const postReIssue = async (data: any) => {
+export const postReIssue = async (data: string | null) => {
   try {
     const url = `user/reissue`;
     const headers = {
