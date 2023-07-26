@@ -1,7 +1,7 @@
-import constants from "utils/consts/LocalLepo";
+import constants from "utils/consts/LocalRepo";
 export class LocalTokenRepository {
   private refresh_token = constants.REFRESH_KEY;
-  private token = constants.TOKEN_KEY;
+  private access_token = constants.ACCESS_TOKEN_KEY;
   private nickname = constants.NiCK_NAME_KEY;
 
   setRefresh(refresh_token: string) {
@@ -17,9 +17,12 @@ export class LocalTokenRepository {
   }
 
   get(): string | null {
-    return localStorage.getItem(this.token);
+    return localStorage.getItem(this.refresh_token);
   }
   remove() {
-    localStorage.removeItem(this.token);
+    localStorage.removeItem(this.access_token);
+    localStorage.removeItem(this.refresh_token);
+    localStorage.removeItem(this.nickname);
   }
 }
+export const localTokenRepoInstance = new LocalTokenRepository();

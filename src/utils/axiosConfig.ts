@@ -1,19 +1,15 @@
 import axios, { AxiosInstance } from "axios";
-import { LocalTokenRepository } from "repository/LocalTokenRepository";
-const locakTokenRepo = new LocalTokenRepository();
 
 export const reissueToken = async () => {
   try {
     const response = await axios.post(
       `${process.env.REACT_APP_ENDPOINT}user/reissue`,
-      {},
       {
         headers: {
           Authorization: `Bearer ` + localStorage.getItem("refresh-token"),
         },
       }
     );
-    console.log(response);
     return response;
   } catch (error) {
     throw new Error("토큰 발급에 실패했습니다.");
@@ -61,6 +57,7 @@ const createAxiosInstance = (): AxiosInstance => {
           error.config.headers.Authorization = `Bearer ${response.data.data.accessToken}`;
           return axios.request(error.config);
         } catch (reissueError) {
+          console.log(reissueError);
           throw new Error("토큰 발급에 실패했습니다.");
         }
       }
