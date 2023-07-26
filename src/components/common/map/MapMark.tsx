@@ -42,10 +42,6 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
             // @ts-ignore
             bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
           }
-          // TODO: 도로명 주소 검색 결과 마커 연결
-          // let lat = Number(markers[0].position.lat);
-          // let lng = Number(markers[0].position.lng);
-
           // @ts-ignore
           map.setBounds(bounds);
         }
@@ -57,14 +53,14 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
 
   function selectOverlay(type: kakao.maps.drawing.OverlayType.MARKER) {
     const manager = managerRef.current;
-    manager && manager.cancel();
-    manager && manager.select(type);
+    // manager?.cancel();
+    manager?.select(type);
   }
 
   function drawOverlayData() {
     const manager = managerRef.current;
-    if (manager !== null) {
-      let lng = manager.getData().marker[0].x.toString();
+    if (manager !== null && manager.getData().marker.length !== 0) {
+      let lng = manager.getData().marker[0].x.toString(); // marker[marker.length-1]
       let lat = manager.getData().marker[0].y.toString();
       setCoordinate(lat, lng);
       setOverlayData(manager.getData());
@@ -99,7 +95,7 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
           guideTooltip={["draw", "drag"]}
           markerOptions={{
             draggable: true,
-            removable: false,
+            removable: true,
           }}
           onStateChanged={() => drawOverlayData()}
         />
@@ -115,7 +111,7 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
           onClick={(e) => {
             selectOverlay(kakao.maps.drawing.OverlayType.MARKER);
           }}
-          disabled={address ? true : false}
+          // disabled={address ? true : false}
         >
           마커 찍기
         </button>
