@@ -1,3 +1,4 @@
+import { postReIssue } from "services/apis/mianziService";
 import constants from "utils/consts/LocalRepo";
 export class LocalTokenRepository {
   private refresh_token = constants.REFRESH_KEY;
@@ -20,6 +21,7 @@ export class LocalTokenRepository {
 
   getAccess(): string | null {
     const accessToken = localStorage.getItem(this.access_token);
+    const refreshToken = localStorage.getItem(this.refresh_token);
     const getExpierTimeStr = localStorage.getItem(this.expier_time);
     console.log(getExpierTimeStr);
     if (!getExpierTimeStr || !accessToken) return null;
@@ -31,13 +33,14 @@ export class LocalTokenRepository {
 
     const timeElapsed = currentTime - expierToNum;
     const isExpier = Math.floor(timeElapsed / 1000) > 1800;
-    // TODO:  reissue api를 정의
-    const newAccess = () => {
-      return "access";
-    };
+
     // TODO
-    return isExpier ? newAccess() : accessToken;
-    // return accessToken;
+    const result: any = isExpier ? postReIssue(refreshToken) : accessToken;
+    return result;
+  }
+  getRefresh(): string | null {
+    const refreshToken = localStorage.getItem(this.refresh_token);
+    return refreshToken;
   }
   remove() {
     localStorage.removeItem(this.access_token);

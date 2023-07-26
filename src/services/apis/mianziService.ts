@@ -60,18 +60,17 @@ export const postLogout = async () => {
   }
 };
 
-export const postReIssue = async () => {
+export const postReIssue = async (data: any) => {
   try {
     const url = `user/reissue`;
-    const access_token = localTokenRepoInstance.getAccess();
     const headers = {
-      Authorization: `Bearer ${access_token}`,
+      Authorization: `Bearer ${data}`,
     };
-    const response = await axiosClient
-      .post(url, headers)
-      .then(() => localTokenRepoInstance.remove());
+    const response = await axiosClient.post(url, headers);
+    //TODO: response에서 어떻게 값이 들어오는지 확인 불가 스웨거에서도 확인불가 토요일에 확인하기
+    // .then((newToken) => localTokenRepoInstance.setRefresh());
     console.log(response);
   } catch (error) {
-    throw new Error(`POST Logout Error: ${error}`);
+    throw new Error(`POST REISSUE Error[토큰 발급 실패]: ${error}`);
   }
 };

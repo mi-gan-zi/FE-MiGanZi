@@ -10,16 +10,17 @@ export const Container = () => {
   const [logout, setLogout] = useState(false);
   const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");
-  const token = localStorage.getItem("access_token");
-  const axios = createAxiosInstance();
   const mutation = useMutation(() => postLogout(), {
     onSuccess: () => {
-      console.log("로그아웃 성공");
+      navigate("/login");
     },
     onError: (e) => {
       console.log("errer mutation", e);
     },
   });
+  const logOut = () => {
+    mutation.mutate();
+  };
 
   // useEffect(() => {
   //   if (!token) {
@@ -41,10 +42,6 @@ export const Container = () => {
   //     clearTimeout(logoutTime);
   //   }
   // };
-  const logOut = () => {
-    // mutation.mutate();
-    postLogout();
-  };
   return (
     <div>
       <div className="w-full h-[62px] flex items-center justify-start text-st-gray-10 text-xl font-semibold px-5">
