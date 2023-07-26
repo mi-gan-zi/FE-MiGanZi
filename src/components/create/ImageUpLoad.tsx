@@ -25,7 +25,7 @@ export default function ImageUpLoad({ setImage, setImageFile }: ImageProps) {
   const handleCreateIMG = (e: any) => {
     const dropFile = e.dataTransfer?.files[0];
     const file = ref.current?.files?.[0];
-    const maxSizeInBytes = 3 * 1024 * 1024; // 3MB
+    const maxSizeInBytes = 3 * 1024 * 1024;
     if (
       (file && file.size > maxSizeInBytes) ||
       dropFile.size > maxSizeInBytes

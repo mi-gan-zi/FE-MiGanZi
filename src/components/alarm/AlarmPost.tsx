@@ -15,7 +15,7 @@ export const AlarmPost = () => {
 
   const getAlarms = async () => {
     const res = await axios.get("pubsub/user-alert");
-    console.log(res.data);
+
     const newPosts = res.data.data.content;
     setAlarms((prevPosts: any) => Array.from(prevPosts || []).concat(newPosts));
     setPageNumber((prevPage) => prevPage + 1);
@@ -34,7 +34,7 @@ export const AlarmPost = () => {
   return (
     <div className="px-5">
       <div className="w-full h-[62px] px-4 py-5 flex gap-[10px] border-b-2 border-st-gray-03">
-        <Pre onClick={() => navigate(-1)} className="cursor-pointer"></Pre>
+        <Pre onClick={() => navigate(-1)} className="cursor-pointer" />
         <p className="text-xl font-semibold">알림</p>
       </div>
       {alarms.length < 1 && (
