@@ -2,34 +2,48 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import createAxiosInstance from "utils/axiosConfig";
 import { LogOutModal } from "./LogOutModal";
+import { useMutation } from "@tanstack/react-query";
+import { postLogout } from "services/apis/mianziService";
 
 export const Container = () => {
   const [enabled, setEnabled] = useState(false);
   const [logout, setLogout] = useState(false);
   const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("access_token");
   const axios = createAxiosInstance();
+  const mutation = useMutation(() => postLogout(), {
+    onSuccess: () => {
+      console.log("로그아웃 성공");
+    },
+    onError: (e) => {
+      console.log("errer mutation", e);
+    },
+  });
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!token) {
+  //     navigate("/login");
+  //   }
+  // }, []);
 
-  const logOut = async () => {
-    const res = await axios.post("user/logout", {});
-    if (res.status === 200) {
-      setLogout(true);
-      const logoutTime = setTimeout(() => {
-        setLogout(false);
-        localStorage.removeItem("token");
-        localStorage.removeItem("nickname");
-        localStorage.removeItem("refresh-token");
-        navigate("/login");
-      }, 2000);
-      clearTimeout(logoutTime);
-    }
+  // const logOut = async () => {
+  //   const res = await axios.post("user/logout", {});
+  //   if (res.status === 200) {
+  //     setLogout(true);
+  //     const logoutTime = setTimeout(() => {
+  //       setLogout(false);
+  //       localStorage.removeItem("token");
+  //       localStorage.removeItem("nickname");
+  //       localStorage.removeItem("refresh-token");
+  //       navigate("/login");
+  //     }, 2000);
+  //     clearTimeout(logoutTime);
+  //   }
+  // };
+  const logOut = () => {
+    // mutation.mutate();
+    postLogout();
   };
   return (
     <div>

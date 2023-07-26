@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
-import { getDetail } from "services/apis/boardService";
+import { getDetail } from "services/apis/mianziService";
 
 export default function TestDetail() {
   const { data, isLoading } = useQuery({

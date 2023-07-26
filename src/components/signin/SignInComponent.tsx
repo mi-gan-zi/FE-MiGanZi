@@ -23,14 +23,16 @@ const SignInComponent = () => {
       formData.append("nickname", nickname);
       formData.append("password", password);
       try {
+        const currentDate = Date.now().toString();
         const res = await axios.post(
           process.env.REACT_APP_ENDPOINT + "user/login",
           formData
         );
         console.log(res);
         if (res.status === 200) {
-          localStorage.setItem("token", res.data.data.accessToken);
-          localStorage.setItem("refresh-token", res.data.data.refreshToken);
+          localStorage.setItem("access_token", res.data.data.accessToken);
+          localStorage.setItem("expier_time", currentDate);
+          localStorage.setItem("refresh_token", res.data.data.refreshToken);
           localStorage.setItem("nickname", res.data.data.nickname);
           alert("미(간)지에 오신 걸 환영합니다." + nickname + "님");
           navigate("/");

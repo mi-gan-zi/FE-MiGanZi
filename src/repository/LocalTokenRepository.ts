@@ -21,17 +21,23 @@ export class LocalTokenRepository {
   getAccess(): string | null {
     const accessToken = localStorage.getItem(this.access_token);
     const getExpierTimeStr = localStorage.getItem(this.expier_time);
+    console.log(getExpierTimeStr);
     if (!getExpierTimeStr || !accessToken) return null;
 
     const expierToNum = Number(getExpierTimeStr);
+    console.log(expierToNum);
     const currentTime = Date.now();
+    console.log(currentTime);
 
+    const timeElapsed = currentTime - expierToNum;
+    const isExpier = Math.floor(timeElapsed / 1000) > 1800;
     // TODO:  reissue api를 정의
     const newAccess = () => {
       return "access";
     };
     // TODO
-    return expierToNum < currentTime ? newAccess() : accessToken;
+    return isExpier ? newAccess() : accessToken;
+    // return accessToken;
   }
   remove() {
     localStorage.removeItem(this.access_token);

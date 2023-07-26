@@ -55,10 +55,11 @@ export class AxiosClient {
 
   async post<T>(
     url: string,
+    headers: any,
     data?: any,
     options: AxiosRequestConfig = {}
   ): Promise<AxiosResponse<T>> {
-    return this.axios<T>(url, { ...options, method: "POST", data });
+    return this.axios<T>(url, { ...options, headers, method: "POST", data });
   }
 
   async put<T>(
