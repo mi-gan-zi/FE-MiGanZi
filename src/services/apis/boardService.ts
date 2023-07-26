@@ -25,7 +25,7 @@ export const postBoard = async (data: {}) => {
   try {
     const url = `user/board/post/write`;
     const headers = {
-      Authorization: "Bearer " + localTokenRepoInstance.get(),
+      Authorization: "Bearer " + localTokenRepoInstance.getAccess(),
       "Content-Type": "multipart/form-data",
       processData: false,
     };
