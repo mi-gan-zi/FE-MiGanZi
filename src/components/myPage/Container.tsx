@@ -2,35 +2,46 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import createAxiosInstance from "utils/axiosConfig";
 import { LogOutModal } from "./LogOutModal";
+import { useMutation } from "@tanstack/react-query";
+import { postLogout } from "services/apis/mianziService";
 
 export const Container = () => {
   const [enabled, setEnabled] = useState(false);
   const [logout, setLogout] = useState(false);
   const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");
-  const token = localStorage.getItem("token");
-  const axios = createAxiosInstance();
-
-  useEffect(() => {
-    if (!token) {
+  const mutation = useMutation(() => postLogout(), {
+    onSuccess: () => {
       navigate("/login");
-    }
-  }, []);
-
-  const logOut = async () => {
-    const res = await axios.post("user/logout", {});
-    if (res.status === 200) {
-      setLogout(true);
-      const logoutTime = setTimeout(() => {
-        setLogout(false);
-        localStorage.removeItem("token");
-        localStorage.removeItem("nickname");
-        localStorage.removeItem("refresh-token");
-        navigate("/login");
-      }, 2000);
-      clearTimeout(logoutTime);
-    }
+    },
+    onError: (e) => {
+      console.log("errer mutation", e);
+    },
+  });
+  const logOut = () => {
+    mutation.mutate();
   };
+
+  // useEffect(() => {
+  //   if (!token) {
+  //     navigate("/login");
+  //   }
+  // }, []);
+
+  // const logOut = async () => {
+  //   const res = await axios.post("user/logout", {});
+  //   if (res.status === 200) {
+  //     setLogout(true);
+  //     const logoutTime = setTimeout(() => {
+  //       setLogout(false);
+  //       localStorage.removeItem("token");
+  //       localStorage.removeItem("nickname");
+  //       localStorage.removeItem("refresh-token");
+  //       navigate("/login");
+  //     }, 2000);
+  //     clearTimeout(logoutTime);
+  //   }
+  // };
   return (
     <div>
       <div className="w-full h-[62px] flex items-center justify-start text-st-gray-10 text-xl font-semibold px-5">

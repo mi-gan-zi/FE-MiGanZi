@@ -25,8 +25,9 @@ export const NicknameComponent = () => {
             process.env.REACT_APP_ENDPOINT + "user/login",
             formData
           );
+          console.log(response);
           if (response.status === 200) {
-            localStorage.setItem("token", response.data);
+            localStorage.setItem("access_token", response.data);
             localStorage.setItem("nickname", nickname);
             alert(`${nickname}님 가입을 축하합니다!`);
             navigate("/");
@@ -39,11 +40,11 @@ export const NicknameComponent = () => {
     }
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("access_token")) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   return (
     <form onSubmit={(e) => submit(e)}>
