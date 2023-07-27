@@ -58,16 +58,21 @@ export const postLogout = async () => {
   }
 };
 
-export const postReIssue = async (data: string | null) => {
+export const postReIssue = async (stableRefesh: any) => {
   try {
     const url = `user/reissue`;
-    const headers = {
-      Authorization: `Bearer ${data}`,
-    };
+    // const options = {
+    //   headers: { Authorization: `Bearer ${stableRefesh}` },
+    // };
+    const headers = { Authorization: `Bearer ${stableRefesh}` };
     const response = await axiosClient.post(url, headers);
-    //TODO: response에서 어떻게 값이 들어오는지 확인 불가 스웨거에서도 확인불가 토요일에 확인하기
-    // .then((newToken) => localTokenRepoInstance.setRefresh());
-    console.log(response);
+    console.log(
+      "axios debugging reissue api ",
+      //@ts-ignore
+      response.data?.data?.accessToken
+    );
+    //@ts-ignore
+    return response.data?.data?.accessToken;
   } catch (error) {
     throw new Error(`POST REISSUE Error[토큰 발급 실패]: ${error}`);
   }

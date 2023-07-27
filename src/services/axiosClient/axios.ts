@@ -18,6 +18,7 @@ export class AxiosClient {
 
     this.axiosInstance = axios.create({
       baseURL: this.baseURL,
+      timeout: 5000,
     });
 
     this.axiosInstance.interceptors.request.use(
@@ -25,6 +26,7 @@ export class AxiosClient {
         if (access_token && config.headers.Authorization === undefined) {
           config.headers.Authorization = `Bearer ${access_token}`;
         }
+        console.log(access_token);
         return config;
       },
       (error) => {
@@ -39,9 +41,6 @@ export class AxiosClient {
   ): Promise<AxiosResponse<T>> {
     const response: AxiosResponse<T> = await this.axiosInstance(url, {
       ...options,
-      headers: {
-        ...options.headers,
-      },
     });
     return response;
   }
@@ -59,7 +58,12 @@ export class AxiosClient {
     data?: any,
     options: AxiosRequestConfig = {}
   ): Promise<AxiosResponse<T>> {
-    return this.axios<T>(url, { ...options, headers, method: "POST", data });
+    return this.axios<T>(url, {
+      ...options,
+      headers,
+      method: "POST",
+      data,
+    });
   }
 
   async put<T>(
