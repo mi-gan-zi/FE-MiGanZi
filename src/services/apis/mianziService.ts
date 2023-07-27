@@ -71,6 +71,11 @@ export const postReIssue = async (stableRefesh: any) => {
       //@ts-ignore
       response.data?.data?.accessToken
     );
+
+    //@ts-ignore
+    const newAccessToken = response.data?.data?.accessToken;
+    //@ts-ignore
+    localTokenRepoInstance.setAccess(newAccessToken);
     //@ts-ignore
     return response.data?.data?.accessToken;
   } catch (error) {
