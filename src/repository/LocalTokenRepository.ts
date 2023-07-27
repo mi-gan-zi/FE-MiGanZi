@@ -19,30 +19,31 @@ export class LocalTokenRepository {
     localStorage.setItem(this.nickname, nickname);
   }
 
-  async getAccess(): Promise<string | null> {
+  getAccess(): Promise<string | null> {
     const stableAccessToken = localStorage.getItem(this.access_token);
     const refreshToken = localStorage.getItem(this.refresh_token);
     const getExpierTimeStr = localStorage.getItem(this.expier_time);
-    // if (!getExpierTimeStr && !accessToken) return null;
+    //@ts-ignore
+    if (!getExpierTimeStr && !stableAccessToken) return null;
 
     const expierToNum = Number(getExpierTimeStr);
     const currentTime = Date.now();
 
     const timeElapsed = currentTime - expierToNum;
-    const isExpier = Math.floor(timeElapsed / 1000) > 1800;
+    const isExpier = Math.floor(timeElapsed / 1000) < 1800;
 
-    const getNewAccessToken = async (refreshToken: string | null) => {
+    const getNewAccessToken = async (refreshTokens: string) => {
       try {
-        const response = await postReIssue(refreshToken);
-        console.log("debugging LocalStorage Repo file response", response);
+        const response = await postReIssue(refreshTokens);
         return response;
       } catch (e) {
         return null;
       }
     };
 
-    const result: string | null = isExpier
-      ? await getNewAccessToken(refreshToken)
+    const result: any = isExpier
+      ? //@ts-ignore
+        getNewAccessToken(refreshToken)
       : stableAccessToken;
 
     return result;

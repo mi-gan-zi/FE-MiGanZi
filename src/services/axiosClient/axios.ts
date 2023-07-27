@@ -54,7 +54,7 @@ export class AxiosClient {
 
   async post<T>(
     url: string,
-    headers: any,
+    headers?: any,
     data?: any,
     options: AxiosRequestConfig = {}
   ): Promise<AxiosResponse<T>> {

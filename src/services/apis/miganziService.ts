@@ -46,7 +46,14 @@ export const postBoard = async (data: {}) => {
 export const postLogout = async () => {
   try {
     const url = `user/logout`;
-    const access_token = localTokenRepoInstance.getAccess();
+    let access_token = await localTokenRepoInstance.getAccess();
+
+    console.log(access_token);
+    if (access_token === null) {
+      access_token = await localTokenRepoInstance.getAccess();
+      return access_token;
+    }
+
     const headers = {
       Authorization: `Bearer ${access_token}`,
     };
@@ -61,23 +68,15 @@ export const postLogout = async () => {
 export const postReIssue = async (stableRefesh: any) => {
   try {
     const url = `user/reissue`;
-    // const options = {
-    //   headers: { Authorization: `Bearer ${stableRefesh}` },
-    // };
     const headers = { Authorization: `Bearer ${stableRefesh}` };
     const response = await axiosClient.post(url, headers);
-    console.log(
-      "axios debugging reissue api ",
-      //@ts-ignore
-      response.data?.data?.accessToken
-    );
 
     //@ts-ignore
     const newAccessToken = response.data?.data?.accessToken;
     //@ts-ignore
     localTokenRepoInstance.setAccess(newAccessToken);
     //@ts-ignore
-    return response.data?.data?.accessToken;
+    return newAccessToken;
   } catch (error) {
     throw new Error(`POST REISSUE Error[토큰 발급 실패]: ${error}`);
   }
