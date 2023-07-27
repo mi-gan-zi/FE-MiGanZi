@@ -1,4 +1,4 @@
-import { postReIssue } from "services/apis/mianziService";
+import { postReIssue } from "services/apis/miganziService";
 import constants from "utils/consts/LocalRepo";
 export class LocalTokenRepository {
   private refresh_token = constants.REFRESH_KEY;
