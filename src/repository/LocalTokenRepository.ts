@@ -30,7 +30,7 @@ export class LocalTokenRepository {
     const currentTime = Date.now();
 
     const timeElapsed = currentTime - expierToNum;
-    const isExpier = Math.floor(timeElapsed / 1000) < 1800;
+    const isExpier = Math.floor(timeElapsed / 1000) > 1800;
 
     const getNewAccessToken = async (refreshTokens: string) => {
       try {

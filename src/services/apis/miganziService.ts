@@ -48,7 +48,6 @@ export const postLogout = async () => {
     const url = `user/logout`;
     let access_token = await localTokenRepoInstance.getAccess();
 
-    console.log(access_token);
     if (access_token === null) {
       access_token = await localTokenRepoInstance.getAccess();
       return access_token;
