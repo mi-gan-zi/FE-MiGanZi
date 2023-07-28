@@ -9,8 +9,9 @@ import  { ReactComponent as Send } from '../assets/Send.svg';
 import { ReactComponent as Mark } from '../assets/Mark.svg';
 import { ReactComponent as CommentImg } from '../assets/Commentimg.svg';
 import { ReactComponent as Dot } from '../assets/Dot.svg';
-import createAxiosInstance from "utils/axiosConfig";
-import axios from 'axios';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getDetail, postComment } from "services/apis/miganziService";
+import axios from "axios";
 
 interface PostDetail {
   createdDate: string;
@@ -20,11 +21,12 @@ interface PostDetail {
   viewCount: number;
   commentCount: number;
   content: string;
+  profileImage: string;
   imageUrl: string;
   address_name: string;
   tag: string;
   tagsNum: number;
-  musicId: string;
+  music_id: string;
 }
 
 interface CommentDetail {
@@ -33,7 +35,7 @@ interface CommentDetail {
   id: number;
   nickname: string;
   content: string;
-  userPost: string;
+  profileImage: string;
 } 
 
 function Header({setPlaying} : {
@@ -221,8 +223,7 @@ function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const commentEndRef = useRef<HTMLDivElement>(null);
-  const axiosInstance = createAxiosInstance();
-
+  const queryClient = useQueryClient()
   const [post, setPost] = useState<PostDetail>({
     createdDate: '',
     modifiedDate: '',
@@ -231,44 +232,28 @@ function Detail() {
     viewCount: 0,
     commentCount: 0,
     content: '',
+    profileImage: '',
     imageUrl: '',
     address_name: '',
     tag: '',
     tagsNum: 0,
-    musicId: '',
+    music_id: '',
   });
 
-  const getPost = async () => {
-    try {
-      const url = process.env.REACT_APP_ENDPOINT + "user/board/" + `${id}`;
-      //const res = await axios.get(url);
-      const res = await axiosInstance.get(url, {
-        headers: {
-          Authorization: ``,
-        },
-      });
-      console.log(res.data); 
-      setPost(res.data);
-      setComment(res.data.userComments);
-      setCommentNum(res.data.userComments.length);
+  const { data, isLoading } = useQuery({
+    queryKey: ["board"],
+    //@ts-ignore
+    queryFn: () => getDetail(id.toString()),
+  });
 
-      musicList.filter((item) => {
-        if (item.id === parseInt(res.data.music_id)) {
-          setArtist(item.artist);
-          setSong(item.song);
-          setPlayTitle(item.playList);
-          setImgURL(item.imgURL);
-          setIsCheck(true);
-          setPlaying(false);
-          setMusicId(item.id.toString());
-        }
-      });
-    } catch (err) {
-      console.log("Error:", err);
-    }
-  };
+  const mutation = useMutation({
+    mutationFn: postComment,
+    onSuccess: () => {
+      //queryClient.invalidateQueries({queryKey: ['comment'] })
+    },
+  })
 
-  const postComment = async () => {
+  /* const postComment = async () => {
     const formData = new FormData();
     formData.append('content', newComment);
     formData.append('postId', `${id}`);
@@ -286,24 +271,51 @@ function Detail() {
      }catch(err){
       console.log("Error:", err);
      }
-  };
+  }; */
 
   useEffect(() => {
-    getPost();
-    const token = localStorage.getItem('token');
-    if (typeof token === 'string'){
-      setUserToken(token);
+    if (data){
+      console.log(data.data);
+      const res = data.data
+      //@ts-ignore
+      setPost(res);
+      musicList.filter((item) => {
+        //@ts-ignore
+        if (item.id === parseInt(res.music_id)) {
+          setArtist(item.artist);
+          setSong(item.song);
+          setPlayTitle(item.playList);
+          setImgURL(item.imgURL);
+          setIsCheck(true);
+          setPlaying(false);
+          setMusicId(item.id.toString());
+        }
+      });
+      //@ts-ignore
+      setComment(res.userComments);
+      //@ts-ignore
+      setCommentNum(res.userComments.length) 
     }
   }, []); 
 
-  const onSendComment = () => {
-    if (userToken != ''){
-      postComment();
+  const onSendComment = async () => {
+    /* if (userToken != ''){
+      //postComment();
+      mutation.mutate({
+        id: Date.now(),
+        title: 'Do Laundry',
+      })
       {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' });}
     }
     else{
       navigate('/login');
-    }
+    } */
+    const formData = new FormData();
+    formData.append('content', newComment);
+    formData.append('postId', `${id}`)
+    //mutation.mutate(formData)
+    const cccc = await mutation.mutateAsync(formData)
+    console.log(cccc)
   }
 
   return(
