@@ -10,9 +10,9 @@ export class LocalTokenRepository {
     localStorage.setItem(this.refresh_token, refresh_token);
   }
 
-  setAccess(access_token: string, expier_time: number) {
+  setAccess(access_token: string) {
     localStorage.setItem(this.access_token, access_token);
-    localStorage.setItem(this.access_token, expier_time.toString());
+    // localStorage.setItem(this.access_token, expier_time.toString());
   }
 
   setNickName(nickname: string) {
