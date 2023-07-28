@@ -49,7 +49,7 @@ export const postLogin = async (formData: any) => {
   try {
     const url = "user/login";
     const currentDate = Date.now().toString();
-    const response = await axiosClient.post(url, formData);
+    const response = await axiosClient.post(url, {}, formData);
     //@ts-ignore
     localTokenRepoInstance.setRefresh(response.data?.data?.refreshToken);
     //@ts-ignore
@@ -57,6 +57,8 @@ export const postLogin = async (formData: any) => {
     //@ts-ignore
     localTokenRepoInstance.setNickName(response.data?.data?.nickname);
     localStorage.setItem("expier_time", currentDate);
+    //@ts-ignore
+    console.log(response.data?.data?.nickname);
     //@ts-ignore
     return response.data?.data?.nickname;
   } catch (error) {
