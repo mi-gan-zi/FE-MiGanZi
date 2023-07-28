@@ -1,4 +1,4 @@
-import { PinIcon, SearchIcon, WihteSearchIcon } from "assets/Icon";
+import { PinIcon, WihteSearchIcon } from "assets/Icon";
 import UseKeywordMap from "components/common/keyword_map/useKeywordMap";
 import { Dispatch, SetStateAction, useState } from "react";
 import DaumPostCode from "react-daum-postcode";
@@ -7,12 +7,10 @@ import TagList from "components/TagList";
 import { MarkType } from "./Container";
 
 export default function Description({
-  testMapDataHandle,
   setMarkes,
   setContent,
   setTags,
 }: {
-  testMapDataHandle: (e: any) => Promise<void>;
   setMarkes: Dispatch<SetStateAction<MarkType>>;
   setContent: Dispatch<SetStateAction<string>>;
   setTags: Dispatch<SetStateAction<string[]>>;
@@ -24,6 +22,8 @@ export default function Description({
     setKeyWord(data.address);
     setIsPopUp(!isPopUp);
   };
+
+  console.log(keyWord);
 
   return (
     <div className="flex flex-col gap-4">
@@ -54,27 +54,15 @@ export default function Description({
             </p>
           )}
         </div>
+        {isPopUp && (
+          <div>
+            <DaumPostCode onComplete={handleAddress} autoClose />
+          </div>
+        )}
       </div>
-      {isPopUp && (
-        <div>
-          <DaumPostCode onComplete={handleAddress} autoClose />
-        </div>
-      )}
 
-      {/* <div className="flex">{useKeywordMap({ keyWord })}</div> */}
       <UseKeywordMap keyWord={keyWord} setMarkes={setMarkes} />
-      <div className="border-t-[1px] border-st-gray-03 flex justify-center ">
-        <button
-          className={
-            " w-[350px] h-[50px] text-st-white font-bold  mt-2 rounded-md " +
-            (keyWord ? "bg-[#007DF0] " : "bg-st-gray-05")
-          }
-          onClick={testMapDataHandle}
-          // disabled
-        >
-          다음으로
-        </button>
-      </div>
+      <div className="border-t-[1px] border-st-gray-03 flex justify-center "></div>
     </div>
   );
 }

@@ -4,11 +4,13 @@ import { Dispatch, SetStateAction, useState, useEffect, useRef } from "react";
 import Player from "../components/common/player/Player";
 import { musicList } from "../@types/music.type";
 import { tagList } from "../@types/tag.type";
+import { ReactComponent as Pre } from "../assets/pre.svg";
 import  { ReactComponent as Send } from '../assets/Send.svg';
 import { ReactComponent as Mark } from '../assets/Mark.svg';
 import { ReactComponent as CommentImg } from '../assets/Commentimg.svg';
 import { ReactComponent as Dot } from '../assets/Dot.svg';
-import axios, { AxiosResponse } from 'axios';
+//import createAxiosInstance from "utils/axiosConfig";
+import axios from 'axios';
 
 interface PostDetail {
   createdDate: string;
@@ -32,12 +34,19 @@ interface CommentDetail {
   nickname: string;
   content: string;
   userPost: string;
-}
+} 
 
-function Header() {
+function Header({setPlaying} : {
+  setPlaying: Dispatch<SetStateAction<boolean>>
+}) {
+  const navigate = useNavigate();
+  async function  newhamsu() {
+    await setPlaying(false); 
+    navigate('/');
+  }
   return(
-    <div className = 'w-[390px] h-[70px] relative'>
-          <p className='text-[20px] mt-[10px] font-bold absolute left-[40px]'>같이 감상하면 좋은 곡</p>
+    <div className = 'w-[390px] h-[70px] relative border-b-[1px] border-st-gray-03'>
+      <Pre onClick={() => {newhamsu(); }} className="absolute mt-[10px] left-[40px] cursor-pointer" ></Pre>
     </div>
   );
 }
@@ -56,7 +65,7 @@ function Content({userName, createdDate, imagePreview, viewCount} :
       <div className = 'w-[390px] h-[566px] relative'>
         <div className = 'w-[330px] h-[21px] absolute right-[20px]'>
           <span style={{borderLeft: '1px soild black'}}>{createdDate}</span> 
-          <span className="border-l-2 ml-[5px] pl-[5px] ">{viewCount}</span>
+          <span className="border-l-2 ml-[5px] pl-[5px] ">조회수 {viewCount}</span>
         </div>
         <div className = 'w-[330px] h-[60px] absolute top-[30px]  relative'>
           <img src='https://storage.googleapis.com/miganzi-bucket/profile_image.png' className="h-[60px] w-[60px] absolute left-[40px]"></img>
@@ -127,7 +136,6 @@ function CommentListItem({comment} : {comment: CommentDetail}) {
           <p className='w-[182px] h-[21px] absolute top-[29px]'>{comment.createdDate}</p>
         </div>
         <div className = 'w-[96px] h-[60px] absolute right-0'>
-          <Dot className = 'w-[36px] h-[36px] absolute left-[12px]'></Dot>
           <Dot className = 'w-[36px] h-[36px] absolute right-0' ></Dot>
         </div>
       </div>
@@ -157,11 +165,19 @@ function CommentInput({newComment, setNewComment, onSendComment} : {
   setNewComment: Dispatch<SetStateAction<string>>,
   onSendComment: () => void
 }) {
+
+  const onKeyDown = (e:  React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      onSendComment();
+    }
+  };
+  
   return(
     <div className = 'w-[390px] h-[85px] relative'>
-      <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02'> 
+      <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02' > 
         <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} 
-            onChange={(event) => { setNewComment(event.target.value); console.log(event.target.value); }}/>    
+            onChange={(event) => { setNewComment(event.target.value); console.log(event.target.value); }} onKeyDown={onKeyDown}/>    
         <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSendComment} />
       </form>
     </div>
@@ -205,6 +221,7 @@ function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const commentEndRef = useRef<HTMLDivElement>(null);
+  //const axios = createAxiosInstance();
 
   const [post, setPost] = useState<PostDetail>({
     createdDate: '',
@@ -258,7 +275,7 @@ function Detail() {
 
     try{
       const res = await axios.post(process.env.REACT_APP_ENDPOINT + "user/board/comment/write", 
-      formData, {headers}
+      formData
       )
       getPost();
      }catch(err){
@@ -286,7 +303,10 @@ function Detail() {
 
   return(
     <>   
-      <Header></Header>
+      <Header setPlaying={setPlaying}></Header>
+      <div className='w-[390px] h-[14px] mb-[20px]'>
+        <p className='text-[20px] font-bold mt-[20px] ml-[40px]'>같이 감상하면 좋은 곡</p>
+      </div>
       <Player
         playing={playing}
         setPlaying={setPlaying}

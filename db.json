@@ -1,0 +1,17 @@
+{
+  "user": {
+    "board": {
+      "post": {
+        "write": {
+          "content": "stringzzz",
+          "lat": 0,
+          "lng": 0,
+          "address_name": "stringzzzz",
+          "tags": "string",
+          "music_id": "string",
+          "imageFile": "string"
+        }
+      }
+    }
+  }
+}

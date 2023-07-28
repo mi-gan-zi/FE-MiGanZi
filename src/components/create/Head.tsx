@@ -4,14 +4,26 @@ import { ReactComponent as Pre } from "../../assets/pre.svg";
 export type NextProps = {
   setNextMove: Dispatch<SetStateAction<number>>;
   image: boolean;
+  testMapDataHandle: (e: any) => Promise<void>;
+  nextMove: number;
+  isLoading: boolean;
 };
 
-export default function Head({ setNextMove, image }: NextProps) {
-  const onClickNextButton = () => {
+export default function Head({
+  setNextMove,
+  image,
+  testMapDataHandle,
+  nextMove,
+  isLoading,
+}: NextProps) {
+  const onClickNextButton = (e: any) => {
     if (image) {
       alert("사진을 업로드 해주세요!");
     } else {
       setNextMove((pre) => pre + 1);
+    }
+    if (nextMove >= 3) {
+      testMapDataHandle(e);
     }
   };
   return (
@@ -24,7 +36,9 @@ export default function Head({ setNextMove, image }: NextProps) {
         <p className="translate-x-4 font-bold">게시글 작성</p>
       </div>
       <div>
-        <button onClick={onClickNextButton}>다음</button>
+        <button onClick={onClickNextButton} disabled={isLoading}>
+          다음
+        </button>
       </div>
     </div>
   );
