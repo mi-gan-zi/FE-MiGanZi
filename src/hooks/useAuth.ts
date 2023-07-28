@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { localTokenRepoInstance } from "repository/LocalTokenRepository";
 import { postLogin } from "services/apis/miganziService";
 
-//TODO: login, logout , 유저정보, 토큰은 api 관리
 export default function useAuth() {
   const [user, setUser] = useState(null);
-  /**
-   * interface: nickName, passWord
-   */
+  const [isUser, setIsUser] = useState(false);
   const login = async (nickName: string, password: string) => {
     console.log(nickName, password);
     const formData = new FormData();
@@ -16,7 +14,15 @@ export default function useAuth() {
       formData.append("password", password);
       await postLogin(formData).then(setUser);
     }
-    console.log(user);
   };
-  return { user, login };
+  useEffect(() => {
+    const checkToken = async () => {
+      const hasToken = await localTokenRepoInstance.getAccess();
+      if (hasToken) {
+        setIsUser(true);
+      }
+    };
+    checkToken();
+  }, [isUser]);
+  return { user, login, isUser };
 }

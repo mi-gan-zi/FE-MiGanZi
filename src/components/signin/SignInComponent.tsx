@@ -11,10 +11,10 @@ import useAuth from "hooks/useAuth";
 const SignInComponent = () => {
   const nickname_ref = useRef<HTMLInputElement>(null);
   const password_ref = useRef<HTMLInputElement>(null);
-  const { user, login } = useAuth();
+  const { user, login, isUser } = useAuth();
   const navigate = useNavigate();
 
-  console.log(user);
+  console.log(isUser);
 
   const loginHandle = async (e: any) => {
     e.preventDefault();
