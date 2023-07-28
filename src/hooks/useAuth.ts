@@ -7,14 +7,14 @@ export default function useAuth() {
   /**
    * interface: nickName, passWord
    */
-  const login = (nickName: string, password: string) => {
+  const login = async (nickName: string, password: string) => {
+    console.log(nickName, password);
     const formData = new FormData();
-    if (!nickName || !password)
-      return alert("닉네임과 비밀번호를 확인해주세요.");
+
     if (nickName && password) {
       formData.append("nickname", nickName);
       formData.append("password", password);
-      postLogin(formData).then(setUser);
+      await postLogin(formData).then(setUser);
     }
     console.log(user);
   };
