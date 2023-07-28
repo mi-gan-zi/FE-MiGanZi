@@ -6,42 +6,58 @@ import { ReactComponent as Google } from "../../assets/google.svg";
 import { ReactComponent as Kakao } from "../../assets/kakao.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import useAuth from "hooks/useAuth";
 
 const SignInComponent = () => {
   const nickname_ref = useRef<HTMLInputElement>(null);
   const password_ref = useRef<HTMLInputElement>(null);
+  const { user, login, isUser } = useAuth();
   const navigate = useNavigate();
 
-  const login = async (e: any) => {
+  console.log(isUser);
+
+  const loginHandle = async (e: any) => {
     e.preventDefault();
     const nickname = nickname_ref.current?.value;
     const password = password_ref.current?.value;
-    const formData = new FormData();
+
     if (!nickname || !password) {
       alert("닉네임과 비밀번호를 적어주세요!");
     } else {
-      formData.append("nickname", nickname);
-      formData.append("password", password);
       try {
-        const currentDate = Date.now().toString();
-        const res = await axios.post(
-          process.env.REACT_APP_ENDPOINT + "user/login",
-          formData
-        );
-        console.log(res);
-        if (res.status === 200) {
-          localStorage.setItem("access_token", res.data.data.accessToken);
-          localStorage.setItem("expier_time", currentDate);
-          localStorage.setItem("refresh_token", res.data.data.refreshToken);
-          localStorage.setItem("nickname", res.data.data.nickname);
-          alert("미(간)지에 오신 걸 환영합니다." + nickname + "님");
-          navigate("/");
-        }
-      } catch (err) {
-        alert("닉네임과 비밀번호를 다시 확인해주세요!");
+        await login(nickname, password);
+        alert("미(간)지에 오신 걸 환영합니다." + nickname + "님");
+        navigate("/");
+      } catch (error) {
+        console.error(error);
       }
     }
   };
+  // const formData = new FormData();
+  // if (!nickname || !password) {
+  //   alert("닉네임과 비밀번호를 적어주세요!");
+  // } else {
+  //   formData.append("nickname", nickname);
+  //   formData.append("password", password);
+  //   try {
+  //     const currentDate = Date.now().toString();
+  //     const res = await axios.post(
+  //       process.env.REACT_APP_ENDPOINT + "user/login",
+  //       formData
+  //     );
+  //     console.log(res);
+  //     if (res.status === 200) {
+  //       localStorage.setItem("access_token", res.data.data.accessToken);
+  //       localStorage.setItem("expier_time", currentDate);
+  //       localStorage.setItem("refresh_token", res.data.data.refreshToken);
+  //       localStorage.setItem("nickname", res.data.data.nickname);
+  //       alert("미(간)지에 오신 걸 환영합니다." + nickname + "님");
+  //       navigate("/");
+  //     }
+  //   } catch (err) {
+  //     alert("닉네임과 비밀번호를 다시 확인해주세요!");
+  //   }
+  // }
 
   return (
     <div className="flex flex-col justify-between h-[665px] w-[24rem] px-5 overflow-y-auto">
@@ -64,7 +80,7 @@ const SignInComponent = () => {
         </div> */}
       </div>
       <div className="flex flex-col items-center justify-center">
-        <form onSubmit={login} className="mb-[35px]">
+        <form onSubmit={loginHandle} className="mb-[35px]">
           <input
             ref={nickname_ref}
             placeholder="nickname"

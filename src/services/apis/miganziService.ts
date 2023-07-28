@@ -44,6 +44,27 @@ export const postBoard = async (data: {}) => {
 /**
  * User API
  */
+
+export const postLogin = async (formData: any) => {
+  try {
+    const url = "user/login";
+    const currentDate = Date.now().toString();
+    const response = await axiosClient.post(url, {}, formData);
+    //@ts-ignore
+    localTokenRepoInstance.setRefresh(response.data?.data?.refreshToken);
+    //@ts-ignore
+    localTokenRepoInstance.setAccess(response.data?.data?.accessToken);
+    //@ts-ignore
+    localTokenRepoInstance.setNickName(response.data?.data?.nickname);
+    localStorage.setItem("expier_time", currentDate);
+    //@ts-ignore
+    console.log(response.data?.data?.nickname);
+    //@ts-ignore
+    return response.data?.data?.nickname;
+  } catch (error) {
+    throw new Error(`POST Login Error: ${error}`);
+  }
+};
 export const postLogout = async () => {
   try {
     const url = `user/logout`;
