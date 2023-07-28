@@ -34,7 +34,7 @@ export const postBoard = async (data: {}) => {
       processData: false,
     };
 
-    const response = await axiosClient.post(url, data, { headers });
+    const response = await axiosClient.axios(url, { headers, data });
     return response;
   } catch (error) {
     throw new Error(`POST Board Error: ${error}`);
@@ -49,7 +49,10 @@ export const postLogin = async (formData: any) => {
   try {
     const url = "user/login";
     const currentDate = Date.now().toString();
-    const response = await axiosClient.post(url, {}, formData);
+    const response = await axiosClient.axios(url, {
+      method: "post",
+      data: formData,
+    });
     //@ts-ignore
     localTokenRepoInstance.setRefresh(response.data?.data?.refreshToken);
     //@ts-ignore
