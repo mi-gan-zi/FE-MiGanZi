@@ -9,7 +9,7 @@ import  { ReactComponent as Send } from '../assets/Send.svg';
 import { ReactComponent as Mark } from '../assets/Mark.svg';
 import { ReactComponent as CommentImg } from '../assets/Commentimg.svg';
 import { ReactComponent as Dot } from '../assets/Dot.svg';
-//import createAxiosInstance from "utils/axiosConfig";
+import createAxiosInstance from "utils/axiosConfig";
 import axios from 'axios';
 
 interface PostDetail {
@@ -221,7 +221,7 @@ function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const commentEndRef = useRef<HTMLDivElement>(null);
-  //const axios = createAxiosInstance();
+  const axiosInstance = createAxiosInstance();
 
   const [post, setPost] = useState<PostDetail>({
     createdDate: '',
@@ -241,7 +241,12 @@ function Detail() {
   const getPost = async () => {
     try {
       const url = process.env.REACT_APP_ENDPOINT + "user/board/" + `${id}`;
-      const res = await axios.get(url);
+      //const res = await axios.get(url);
+      const res = await axiosInstance.get(url, {
+        headers: {
+          Authorization: ``,
+        },
+      });
       console.log(res.data); 
       setPost(res.data);
       setComment(res.data.userComments);
