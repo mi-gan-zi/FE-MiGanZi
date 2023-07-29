@@ -41,7 +41,6 @@ export const postComment = async (formData: any) => {
   }
 };
 
-
 export const postBoard = async (data: {}) => {
   try {
     const url = `user/board/post/write`;
