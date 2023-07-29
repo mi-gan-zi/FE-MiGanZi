@@ -4,11 +4,14 @@ import { Dispatch, SetStateAction, useState, useEffect, useRef } from "react";
 import Player from "../components/common/player/Player";
 import { musicList } from "../@types/music.type";
 import { tagList } from "../@types/tag.type";
-import { ReactComponent as Send } from "../assets/Send.svg";
-import { ReactComponent as Mark } from "../assets/Mark.svg";
-import { ReactComponent as CommentImg } from "../assets/Commentimg.svg";
-import { ReactComponent as Dot } from "../assets/Dot.svg";
-import axios, { AxiosResponse } from "axios";
+import { ReactComponent as Pre } from "../assets/pre.svg";
+import  { ReactComponent as Send } from '../assets/Send.svg';
+import { ReactComponent as Mark } from '../assets/Mark.svg';
+import { ReactComponent as CommentImg } from '../assets/Commentimg.svg';
+import { ReactComponent as Dot } from '../assets/Dot.svg';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getDetail, postComment } from "services/apis/miganziService";
+import axios from "axios";
 
 interface PostDetail {
   createdDate: string;
@@ -18,11 +21,12 @@ interface PostDetail {
   viewCount: number;
   commentCount: number;
   content: string;
+  profileImage: string;
   imageUrl: string;
   address_name: string;
   tag: string;
   tagsNum: number;
-  musicId: string;
+  music_id: string;
 }
 
 interface CommentDetail {
@@ -31,15 +35,20 @@ interface CommentDetail {
   id: number;
   nickname: string;
   content: string;
-  userPost: string;
+  profileImage: string;
 }
 
-function Header() {
-  return (
-    <div className="w-[390px] h-[70px] relative">
-      <p className="text-[20px] mt-[10px] font-bold absolute left-[40px]">
-        같이 감상하면 좋은 곡
-      </p>
+function Header({setPlaying} : {
+  setPlaying: Dispatch<SetStateAction<boolean>>
+}) {
+  const navigate = useNavigate();
+  async function  newhamsu() {
+    await setPlaying(false); 
+    navigate('/');
+  }
+  return(
+    <div className = 'w-[390px] h-[70px] relative border-b-[1px] border-st-gray-03'>
+      <Pre onClick={() => {newhamsu(); }} className="absolute mt-[10px] left-[40px] cursor-pointer" ></Pre>
     </div>
   );
 }
@@ -57,11 +66,11 @@ function Content({
 }) {
   return (
     <>
-      <div className="w-[350px] h-[10px] bg-st-gray-10 mt-[32px] ml-[40px]" />
-      <div className="w-[390px] h-[566px] relative">
-        <div className="w-[330px] h-[21px] absolute right-[20px]">
-          <span style={{ borderLeft: "1px soild black" }}>{createdDate}</span>
-          <span className="border-l-2 ml-[5px] pl-[5px] ">{viewCount}</span>
+      <div className='w-[350px] h-[10px] bg-st-gray-10 mt-[32px] ml-[40px]'/>
+      <div className = 'w-[390px] h-[566px] relative'>
+        <div className = 'w-[330px] h-[21px] absolute right-[20px]'>
+          <span style={{borderLeft: '1px soild black'}}>{createdDate}</span> 
+          <span className="border-l-2 ml-[5px] pl-[5px] ">조회수 {viewCount}</span>
         </div>
         <div className="w-[330px] h-[60px] absolute top-[30px]  relative">
           <img
@@ -148,9 +157,8 @@ function CommentListItem({ comment }: { comment: CommentDetail }) {
             {comment.createdDate}
           </p>
         </div>
-        <div className="w-[96px] h-[60px] absolute right-0">
-          <Dot className="w-[36px] h-[36px] absolute left-[12px]"></Dot>
-          <Dot className="w-[36px] h-[36px] absolute right-0"></Dot>
+        <div className = 'w-[96px] h-[60px] absolute right-0'>
+          <Dot className = 'w-[36px] h-[36px] absolute right-0' ></Dot>
         </div>
       </div>
       <div className="w-[350px] h-[84px] absolute left-[20px] top-[108px]">
@@ -185,22 +193,19 @@ function CommentInput({
   setNewComment: Dispatch<SetStateAction<string>>;
   onSendComment: () => void;
 }) {
-  return (
-    <div className="w-[390px] h-[85px] relative">
-      <form className="w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02">
-        <input
-          className="w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none"
-          placeholder="댓글을 입력하세요"
-          value={newComment}
-          onChange={(event) => {
-            setNewComment(event.target.value);
-            console.log(event.target.value);
-          }}
-        />
-        <Send
-          className="w-[24px] h-[24px] absolute right-[8px] top-[8px]"
-          onClick={onSendComment}
-        />
+  const onKeyDown = (e:  React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      onSendComment();
+    }
+  };
+  
+  return(
+    <div className = 'w-[390px] h-[85px] relative'>
+      <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02' > 
+        <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} 
+            onChange={(event) => { setNewComment(event.target.value); console.log(event.target.value); }} onKeyDown={onKeyDown}/>    
+        <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSendComment} />
       </form>
     </div>
   );
@@ -259,7 +264,7 @@ function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const commentEndRef = useRef<HTMLDivElement>(null);
-
+  const queryClient = useQueryClient()
   const [post, setPost] = useState<PostDetail>({
     createdDate: "",
     modifiedDate: "",
@@ -267,25 +272,37 @@ function Detail() {
     nickname: "",
     viewCount: 0,
     commentCount: 0,
-    content: "",
-    imageUrl: "",
-    address_name: "",
-    tag: "",
+    content: '',
+    profileImage: '',
+    imageUrl: '',
+    address_name: '',
+    tag: '',
     tagsNum: 0,
-    musicId: "",
+    music_id: '',
   });
 
-  const getPost = async () => {
-    try {
-      const url = process.env.REACT_APP_ENDPOINT + "user/board/" + `${id}`;
-      const res = await axios.get(url);
-      console.log(res.data);
-      setPost(res.data);
-      setComment(res.data.userComments);
-      setCommentNum(res.data.userComments.length);
+  const { data, isLoading } = useQuery({
+    queryKey: ["board"],
+    //@ts-ignore
+    queryFn: () => getDetail(id.toString()),
+  });
 
+  const mutation = useMutation({
+    mutationFn: postComment,
+    onSuccess: () => {
+      //queryClient.invalidateQueries({queryKey: ['comment'] })
+    },
+  })
+      
+  useEffect(() => {
+    if (data){
+      console.log(data.data);
+      const res = data.data
+      //@ts-ignore
+      setPost(res);
       musicList.filter((item) => {
-        if (item.id === parseInt(res.data.music_id)) {
+        //@ts-ignore
+        if (item.id === parseInt(res.music_id)) {
           setArtist(item.artist);
           setSong(item.song);
           setPlayTitle(item.playList);
@@ -295,56 +312,44 @@ function Detail() {
           setMusicId(item.id.toString());
         }
       });
-    } catch (err) {
-      console.log("Error:", err);
-    }
-  };
-
-  const postComment = async () => {
-    const formData = new FormData();
-    formData.append("content", newComment);
-    formData.append("postId", `${id}`);
-    const headers = {
-      Authorization: "Bearer " + userToken,
-      "Content-Type": "multipart/form-data",
-      processData: false,
-    };
-
-    try {
-      const res = await axios.post(
-        process.env.REACT_APP_ENDPOINT + "user/board/comment/write",
-        formData,
-        { headers }
-      );
-      getPost();
-    } catch (err) {
-      console.log("Error:", err);
-    }
-  };
-
-  useEffect(() => {
-    getPost();
-    const token = localStorage.getItem("token");
-    if (typeof token === "string") {
-      setUserToken(token);
+      //@ts-ignore
+      setComment(res.userComments);
+      //@ts-ignore
+      setCommentNum(res.userComments.length) 
     }
   }, []);
 
-  const onSendComment = () => {
-    if (userToken != "") {
-      postComment();
-      {
-        commentEndRef.current &&
-          commentEndRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    } else {
-      navigate("/login");
+  const onSendComment = async () => {
+    /* if (userToken != ''){
+      //postComment();
+      mutation.mutate({
+        id: Date.now(),
+        title: 'Do Laundry',
+      })
+      {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' });}
     }
-  };
+    else{
+      navigate('/login');
+    } */
+    const formData = new FormData();
+    formData.append('content', newComment);
+    formData.append('postId', `${id}`)
+    //mutation.mutate(formData)
+    const res = await mutation.mutateAsync(formData)
+    console.log(res)
+    //@ts-ignore
+    setComment(res.data);
+    //@ts-ignore
+    setCommentNum(res.data.length)
+    {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' });}
+  }
 
-  return (
-    <>
-      <Header></Header>
+  return(
+    <>   
+      <Header setPlaying={setPlaying}></Header>
+      <div className='w-[390px] h-[14px] mb-[20px]'>
+        <p className='text-[20px] font-bold mt-[20px] ml-[40px]'>같이 감상하면 좋은 곡</p>
+      </div>
       <Player
         playing={playing}
         setPlaying={setPlaying}
