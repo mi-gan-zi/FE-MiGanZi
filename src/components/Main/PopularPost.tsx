@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Popular } from "../../@types/post.type";
 import useInterval from "../../hooks/useInterval";
 import createAxiosInstance from "utils/axiosConfig";
+// import TagList from "components/TagList";
+import TagButton from "components/TagButton";
+import { tagList } from "../../@types/tag.type";
 
 const PopularPost = () => {
   const START_PAGE = 0;
@@ -12,6 +15,7 @@ const PopularPost = () => {
   const [showNumber, setShowNumber] = useState(START_PAGE);
   const navigate = useNavigate();
   const axios = createAxiosInstance();
+  const [isTag, setIsTag] = useState<string[]>();
 
   const getPopularPost = async () => {
     try {
@@ -28,6 +32,7 @@ const PopularPost = () => {
 
   useEffect(() => {
     getPopularPost();
+    // setIsTag(showPostArray[showNumber]?.tags.split(""));
   }, []);
 
   for (const [key, value] of Object.entries(popularPost || "")) {
@@ -47,6 +52,19 @@ const PopularPost = () => {
     setShowNumber(id);
   };
 
+  // const tag = isTag?.filter((item) => item === "0"); // 1로 바꿔야됨
+  // console.log(isTag);
+
+  const position = new Array();
+  let pos = showPostArray[showNumber]?.tags.indexOf("0");
+  while (pos > -1) {
+    position.push(pos);
+    pos = showPostArray[showNumber]?.tags.indexOf("0", pos + 1);
+  }
+  // console.log(position);
+  position.map((item) => {
+    console.log(tagList[item]);
+  });
   return (
     <>
       <div className="text-[20px] h-[70px] border-b-2 flex items-center ml-[40px]">
