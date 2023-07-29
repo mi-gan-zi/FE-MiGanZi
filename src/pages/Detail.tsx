@@ -299,7 +299,8 @@ function Detail() {
     //@ts-ignore
     setComment(res.data);
     //@ts-ignore
-    setCommentNum(res.data.length) 
+    setCommentNum(res.data.length)
+    {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' });}
   }
 
   return(
