@@ -10,25 +10,27 @@ export const Container = () => {
   const nickname = localStorage.getItem("nickname");
   const token = localStorage.getItem("token");
   const axios = createAxiosInstance();
+  let logoutTime: any;
 
   useEffect(() => {
     if (!token) {
       navigate("/login");
     }
+    return clearTimeout(logoutTime);
   }, []);
 
   const logOut = async () => {
     const res = await axios.post("user/logout", {});
+
     if (res.status === 200) {
       setLogout(true);
-      const logoutTime = setTimeout(() => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("nickname");
+      localStorage.removeItem("refresh-token");
+      logoutTime = setTimeout(() => {
         setLogout(false);
-        localStorage.removeItem("token");
-        localStorage.removeItem("nickname");
-        localStorage.removeItem("refresh-token");
         navigate("/login");
       }, 2000);
-      clearTimeout(logoutTime);
     }
   };
   return (
