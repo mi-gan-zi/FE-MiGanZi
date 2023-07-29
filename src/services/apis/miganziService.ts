@@ -65,10 +65,8 @@ export const postLogin = async (formData: any) => {
   try {
     const url = "user/login";
     const currentDate = Date.now().toString();
-    const response = await axiosClient.axios(url, {
-      method: "post",
-      data: formData,
-    });
+    const options = { method: "post", data: formData };
+    const response = await axiosClient.axios(url, options);
     //@ts-ignore
     localTokenRepoInstance.setRefresh(response.data?.data?.refreshToken);
     //@ts-ignore
@@ -76,8 +74,6 @@ export const postLogin = async (formData: any) => {
     //@ts-ignore
     localTokenRepoInstance.setNickName(response.data?.data?.nickname);
     localStorage.setItem("expier_time", currentDate);
-    //@ts-ignore
-    console.log(response.data?.data?.nickname);
     //@ts-ignore
     return response.data?.data?.nickname;
   } catch (error) {
@@ -97,8 +93,10 @@ export const postLogout = async () => {
     const headers = {
       Authorization: `Bearer ${access_token}`,
     };
+    const options = { method: "post", headers };
     await axiosClient
-      .post(url, headers)
+      .axios(url, options)
+
       .then(() => localTokenRepoInstance.remove());
   } catch (error) {
     throw new Error(`POST Logout Error: ${error}`);
@@ -109,7 +107,7 @@ export const postReIssue = async (stableRefesh: any) => {
   try {
     const url = `user/reissue`;
     const headers = { Authorization: `Bearer ${stableRefesh}` };
-    const response = await axiosClient.post(url, headers);
+    const response = await axiosClient.axios(url, { headers });
 
     //@ts-ignore
     const newAccessToken = response.data?.data?.accessToken;

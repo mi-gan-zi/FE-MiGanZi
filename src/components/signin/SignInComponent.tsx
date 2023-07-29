@@ -14,8 +14,6 @@ const SignInComponent = () => {
   const { user, login, isUser } = useAuth();
   const navigate = useNavigate();
 
-  console.log(isUser);
-
   const loginHandle = async (e: any) => {
     e.preventDefault();
     const nickname = nickname_ref.current?.value;
@@ -25,8 +23,8 @@ const SignInComponent = () => {
       alert("닉네임과 비밀번호를 적어주세요!");
     } else {
       try {
-        await login(nickname, password);
-        alert("미(간)지에 오신 걸 환영합니다." + nickname + "님");
+        const response = await login(nickname, password);
+        alert("미(간)지에 오신 걸 환영합니다." + response + "님");
         navigate("/");
       } catch (error) {
         console.error(error);

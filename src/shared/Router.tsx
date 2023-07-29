@@ -17,9 +17,12 @@ import { MyPosts } from "components/myPage/MyPosts";
 import { MyComents } from "components/myPage/MyComents";
 import { Alarm } from "pages/Alarm";
 import useAuth from "hooks/useAuth";
+import { useEffect } from "react";
 export default function Router() {
   const { isUser } = useAuth();
+
   console.log(isUser);
+  useEffect(() => {}, [isUser]);
   return (
     <BrowserRouter>
       <Layout>
