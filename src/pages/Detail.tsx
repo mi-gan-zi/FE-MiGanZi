@@ -253,26 +253,6 @@ function Detail() {
     },
   })
 
-  /* const postComment = async () => {
-    const formData = new FormData();
-    formData.append('content', newComment);
-    formData.append('postId', `${id}`);
-    const headers = {
-      Authorization: "Bearer " + userToken,
-      "Content-Type": "multipart/form-data",
-      processData: false,
-    };
-
-    try{
-      const res = await axios.post(process.env.REACT_APP_ENDPOINT + "user/board/comment/write", 
-      formData
-      )
-      getPost();
-     }catch(err){
-      console.log("Error:", err);
-     }
-  }; */
-
   useEffect(() => {
     if (data){
       console.log(data.data);
@@ -314,8 +294,12 @@ function Detail() {
     formData.append('content', newComment);
     formData.append('postId', `${id}`)
     //mutation.mutate(formData)
-    const cccc = await mutation.mutateAsync(formData)
-    console.log(cccc)
+    const res = await mutation.mutateAsync(formData)
+    console.log(res)
+    //@ts-ignore
+    setComment(res.data);
+    //@ts-ignore
+    setCommentNum(res.data.length) 
   }
 
   return(

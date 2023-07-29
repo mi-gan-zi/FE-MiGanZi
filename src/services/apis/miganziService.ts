@@ -26,7 +26,7 @@ export const getDetail = async (id: string) => {
 };
 
 export const postComment = async (formData: any) => {
-  const localToken = localTokenRepoInstance.getAccess()
+  let localToken = await localTokenRepoInstance.getAccess()
   try {
     const url = `user/board/comment/write`;
     const headers = {
