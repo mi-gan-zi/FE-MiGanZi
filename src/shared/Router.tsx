@@ -17,24 +17,35 @@ import { MyPosts } from "components/myPage/MyPosts";
 import { MyComents } from "components/myPage/MyComents";
 import { Alarm } from "pages/Alarm";
 import useAuth from "hooks/useAuth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { checkToken } from "components/common/utils/checkAccessToken";
 export default function Router() {
-  const { isUser } = useAuth();
-
-  console.log(isUser);
-  useEffect(() => {}, [isUser]);
+  const [isAccessToken, setIsAccessToken] = useState(false);
+  const getCheck = async () => {
+    const response = await checkToken();
+    if (response) {
+      setIsAccessToken(response);
+    }
+    console.log("mypage", response);
+  };
+  useEffect(() => {
+    getCheck();
+  }, []);
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
           <Route path="/testde" element={<TestDetail />} />
           <Route path="/" element={<Main />} />
-          <Route path="/detail/:id" element={<Detail />} />
+          <Route
+            path="/detail/:id"
+            element={<Detail isAccessToken={isAccessToken} />}
+          />
           <Route path="/search" element={<Search />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/create" element={isUser ? <Create /> : <SignIn />} />
-          <Route path="/user" element={isUser ? <MyPage /> : <SignIn />} />
+          <Route path="/create" element={<Create />} />
+          <Route path="/user" element={<MyPage />} />
           <Route path="/nickname" element={<ChangeNickname />} />
           <Route path="/password" element={<ChangePassword />} />
           <Route path="/delete" element={<DeleteUser />} />

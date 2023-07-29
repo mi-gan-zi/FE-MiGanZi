@@ -7,30 +7,31 @@ import { ReactComponent as Kakao } from "../../assets/kakao.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "hooks/useAuth";
+import { localTokenRepoInstance } from "repository/LocalTokenRepository";
 
 const SignInComponent = () => {
   const nickname_ref = useRef<HTMLInputElement>(null);
   const password_ref = useRef<HTMLInputElement>(null);
-  const { user, login, isUser } = useAuth();
+  const { login, isUser } = useAuth();
   const navigate = useNavigate();
 
+  console.log(isUser);
   const loginHandle = async (e: any) => {
     e.preventDefault();
     const nickname = nickname_ref.current?.value;
     const password = password_ref.current?.value;
 
-    if (!nickname || !password) {
-      alert("닉네임과 비밀번호를 적어주세요!");
-    } else {
-      try {
-        const response = await login(nickname, password);
-        alert("미(간)지에 오신 걸 환영합니다." + response + "님");
-        navigate("/");
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    // if (!nickname || !password) {
+    //   alert("닉네임과 비밀번호를 적어주세요!");
+    // }
+    //@ts-ignore
+    const response = await login(nickname, password);
+    alert("미(간)지에 오신 걸 환영합니다." + response + "님");
+    navigate("/");
   };
+  useEffect(() => {
+    console.log("123123");
+  }, [isUser]);
   // const formData = new FormData();
   // if (!nickname || !password) {
   //   alert("닉네임과 비밀번호를 적어주세요!");

@@ -19,6 +19,9 @@ export class LocalTokenRepository {
     localStorage.setItem(this.nickname, nickname);
   }
 
+  getNickName() {
+    localStorage.getItem(this.nickname);
+  }
   getAccess(): Promise<string | null> {
     const stableAccessToken = localStorage.getItem(this.access_token);
     const refreshToken = localStorage.getItem(this.refresh_token);
