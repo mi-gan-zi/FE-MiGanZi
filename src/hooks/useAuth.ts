@@ -6,7 +6,6 @@ export default function useAuth() {
   const [user, setUser] = useState(null);
   const [isUser, setIsUser] = useState(false);
   const login = async (nickName: string, password: string) => {
-    console.log(nickName, password);
     const formData = new FormData();
 
     if (nickName && password) {
