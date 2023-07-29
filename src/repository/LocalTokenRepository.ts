@@ -32,9 +32,11 @@ export class LocalTokenRepository {
     const timeElapsed = currentTime - expierToNum;
     const isExpier = Math.floor(timeElapsed / 1000) > 1800;
 
-    const getNewAccessToken = async (refreshTokens: string) => {
+    const getNewAccessToken = async (
+      refreshToken: string
+    ): Promise<string | null> => {
       try {
-        const response = await postReIssue(refreshTokens);
+        const response = await postReIssue(refreshToken);
         return response;
       } catch (e) {
         return null;
