@@ -1,12 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-// import Main from "pages/Main";
-// import Detail from "pages/Detail";
-// import Search from "pages/Search";
-// import SignIn from "pages/SignIn";
-// import Create from "pages/Create";
-// import Layout from "components/common/Layout/Layout";
-// import SignUp from "pages/SignUp";
-// import TestDetail from "pages/TestDetail";
 import {
   Main,
   Detail,
@@ -24,7 +16,10 @@ import { DeleteUser } from "components/myPage/DeleteUser";
 import { MyPosts } from "components/myPage/MyPosts";
 import { MyComents } from "components/myPage/MyComents";
 import { Alarm } from "pages/Alarm";
+import useAuth from "hooks/useAuth";
 export default function Router() {
+  const { isUser } = useAuth();
+  console.log(isUser);
   return (
     <BrowserRouter>
       <Layout>
@@ -35,8 +30,8 @@ export default function Router() {
           <Route path="/search" element={<Search />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/create" element={<Create />} />
-          <Route path="/user" element={<MyPage />} />
+          <Route path="/create" element={isUser ? <Create /> : <SignIn />} />
+          <Route path="/user" element={isUser ? <MyPage /> : <SignIn />} />
           <Route path="/nickname" element={<ChangeNickname />} />
           <Route path="/password" element={<ChangePassword />} />
           <Route path="/delete" element={<DeleteUser />} />
@@ -49,3 +44,4 @@ export default function Router() {
     </BrowserRouter>
   );
 }
+//expier를 체킹하는 로직을 따로 만들어야함
