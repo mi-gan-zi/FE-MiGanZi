@@ -3,7 +3,7 @@ import constants from "utils/consts/LocalRepo";
 export class LocalTokenRepository {
   private refresh_token = constants.REFRESH_KEY;
   private access_token = constants.ACCESS_TOKEN_KEY;
-  private expier_time = constants.EXPIER_TIME;
+  private expire_time = constants.EXPIRE_TIME;
   private nickname = constants.NiCK_NAME_KEY;
 
   setRefresh(refresh_token: string) {
@@ -25,11 +25,11 @@ export class LocalTokenRepository {
   getAccess(): Promise<string | null> {
     const stableAccessToken = localStorage.getItem(this.access_token);
     const refreshToken = localStorage.getItem(this.refresh_token);
-    const getExpierTimeStr = localStorage.getItem(this.expier_time);
+    const getExpireTimeStr = localStorage.getItem(this.expire_time);
     //@ts-ignore
-    if (!getExpierTimeStr && !stableAccessToken) return null;
+    if (!getExpireTimeStr && !stableAccessToken) return null;
 
-    const expierToNum = Number(getExpierTimeStr);
+    const expierToNum = Number(getExpireTimeStr);
     const currentTime = Date.now();
 
     const timeElapsed = currentTime - expierToNum;

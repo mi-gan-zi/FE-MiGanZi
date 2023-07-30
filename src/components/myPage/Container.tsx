@@ -4,15 +4,18 @@ import createAxiosInstance from "utils/axiosConfig";
 import { LogOutModal } from "./LogOutModal";
 import { useMutation } from "@tanstack/react-query";
 import { postLogout } from "services/apis/miganziService";
+import useAuth from "hooks/useAuth";
 
 export const Container = () => {
   const [enabled, setEnabled] = useState(false);
   const [logout, setLogout] = useState(false);
   const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");
+  const { setIsUser } = useAuth();
   const mutation = useMutation(() => postLogout(), {
     onSuccess: () => {
       navigate("/login");
+      setIsUser(false);
     },
     onError: (e) => {
       console.log("errer mutation", e);
