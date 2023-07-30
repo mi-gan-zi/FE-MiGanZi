@@ -111,8 +111,13 @@ export const postLogout = async () => {
 export const postReIssue = async (stableRefesh: any) => {
   try {
     const url = `user/reissue`;
-    const headers = { Authorization: `Bearer ${stableRefesh}` };
-    const response = await axiosClient.axios(url, { headers });
+    const options = {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${stableRefesh}`,
+      },
+    };
+    const response = await axiosClient.axios(url, options);
 
     //@ts-ignore
     const newAccessToken = response.data?.data?.accessToken;

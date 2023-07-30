@@ -1,23 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import { checkToken } from "components/common/utils/checkAccessToken";
+import useAuth from "hooks/useAuth";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { getDetail, postReIssue } from "services/apis/miganziService";
 
 export default function TestDetail() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["board"],
-    queryFn: () => getDetail("1"),
-  });
-  const handle = async () => {
-    const res = await postReIssue(
-      "eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTY5MDQzNDQxMiwiZXhwIjoxNjkzMDI2NDEyfQ.rmyrn9LPBqC0S3xR4c2KmPJpDfIHcUVsvKABkHlLqJk"
-    );
-    console.log(res);
+  const [isAccessToken, setIsAccessToken] = useState(false);
+  const { getIsToken, isUser } = useAuth();
+  // const path = window.location.pathname;
+  const { pathname } = useLocation();
+  console.log(pathname);
+  const getCheck = async () => {
+    const response = await checkToken();
+    if (response) {
+      setIsAccessToken(response);
+      console.log(" testpage mypage", response);
+    }
   };
-
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getCheck();
+    console.log(" testpage getIsToken", getIsToken);
+    console.log(" testpage isUser", isUser);
+    console.log(" testpage isAccessToken", isAccessToken);
+  }, [pathname]);
   return (
     <div>
-      <button onClick={handle}>sdfsdf</button>
+      <button>sdfsdf</button>
     </div>
   );
 }
