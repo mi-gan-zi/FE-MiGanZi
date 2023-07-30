@@ -1,5 +1,6 @@
 import { AxiosClient } from "services/axiosClient/axios";
 import { localTokenRepoInstance } from "repository/LocalTokenRepository";
+import { IPopular } from "../../@types/post.type";
 
 // interface
 // 1. baseURL
@@ -123,4 +124,13 @@ export const postReIssue = async (stableRefesh: any) => {
   } catch (error) {
     throw new Error(`POST REISSUE Error[토큰 발급 실패]: ${error}`);
   }
+};
+
+export const popularPost = async () => {
+  return axiosClient
+    .get<IPopular[] | undefined>(`user/board/popular-post`)
+    .then((res) => res.data)
+    .catch((error) => {
+      throw new Error(`PopularPost get ERR : ${error}`);
+    });
 };

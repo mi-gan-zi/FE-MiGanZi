@@ -8,14 +8,14 @@ export interface IPost {
   imageUrl: string;
 }
 
-export type Popular = {
+export interface IPopular {
   address_name: string;
   content: string;
-  id: number;
+  id?: number;
   imageUrl: string;
   modifiedDate: string;
   nickname: string;
   tags: string;
   viewCount: number;
   profileImage: string;
-};
+}
