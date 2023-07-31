@@ -1,6 +1,6 @@
 import { AxiosClient } from "services/axiosClient/axios";
 import { localTokenRepoInstance } from "repository/LocalTokenRepository";
-import { IPopular } from "../../@types/post.type";
+import { IPopular, IPost, IPostContent } from "../../@types/post.type";
 
 // interface
 // 1. baseURL
@@ -83,11 +83,30 @@ export const postReIssue = async (stableRefesh: any) => {
   }
 };
 
-export const popularPost = async () => {
+// export const getPopularPost = async () => {
+//   try {
+//     const url = `user/board/popular-post`;
+//     const response = await axiosClient.axios(url);
+//     return response;
+//   } catch (error) {
+//     throw new Error(`PopularPost get ERR : ${error}`);
+//   }
+// };
+
+export const getPopularPost = async () => {
   return axiosClient
     .get<IPopular[] | undefined>(`user/board/popular-post`)
-    .then((res) => res.data)
-    .catch((error) => {
+    .then((res: any) => res.data)
+    .catch((error: any) => {
       throw new Error(`PopularPost get ERR : ${error}`);
     });
 };
+
+// export const getInfinityPost = async () => {
+//   return axiosClient
+//     .get<any>(`user/board/posts?page=0`) // data.content에서 타입에러 발생해서 any로 일단 처리
+//     .then((res) => res.data)
+//     .catch((error) => {
+//       throw new Error(`InfinityPost get ERR : ${error}`);
+//     });
+// };
