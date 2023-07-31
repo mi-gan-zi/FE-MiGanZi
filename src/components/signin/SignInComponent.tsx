@@ -7,11 +7,12 @@ import { ReactComponent as Kakao } from "../../assets/kakao.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "hooks/useAuth";
+import { localTokenRepoInstance } from "repository/LocalTokenRepository";
 
 const SignInComponent = () => {
   const nickname_ref = useRef<HTMLInputElement>(null);
   const password_ref = useRef<HTMLInputElement>(null);
-  const { user, login, isUser } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const loginHandle = async (e: any) => {
@@ -32,6 +33,7 @@ ${response}님`);
       }
     }
   };
+
   // const formData = new FormData();
   // if (!nickname || !password) {
   //   alert("닉네임과 비밀번호를 적어주세요!");

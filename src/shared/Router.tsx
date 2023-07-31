@@ -16,32 +16,37 @@ import { DeleteUser } from "components/myPage/DeleteUser";
 import { MyPosts } from "components/myPage/MyPosts";
 import { MyComents } from "components/myPage/MyComents";
 import { Alarm } from "pages/Alarm";
+import { useEffect, useState } from "react";
+import PrivateRoute from "./PrivateRouter";
 import useAuth from "hooks/useAuth";
-import { useEffect } from "react";
-export default function Router() {
-  const { isUser } = useAuth();
 
-  console.log(isUser);
-  useEffect(() => {}, [isUser]);
+export default function Router() {
+  const [isAccessToken, setIsAccessToken] = useState(false);
+  const isUser = localStorage.getItem("access_token");
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/testde" element={<TestDetail />} />
-          <Route path="/" element={<Main />} />
-          <Route path="/detail/:id" element={<Detail />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/create" element={isUser ? <Create /> : <SignIn />} />
-          <Route path="/user" element={isUser ? <MyPage /> : <SignIn />} />
-          <Route path="/nickname" element={<ChangeNickname />} />
-          <Route path="/password" element={<ChangePassword />} />
-          <Route path="/delete" element={<DeleteUser />} />
-          <Route path="/myposts" element={<MyPosts />} />
-          <Route path="/mycommets" element={<MyComents />} />
-          <Route path="/alarms" element={<Alarm />} />
-          <Route path="*" element={<Main />} />
+          <Route element={<PrivateRoute isUser={isUser} />}>
+            <Route path="/testde" element={<TestDetail />} />
+            <Route path="/" element={<Main />} />
+            <Route
+              path="/detail/:id"
+              element={<Detail isAccessToken={isAccessToken} />}
+            />
+            <Route path="/search" element={<Search />} />
+            <Route path="/login" element={<SignIn isUser={isUser} />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/create" element={<Create isUser={isUser} />} />
+            <Route path="/user" element={<MyPage isUser={isUser} />} />
+            <Route path="/nickname" element={<ChangeNickname />} />
+            <Route path="/password" element={<ChangePassword />} />
+            <Route path="/delete" element={<DeleteUser />} />
+            <Route path="/myposts" element={<MyPosts />} />
+            <Route path="/mycommets" element={<MyComents />} />
+            <Route path="/alarms" element={<Alarm />} />
+            <Route path="*" element={<Main />} />
+          </Route>
         </Routes>
       </Layout>
     </BrowserRouter>

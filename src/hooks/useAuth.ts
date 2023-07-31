@@ -4,7 +4,7 @@ import { postLogin } from "services/apis/miganziService";
 
 export default function useAuth() {
   const [user, setUser] = useState("");
-  const [isUser, setIsUser] = useState(false);
+  const [isUser, setIsUser] = useState<boolean>(false);
 
   const login = async (nickName: string, password: string) => {
     const formData = new FormData();
@@ -19,11 +19,15 @@ export default function useAuth() {
   useEffect(() => {
     const checkToken = async () => {
       const hasToken = await localTokenRepoInstance.getAccess();
+      console.log(hasToken);
       if (hasToken) {
-        setIsUser(true);
+        return setIsUser(true);
+      } else if (!hasToken) {
+        return setIsUser(false);
       }
     };
     checkToken();
   }, [isUser]);
+  console.log(isUser);
   return { user, login, isUser };
 }

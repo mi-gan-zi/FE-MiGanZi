@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { LogOutModal } from "./LogOutModal";
 import { useMutation } from "@tanstack/react-query";
 import { postLogout } from "services/apis/miganziService";
+import useAuth from "hooks/useAuth";
 
 export const Container = () => {
   const [enabled, setEnabled] = useState(false);
