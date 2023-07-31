@@ -20,13 +20,18 @@ const SignInComponent = () => {
     const nickname = nickname_ref.current?.value;
     const password = password_ref.current?.value;
 
-    // if (!nickname || !password) {
-    //   alert("닉네임과 비밀번호를 적어주세요!");
-    // }
-    //@ts-ignore
-    const response = await login(nickname, password);
-    alert("미(간)지에 오신 걸 환영합니다." + response + "님");
-    navigate("/");
+    if (!nickname || !password) {
+      alert("닉네임과 비밀번호를 적어주세요!");
+    } else {
+      try {
+        const response = await login(nickname, password);
+        alert(`미(간)지에 오신 걸 환영합니다. 
+${response}님`);
+        navigate("/");
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   // const formData = new FormData();

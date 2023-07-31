@@ -10,10 +10,8 @@ export type Post = {
 export function Main() {
   return (
     <>
-      <>
-        <PopularPost />
-        <AllPost />
-      </>
+      <PopularPost />
+      <AllPost />
     </>
   );
 }

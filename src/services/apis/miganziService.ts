@@ -1,5 +1,7 @@
 import { AxiosClient } from "services/axiosClient/axios";
 import { localTokenRepoInstance } from "repository/LocalTokenRepository";
+import { IPopular, IPost, IPostContent } from "../../@types/post.type";
+import { AxiosResponse } from "axios";
 
 // interface
 // 1. baseURL
@@ -71,16 +73,16 @@ export const postLogin = async (formData: any) => {
     const url = "user/login";
     const currentDate = Date.now().toString();
     const options = { method: "post", data: formData };
-    const response = await axiosClient.axios(url, options);
-    //@ts-ignore
-    localTokenRepoInstance.setRefresh(response.data?.data?.refreshToken);
-    //@ts-ignore
-    localTokenRepoInstance.setAccess(response.data?.data?.accessToken);
-    //@ts-ignore
-    localTokenRepoInstance.setNickName(response.data?.data?.nickname);
+    const response: AxiosResponse<any> = await axiosClient.axios(url, options);
+
+    localTokenRepoInstance.setRefresh(
+      response.data.data.refreshToken.toString()
+    );
+    localTokenRepoInstance.setAccess(response.data.data.accessToken);
+    localTokenRepoInstance.setNickName(response.data.data.nickname);
     localStorage.setItem("expier_time", currentDate);
-    //@ts-ignore
-    return response.data?.data?.nickname;
+
+    return response.data.data.nickname;
   } catch (error) {
     throw new Error(`POST Login Error: ${error}`);
   }
@@ -101,7 +103,6 @@ export const postLogout = async () => {
     const options = { method: "post", headers };
     await axiosClient
       .axios(url, options)
-
       .then(() => localTokenRepoInstance.remove());
   } catch (error) {
     throw new Error(`POST Logout Error: ${error}`);
@@ -129,3 +130,31 @@ export const postReIssue = async (stableRefesh: any) => {
     throw new Error(`POST REISSUE Error[토큰 발급 실패]: ${error}`);
   }
 };
+
+// export const getPopularPost = async () => {
+//   try {
+//     const url = `user/board/popular-post`;
+//     const response = await axiosClient.axios(url);
+//     return response;
+//   } catch (error) {
+//     throw new Error(`PopularPost get ERR : ${error}`);
+//   }
+// };
+
+export const getPopularPost = async () => {
+  return axiosClient
+    .get<IPopular[] | undefined>(`user/board/popular-post`)
+    .then((res: any) => res.data)
+    .catch((error: any) => {
+      throw new Error(`PopularPost get ERR : ${error}`);
+    });
+};
+
+// export const getInfinityPost = async () => {
+//   return axiosClient
+//     .get<any>(`user/board/posts?page=0`) // data.content에서 타입에러 발생해서 any로 일단 처리
+//     .then((res) => res.data)
+//     .catch((error) => {
+//       throw new Error(`InfinityPost get ERR : ${error}`);
+//     });
+// };
