@@ -4,6 +4,15 @@ export interface Post {
 }
 
 export interface IPost {
+  content: IPostContent;
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  size: number;
+}
+export interface IPostContent {
   id: number;
   imageUrl: string;
 }
@@ -11,7 +20,7 @@ export interface IPost {
 export interface IPopular {
   address_name: string;
   content: string;
-  id?: number;
+  id: number;
   imageUrl: string;
   modifiedDate: string;
   nickname: string;
