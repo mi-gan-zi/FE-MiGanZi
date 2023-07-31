@@ -57,7 +57,7 @@ const createAxiosInstance = (): AxiosInstance => {
           error.config.headers.Authorization = `Bearer ${response.data.data.accessToken}`;
           return axios.request(error.config);
         } catch (reissueError) {
-          console.log(reissueError);
+          // console.log(reissueError);
           throw new Error("토큰 발급에 실패했습니다.");
         }
       }
