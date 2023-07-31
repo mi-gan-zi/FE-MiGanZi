@@ -1,7 +1,6 @@
 import { AxiosClient } from "services/axiosClient/axios";
 import { localTokenRepoInstance } from "repository/LocalTokenRepository";
 import { IPopular } from "../../@types/post.type";
-import { AxiosResponse } from "axios";
 
 // interface
 // 1. baseURL
@@ -73,14 +72,16 @@ export const postLogin = async (formData: any) => {
     const url = "user/login";
     const currentDate = Date.now().toString();
     const options = { method: "post", data: formData };
-    const response:AxiosResponse<any>= await axiosClient.axios(url, options);
-
-    localTokenRepoInstance.setRefresh(response.data.data.refreshToken.toString());
-    localTokenRepoInstance.setAccess(response.data.data.accessToken);
-    localTokenRepoInstance.setNickName(response.data.data.nickname);
+    const response = await axiosClient.axios(url, options);
+    //@ts-ignore
+    localTokenRepoInstance.setRefresh(response.data?.data?.refreshToken);
+    //@ts-ignore
+    localTokenRepoInstance.setAccess(response.data?.data?.accessToken);
+    //@ts-ignore
+    localTokenRepoInstance.setNickName(response.data?.data?.nickname);
     localStorage.setItem("expier_time", currentDate);
-
-    return response.data.data.nickname;
+    //@ts-ignore
+    return response.data?.data?.nickname;
   } catch (error) {
     throw new Error(`POST Login Error: ${error}`);
   }
@@ -101,6 +102,7 @@ export const postLogout = async () => {
     const options = { method: "post", headers };
     await axiosClient
       .axios(url, options)
+
       .then(() => localTokenRepoInstance.remove());
   } catch (error) {
     throw new Error(`POST Logout Error: ${error}`);

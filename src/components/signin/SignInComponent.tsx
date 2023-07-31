@@ -24,8 +24,7 @@ const SignInComponent = () => {
     } else {
       try {
         const response = await login(nickname, password);
-        alert(`미(간)지에 오신 걸 환영합니다. 
-${response}님`);
+        alert("미(간)지에 오신 걸 환영합니다." + response + "님");
         navigate("/");
       } catch (error) {
         console.error(error);
