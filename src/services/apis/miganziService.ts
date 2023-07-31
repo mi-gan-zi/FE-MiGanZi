@@ -25,8 +25,9 @@ export const getDetail = async (id: string) => {
   }
 };
 
+ 
 export const postComment = async (formData: any) => {
-  let localToken = await localTokenRepoInstance.getAccess()
+  let localToken = await localTokenRepoInstance.getAccess();
   try {
     const url = `user/board/comment/write`;
     const headers = {
@@ -34,7 +35,12 @@ export const postComment = async (formData: any) => {
       "Content-Type": "multipart/form-data",
       processData: false,
     };
-    const response = await axiosClient.post(url, headers, formData);
+    const options = {
+      method: "post",
+      data: formData,
+      headers,
+    };
+    const response = await axiosClient.axios(url, options);
     return response;
   } catch (error) {
     throw new Error(`POST Board Error: ${error}`);

@@ -11,7 +11,7 @@ import { ReactComponent as CommentImg } from '../assets/Commentimg.svg';
 import { ReactComponent as Dot } from '../assets/Dot.svg';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getDetail, postComment } from "services/apis/miganziService";
-import axios from "axios";
+import useMoveToTop from "hooks/useMoveToTop";
 
 interface PostDetail {
   createdDate: string;
@@ -264,18 +264,19 @@ function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const commentEndRef = useRef<HTMLDivElement>(null);
+  const headerRef =  useMoveToTop();
   const queryClient = useQueryClient()
   const [post, setPost] = useState<PostDetail>({
-    createdDate: "",
-    modifiedDate: "",
+    createdDate: "2023-07-31",
+    modifiedDate: "2023-07-31",
     id: 0,
-    nickname: "",
+    nickname: "temp",
     viewCount: 0,
     commentCount: 0,
     content: '',
     profileImage: '',
     imageUrl: '',
-    address_name: '',
+    address_name: '서울특별시',
     tag: '',
     tagsNum: 0,
     music_id: '',
@@ -317,7 +318,7 @@ function Detail() {
       //@ts-ignore
       setCommentNum(res.userComments.length) 
     }
-  }, []);
+  }, []); 
 
   const onSendComment = async () => {
     /* if (userToken != ''){
@@ -338,14 +339,15 @@ function Detail() {
     const res = await mutation.mutateAsync(formData)
     console.log(res)
     //@ts-ignore
-    setComment(res.data);
+    setComment(res.data.commentsDto);
     //@ts-ignore
-    setCommentNum(res.data.length)
+    setCommentNum(res.data.numberOfComments)
     {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' });}
   }
 
   return(
     <>   
+      <div ref={headerRef}></div>
       <Header setPlaying={setPlaying}></Header>
       <div className='w-[390px] h-[14px] mb-[20px]'>
         <p className='text-[20px] font-bold mt-[20px] ml-[40px]'>같이 감상하면 좋은 곡</p>
