@@ -382,7 +382,6 @@ function Detail() {
         onSendComment={onSendComment}
         commentEndRef={commentEndRef}
       >
-        {" "}
       </Comment>
     </>
   );

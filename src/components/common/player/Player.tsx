@@ -119,7 +119,7 @@ export default function Player(props: PropsType) {
               <>
                 <img
                   className={
-                    `rounded-full w-[100px] h-[100px] absolute left-[60px] top-[200px] ` +
+                    `rounded-full w-[104px] h-[104px] absolute left-[50px] top-[190px] ` +
                     (playing ? "animate-spin" : "")
                   }
                   src={imgURL}
