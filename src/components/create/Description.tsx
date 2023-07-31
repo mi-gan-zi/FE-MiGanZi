@@ -4,17 +4,8 @@ import { Dispatch, SetStateAction, useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import { Text } from "./Text";
 import TagList from "components/TagList";
-import { MarkType } from "./Container";
 
-export default function Description({
-  setMarkes,
-  setContent,
-  setTags,
-}: {
-  setMarkes: Dispatch<SetStateAction<MarkType>>;
-  setContent: Dispatch<SetStateAction<string>>;
-  setTags: Dispatch<SetStateAction<string[]>>;
-}) {
+export default function Description() {
   const [keyWord, setKeyWord] = useState("");
   const [isPopUp, setIsPopUp] = useState(false);
 
@@ -27,9 +18,7 @@ export default function Description({
     <div className="flex flex-col gap-4">
       <div className="py-5">
         <h1 className="font-bold text-xl px-5 pb-5">태그 선택</h1>
-        <TagList setTags={setTags} />
       </div>
-      <Text setContent={setContent} />
       <div className="w-[350px] h-[70px] font-bold text-xl flex items-center px-5">
         <h1>장소 입력</h1>
       </div>
@@ -59,7 +48,7 @@ export default function Description({
         )}
       </div>
 
-      <UseKeywordMap keyWord={keyWord} setMarkes={setMarkes} />
+      {/* <UseKeywordMap keyWord={keyWord} setMarkes={} /> */}
       <div className="border-t-[1px] border-st-gray-03 flex justify-center "></div>
     </div>
   );
