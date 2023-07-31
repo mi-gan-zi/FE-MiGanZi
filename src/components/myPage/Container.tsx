@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import createAxiosInstance from "utils/axiosConfig";
 import { LogOutModal } from "./LogOutModal";
 import { useMutation } from "@tanstack/react-query";
 import { postLogout } from "services/apis/miganziService";

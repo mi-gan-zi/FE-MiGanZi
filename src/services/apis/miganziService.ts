@@ -1,6 +1,7 @@
 import { AxiosClient } from "services/axiosClient/axios";
 import { localTokenRepoInstance } from "repository/LocalTokenRepository";
 import { IPopular, IPost, IPostContent } from "../../@types/post.type";
+import { AxiosResponse } from "axios";
 
 // interface
 // 1. baseURL
@@ -26,6 +27,27 @@ export const getDetail = async (id: string) => {
   }
 };
 
+export const postComment = async (formData: any) => {
+  let localToken = await localTokenRepoInstance.getAccess();
+  try {
+    const url = `user/board/comment/write`;
+    const headers = {
+      Authorization: "Bearer " + `${localToken}`,
+      "Content-Type": "multipart/form-data",
+      processData: false,
+    };
+    const options = {
+      method: "post",
+      data: formData,
+      headers,
+    };
+    const response = await axiosClient.axios(url, options);
+    return response;
+  } catch (error) {
+    throw new Error(`POST Board Error: ${error}`);
+  }
+};
+
 export const postBoard = async (data: {}) => {
   try {
     const url = `user/board/post/write`;
@@ -35,7 +57,7 @@ export const postBoard = async (data: {}) => {
       processData: false,
     };
 
-    const response = await axiosClient.post(url, data, { headers });
+    const response = await axiosClient.axios(url, { headers, data });
     return response;
   } catch (error) {
     throw new Error(`POST Board Error: ${error}`);
@@ -45,6 +67,26 @@ export const postBoard = async (data: {}) => {
 /**
  * User API
  */
+
+export const postLogin = async (formData: any) => {
+  try {
+    const url = "user/login";
+    const currentDate = Date.now().toString();
+    const options = { method: "post", data: formData };
+    const response: AxiosResponse<any> = await axiosClient.axios(url, options);
+
+    localTokenRepoInstance.setRefresh(
+      response.data.data.refreshToken.toString()
+    );
+    localTokenRepoInstance.setAccess(response.data.data.accessToken);
+    localTokenRepoInstance.setNickName(response.data.data.nickname);
+    localStorage.setItem("expier_time", currentDate);
+
+    return response.data.data.nickname;
+  } catch (error) {
+    throw new Error(`POST Login Error: ${error}`);
+  }
+};
 export const postLogout = async () => {
   try {
     const url = `user/logout`;
@@ -58,8 +100,9 @@ export const postLogout = async () => {
     const headers = {
       Authorization: `Bearer ${access_token}`,
     };
+    const options = { method: "post", headers };
     await axiosClient
-      .post(url, headers)
+      .axios(url, options)
       .then(() => localTokenRepoInstance.remove());
   } catch (error) {
     throw new Error(`POST Logout Error: ${error}`);
@@ -70,7 +113,7 @@ export const postReIssue = async (stableRefesh: any) => {
   try {
     const url = `user/reissue`;
     const headers = { Authorization: `Bearer ${stableRefesh}` };
-    const response = await axiosClient.post(url, headers);
+    const response = await axiosClient.axios(url, { headers });
 
     //@ts-ignore
     const newAccessToken = response.data?.data?.accessToken;
