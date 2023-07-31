@@ -1,22 +1,17 @@
 import Container from "components/create/Container";
-import useAuth from "hooks/useAuth";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Create() {
+export default function Create({ isUser }: { isUser: string | null }) {
   const navigate = useNavigate();
-  const { isUser } = useAuth();
-
-  // useEffect(() => {
-  //   if (isUser === false) {
-  //     navigate("/login");
-  //   } else {
-  //     navigate("/create");
-  //   }
-  // }, [isUser]);
-  return (
-    <>
-      <Container />
-    </>
-  );
+  const hasToken = localStorage.getItem("access_token");
+  console.log(hasToken);
+  useEffect(() => {
+    if (!hasToken) {
+      navigate("/login");
+    } else {
+      navigate("/create");
+    }
+  }, [hasToken]);
+  return <Container />;
 }

@@ -18,19 +18,16 @@ import { MyComents } from "components/myPage/MyComents";
 import { Alarm } from "pages/Alarm";
 import { useEffect, useState } from "react";
 import PrivateRoute from "./PrivateRouter";
+import useAuth from "hooks/useAuth";
 
 export default function Router() {
   const [isAccessToken, setIsAccessToken] = useState(false);
-  const path = window.location.pathname;
-  const getCheck = async () => {};
-  useEffect(() => {
-    getCheck();
-  }, [path, isAccessToken, setIsAccessToken]);
+  const isUser = localStorage.getItem("access_token");
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route element={<PrivateRoute />}>
+          <Route element={<PrivateRoute isUser={isUser} />}>
             <Route path="/testde" element={<TestDetail />} />
             <Route path="/" element={<Main />} />
             <Route
@@ -38,10 +35,10 @@ export default function Router() {
               element={<Detail isAccessToken={isAccessToken} />}
             />
             <Route path="/search" element={<Search />} />
-            <Route path="/login" element={<SignIn />} />
+            <Route path="/login" element={<SignIn isUser={isUser} />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/create" element={<Create />} />
-            <Route path="/user" element={<MyPage />} />
+            <Route path="/create" element={<Create isUser={isUser} />} />
+            <Route path="/user" element={<MyPage isUser={isUser} />} />
             <Route path="/nickname" element={<ChangeNickname />} />
             <Route path="/password" element={<ChangePassword />} />
             <Route path="/delete" element={<DeleteUser />} />

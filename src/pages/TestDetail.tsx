@@ -7,7 +7,7 @@ import { getDetail, postReIssue } from "services/apis/miganziService";
 
 export default function TestDetail() {
   const [isAccessToken, setIsAccessToken] = useState(false);
-  const { getIsToken, isUser } = useAuth();
+  const { isUser } = useAuth();
   // const path = window.location.pathname;
   const { pathname } = useLocation();
   console.log(pathname);
@@ -20,7 +20,6 @@ export default function TestDetail() {
   };
   useEffect(() => {
     getCheck();
-    console.log(" testpage getIsToken", getIsToken);
     console.log(" testpage isUser", isUser);
     console.log(" testpage isAccessToken", isAccessToken);
   }, [pathname]);

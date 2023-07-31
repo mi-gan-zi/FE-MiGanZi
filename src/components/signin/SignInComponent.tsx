@@ -12,7 +12,7 @@ import { localTokenRepoInstance } from "repository/LocalTokenRepository";
 const SignInComponent = () => {
   const nickname_ref = useRef<HTMLInputElement>(null);
   const password_ref = useRef<HTMLInputElement>(null);
-  const { login, setIsUser } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const loginHandle = async (e: any) => {
@@ -25,7 +25,6 @@ const SignInComponent = () => {
     // }
     //@ts-ignore
     const response = await login(nickname, password);
-    setIsUser(true);
     alert("미(간)지에 오신 걸 환영합니다." + response + "님");
     navigate("/");
   };
