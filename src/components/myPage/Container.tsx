@@ -11,11 +11,9 @@ export const Container = () => {
   const [logout, setLogout] = useState(false);
   const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");
-  const { setIsUser } = useAuth();
   const mutation = useMutation(() => postLogout(), {
     onSuccess: () => {
       navigate("/login");
-      setIsUser(false);
     },
     onError: (e) => {
       console.log("errer mutation", e);
