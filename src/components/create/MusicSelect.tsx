@@ -90,8 +90,6 @@ export default function MusicSelect({ setMusicId }: MusicIdProps) {
         setIsCheck={setIsCheck}
         targetId={targetId}
       />
-      {/* //빈지노의 브레이크
-      //한요한의 따릉에 */}
       <ul className="py-10 px-4">
         {playList.map((i) => (
           <li
@@ -113,7 +111,6 @@ export default function MusicSelect({ setMusicId }: MusicIdProps) {
               value={i.id}
               onChange={inputValue}
               checked={targetId === i.id ? true : false}
-              // disabled={targetId === i.id ? true : false}
             />
           </li>
         ))}
