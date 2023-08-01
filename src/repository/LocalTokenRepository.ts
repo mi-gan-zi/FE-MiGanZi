@@ -20,7 +20,7 @@ export class LocalTokenRepository {
   }
 
   getNickName() {
-    localStorage.getItem(this.nickname);
+    return localStorage.getItem(this.nickname);
   }
   getAccess(): Promise<string | null> {
     const stableAccessToken = localStorage.getItem(this.access_token);
@@ -40,7 +40,7 @@ export class LocalTokenRepository {
     ): Promise<string | null> => {
       try {
         const response = await postReIssue(refreshToken);
-        console.log(response)
+        console.log(response);
         return response;
       } catch (e) {
         return null;

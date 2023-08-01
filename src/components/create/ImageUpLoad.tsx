@@ -41,6 +41,7 @@ export default function ImageUpLoad({ setIsImage, setImageValue }: Props) {
         imageSizeAlert();
       } else {
         reader.readAsDataURL(imageFile);
+        console.log(imageFile.size, maxSizeInBytes);
         setIsImage(true);
       }
     };

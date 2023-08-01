@@ -5,8 +5,10 @@ import { CreateMiganziType } from "./CreateContainer";
 interface CreateHeaderProps {
   goBackStep: () => void;
   goNextStep: () => void;
+  createPost: (e: any) => Promise<void>;
   isImage: boolean;
   currentStep: CreateMiganziType;
+  mapMarkValue: Object | undefined;
 }
 
 const CreateHeader = ({
@@ -14,6 +16,8 @@ const CreateHeader = ({
   goBackStep,
   isImage,
   currentStep,
+  mapMarkValue,
+  createPost,
 }: CreateHeaderProps) => {
   return (
     <div className="w-full pb-4 flex-col items-center justify-between px-5 border-b-[1px] border-st-gray-03">
@@ -37,7 +41,7 @@ const CreateHeader = ({
               }
             }}
           >
-            다음
+            {mapMarkValue ? <div onClick={createPost}>저장</div> : "다음"}
           </button>
         </div>
       </div>

@@ -9,11 +9,13 @@ type Props = {
   setTagValue: Dispatch<SetStateAction<any>>;
   setMapMarkValue: Dispatch<SetStateAction<any>>;
   setContentValue: Dispatch<SetStateAction<any>>;
+  mapMarkValue: Object | undefined;
 };
 export default function Description({
   setTagValue,
   setContentValue,
   setMapMarkValue,
+  mapMarkValue,
 }: Props) {
   const [keyWord, setKeyWord] = useState("");
   const [isPopUp, setIsPopUp] = useState(false);
@@ -65,7 +67,16 @@ export default function Description({
       </div>
 
       <UseKeywordMap keyWord={keyWord} setMarkes={setMapMarkValue} />
-      <div className="border-t-[1px] border-st-gray-03 flex justify-center "></div>
+      <div className="border-t-[1px] border-st-gray-03 flex justify-center ">
+        <button
+          className={
+            " w-[350px] h-[50px] text-st-white font-bold  mt-2 rounded-md cursor-pointer " +
+            (mapMarkValue ? "bg-[#007DF0] " : "bg-st-gray-05")
+          }
+        >
+          다음으로
+        </button>
+      </div>
     </div>
   );
 }

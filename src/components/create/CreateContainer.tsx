@@ -1,29 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MusicSelect from "./MusicSelect";
 import CreateHeader from "./CreateHeader";
 import ImageUpLoad from "./ImageUpLoad";
 import Description from "./Description";
+import { localTokenRepoInstance } from "repository/LocalTokenRepository";
+import { useMutation } from "@tanstack/react-query";
+import { postBoard } from "services/apis/miganziService";
+import { useNavigate } from "react-router-dom";
 
 export type CreateMiganziType = "music" | "image" | "description";
 
 export default function Container() {
+  const steps: CreateMiganziType[] = ["music", "image", "description"];
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const currentStep = steps[currentStepIndex];
   const [playing, setPlaying] = useState(false);
   const [isImage, setIsImage] = useState(false);
   const [musicValue, setMusicValue] = useState("");
-  const [imageValue, setImageValue] = useState<string | ArrayBuffer | null>("");
-  const [tagValue, setTagValue] = useState<string>();
+  const [imageValue, setImageValue] = useState<any>("");
+  const [tagValue, setTagValue] = useState<any>();
   const [contentValue, setContentValue] = useState("");
-  const [mapMarkValue, setMapMarkValue] = useState({});
-  const formData = new FormData();
-  console.log(imageValue);
-  console.log(musicValue);
-  console.log(tagValue);
-  console.log(contentValue);
-  console.log(mapMarkValue);
-  const steps: CreateMiganziType[] = ["music", "image", "description"];
-  const currentStep = steps[currentStepIndex];
-  //TODO: 중복보내기 방지
+  const [mapMarkValue, setMapMarkValue] = useState<any>();
+  const navigate = useNavigate();
+
+  const createMutation = useMutation({
+    mutationFn: postBoard,
+    onSuccess: () => {
+      alert("게시글 업로드에 성공하셨습니다!");
+      navigate("/");
+    },
+  });
+
   const goNextStep = () => {
     setPlaying(false);
     if (currentStepIndex < steps.length - 1) {
@@ -36,6 +43,25 @@ export default function Container() {
       setCurrentStepIndex((index) => index - 1);
     }
   };
+  const createPost = async (e: any) => {
+    const formData = new FormData();
+    e.preventDefault();
+
+    const nickname = localTokenRepoInstance.getNickName();
+
+    formData.append("music_id", musicValue);
+    if (imageValue) {
+      formData.append("imageFile", imageValue);
+    }
+    formData.append("tags", tagValue);
+    formData.append("content", contentValue);
+    formData.append("lat", mapMarkValue?.lat);
+    formData.append("lng", mapMarkValue?.lng);
+    if (nickname !== null) {
+      formData.append("nickname", nickname);
+    }
+    createMutation.mutate(formData);
+  };
 
   return (
     <>
@@ -44,6 +70,8 @@ export default function Container() {
         goBackStep={goBackStep}
         isImage={isImage}
         currentStep={currentStep}
+        mapMarkValue={mapMarkValue}
+        createPost={createPost}
       />
       {currentStep === "music" && (
         <MusicSelect
@@ -58,6 +86,7 @@ export default function Container() {
       )}
       {currentStep === "description" && (
         <Description
+          mapMarkValue={mapMarkValue}
           setTagValue={setTagValue}
           setMapMarkValue={setMapMarkValue}
           setContentValue={setContentValue}
