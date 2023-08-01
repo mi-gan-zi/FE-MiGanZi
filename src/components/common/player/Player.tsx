@@ -11,14 +11,12 @@ interface PropsType {
   imgURL?: string;
   playing: boolean;
   setPlaying: Dispatch<SetStateAction<boolean>>;
-  setIsCheck: Dispatch<SetStateAction<boolean>>;
 }
 export default function Player(props: PropsType) {
   const {
     song = "음악을 선택해주세요!",
     artist,
     playList,
-    setIsCheck,
     setPlaying,
     targetId,
     imgURL,
@@ -30,7 +28,8 @@ export default function Player(props: PropsType) {
   const [audio, setAudio] = useState(new Audio(playList));
   const [playId, setPlayId] = useState();
   const [ratio, setRatio] = useState(0);
-  const temp2 = "progress-bar border-[5px]  border-solid border-gray-500 rounded-full w-[120px] h-[120px] flex items-center justify-center shadow-xl relative"
+  const temp2 =
+    "progress-bar border-[5px]  border-solid border-gray-500 rounded-full w-[120px] h-[120px] flex items-center justify-center shadow-xl relative";
 
   useEffect(() => {
     if (audio) {
@@ -39,25 +38,17 @@ export default function Player(props: PropsType) {
         setTotalTime(audio.duration);
         audio.addEventListener("timeupdate", () => {
           setCurrentTime(audio.currentTime);
-          setRatio((audio.currentTime/audio.duration)*100)
-          if(audio.duration == audio.currentTime){
-            setPlaying(false)
+          setRatio((audio.currentTime / audio.duration) * 100);
+          if (audio.duration == audio.currentTime) {
+            setPlaying(false);
           }
         });
       }
     }
   }, [playing, targetId, audio]);
   useEffect(() => {
-    // if (playList) {
     setAudio(new Audio(playList));
-    setIsCheck(true);
-    // }
   }, [playList, targetId]);
-  // useEffect(() => {
-  //   // setPlaying(false);
-  //   // setAudio(new Audio());
-  //   // audio.play();
-  // }, [targetId]);
 
   const onStartPlay = () => {
     if (song !== "Happay") playing || setPlaying(true);
@@ -99,22 +90,21 @@ export default function Player(props: PropsType) {
           </div>
         </article>
         <article className="record-box mr-2 w-[190px] relative">
-        <CircularProgressbarWithChildren
-              value={ratio}
-              strokeWidth={5}
-              className={"w-[120px] h-[120px] absolute right-[20px]"}
-              styles={{
-                
-                path: {
-                  stroke: "#007DF0",
-                  strokeLinecap: "butt",
-                  transition: "stroke-dashoffset 0.5s ease 0s",
-                },
-                trail: {
-                  stroke: "#d7d7d7",
-                },  
-              }}
-            >
+          <CircularProgressbarWithChildren
+            value={ratio}
+            strokeWidth={5}
+            className={"w-[120px] h-[120px] absolute right-[20px]"}
+            styles={{
+              path: {
+                stroke: "#007DF0",
+                strokeLinecap: "butt",
+                transition: "stroke-dashoffset 0.5s ease 0s",
+              },
+              trail: {
+                stroke: "#d7d7d7",
+              },
+            }}
+          >
             {playList ? (
               <>
                 <img
@@ -140,7 +130,6 @@ export default function Player(props: PropsType) {
                 <div className="rounded-full w-[10px] h-[10px] bg-st-white absolute"></div>
               </>
             )}
-
           </CircularProgressbarWithChildren>
         </article>
       </div>

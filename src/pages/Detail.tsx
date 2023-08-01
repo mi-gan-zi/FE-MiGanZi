@@ -382,7 +382,6 @@ function Detail() {
         song={song}
         artist={artist}
         imgURL={imgURL}
-        setIsCheck={setIsCheck}
       />
       <div className="w-[390px] h-[14px] bg-st-gray-02 mt-[32px]"></div>
       <Content
