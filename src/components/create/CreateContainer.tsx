@@ -29,7 +29,12 @@ export default function Container() {
       alert("게시글 업로드에 성공하셨습니다!");
       navigate("/");
     },
+    onError: () => {
+      alert("서버에서 에러가 났어요 😡");
+    },
   });
+  const isLoading = createMutation.isLoading;
+  console.log(isLoading);
 
   const goNextStep = () => {
     setPlaying(false);
@@ -72,6 +77,7 @@ export default function Container() {
         currentStep={currentStep}
         mapMarkValue={mapMarkValue}
         createPost={createPost}
+        isLoading={isLoading}
       />
       {currentStep === "music" && (
         <MusicSelect

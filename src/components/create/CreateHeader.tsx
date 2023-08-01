@@ -9,6 +9,7 @@ interface CreateHeaderProps {
   isImage: boolean;
   currentStep: CreateMiganziType;
   mapMarkValue: Object | undefined;
+  isLoading: boolean;
 }
 
 const CreateHeader = ({
@@ -18,6 +19,7 @@ const CreateHeader = ({
   currentStep,
   mapMarkValue,
   createPost,
+  isLoading,
 }: CreateHeaderProps) => {
   return (
     <div className="w-full pb-4 flex-col items-center justify-between px-5 border-b-[1px] border-st-gray-03">
@@ -41,7 +43,13 @@ const CreateHeader = ({
               }
             }}
           >
-            {mapMarkValue ? <div onClick={createPost}>저장</div> : "다음"}
+            {isLoading ? (
+              "저장중.."
+            ) : (
+              <>
+                {mapMarkValue ? <div onClick={createPost}>저장</div> : "다음"}
+              </>
+            )}
           </button>
         </div>
       </div>
