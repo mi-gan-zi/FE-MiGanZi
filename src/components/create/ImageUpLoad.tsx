@@ -19,26 +19,34 @@ export default function ImageUpLoad() {
   const ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {}, []);
+  const imageSizeAlert = () => {
+    alert("이미지 사이즈는 10메가 이하로 해주세요 😡");
+  };
 
   const handleCreateIMG = (e: any) => {
     const dropFile = e.dataTransfer?.files[0];
     const file = ref.current?.files?.[0];
-    //TODO: 이미지 사이즈 10메가
-    const maxSizeInBytes = 10 * 1024 * 1024; // 3MB
-
     const reader = new FileReader();
-    console.log(reader);
-    //@ts-ignore
-    if (file) {
-      reader?.readAsDataURL(file);
-    }
+    //TODO: 이미지 사이즈 10메가
+    const maxSizeInBytes = 10 * 1024 * 1024;
 
-    if (dropFile) {
-      reader?.readAsDataURL(dropFile);
-    }
     reader.onloadend = () => {
       setImg(reader?.result);
     };
+    const checkAndReadImage = (imageFile: File) => {
+      if (imageFile.size > maxSizeInBytes) {
+        imageSizeAlert();
+      } else {
+        reader.readAsDataURL(imageFile);
+      }
+    };
+    if (file) {
+      checkAndReadImage(file);
+    }
+
+    if (dropFile) {
+      checkAndReadImage(dropFile);
+    }
   };
   const handleDrop = useCallback((e: DragEvent): void => {
     e.preventDefault();
