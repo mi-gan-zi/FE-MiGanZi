@@ -269,8 +269,7 @@ function Comment({
   );
 }
 
-function Detail({ isAccessToken }: { isAccessToken: boolean }) {
-  console.log(isAccessToken);
+function Detail() {
   const [playing, setPlaying] = useState(false);
   const [musicId, setMusicId] = useState("");
   const [comment, setComment] = useState<CommentDetail[]>();
@@ -383,7 +382,6 @@ function Detail({ isAccessToken }: { isAccessToken: boolean }) {
         song={song}
         artist={artist}
         imgURL={imgURL}
-        setIsCheck={setIsCheck}
       />
       <div className="w-[390px] h-[14px] bg-st-gray-02 mt-[32px]"></div>
       <Content

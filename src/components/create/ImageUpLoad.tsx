@@ -14,40 +14,32 @@ type ImageProps = {
   setImageFile: Dispatch<SetStateAction<any>>;
 };
 
-export default function ImageUpLoad({ setImage, setImageFile }: ImageProps) {
-  const [img, setImg] = useState<string>("");
+export default function ImageUpLoad() {
+  const [img, setImg] = useState<any>("");
   const ref = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setImage(true);
-  }, []);
+  useEffect(() => {}, []);
 
   const handleCreateIMG = (e: any) => {
     const dropFile = e.dataTransfer?.files[0];
     const file = ref.current?.files?.[0];
-    const maxSizeInBytes = 3 * 1024 * 1024; // 3MB
-    if (
-      (file && file.size > maxSizeInBytes) ||
-      dropFile.size > maxSizeInBytes
-    ) {
-      alert("이미지 용량은 3MB이하로 올려주세요.");
-    } else {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImg(reader.result as string);
-      };
-      if (file) {
-        reader.readAsDataURL(file);
-        setImageFile(e.target.files[0]);
-        setImage(false);
-      } else if (dropFile) {
-        reader.readAsDataURL(dropFile);
-        setImageFile(e.target.files[0]);
-        setImage(false);
-      }
-    }
-  };
+    //TODO: 이미지 사이즈 10메가
+    const maxSizeInBytes = 10 * 1024 * 1024; // 3MB
 
+    const reader = new FileReader();
+    console.log(reader);
+    //@ts-ignore
+    if (file) {
+      reader?.readAsDataURL(file);
+    }
+
+    if (dropFile) {
+      reader?.readAsDataURL(dropFile);
+    }
+    reader.onloadend = () => {
+      setImg(reader?.result);
+    };
+  };
   const handleDrop = useCallback((e: DragEvent): void => {
     e.preventDefault();
     e.stopPropagation();
