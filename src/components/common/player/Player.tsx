@@ -12,6 +12,9 @@ interface PropsType {
   playing: boolean;
   setPlaying: Dispatch<SetStateAction<boolean>>;
 }
+//TODO: 리펙터링 하고 필요없으면 휴지통
+// const temp2 =
+//   "progress-bar border-[5px]  border-solid border-gray-500 rounded-full w-[120px] h-[120px] flex items-center justify-center shadow-xl relative";
 export default function Player(props: PropsType) {
   const {
     song = "음악을 선택해주세요!",
@@ -26,14 +29,12 @@ export default function Player(props: PropsType) {
   const [totalTime, setTotalTime] = useState(0);
   const [current, setCurrentTime] = useState(0);
   const [audio, setAudio] = useState(new Audio(playList));
-  const [playId, setPlayId] = useState();
+  const [playId, setPlay통d] = useState();
   const [ratio, setRatio] = useState(0);
-  const temp2 =
-    "progress-bar border-[5px]  border-solid border-gray-500 rounded-full w-[120px] h-[120px] flex items-center justify-center shadow-xl relative";
 
+  playing ? audio.play() : audio.pause();
   useEffect(() => {
     if (audio) {
-      playing ? audio.play() : audio.pause();
       if (playing) {
         setTotalTime(audio.duration);
         audio.addEventListener("timeupdate", () => {
@@ -55,13 +56,9 @@ export default function Player(props: PropsType) {
   };
 
   const onStopPlay = () => {
-    // playing && audio.pause();
     if (playing) {
       setPlaying(false);
-    } else {
-      return;
     }
-    // playing && setPlaying(false);
   };
   return (
     <div className="bg-yellow-300 flex justify-end">

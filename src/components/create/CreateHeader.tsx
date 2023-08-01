@@ -1,12 +1,20 @@
 // CreateHeader.tsx
 import Pre from "assets/pre.svg";
+import { CreateMiganziType } from "./CreateContainer";
 
 interface CreateHeaderProps {
   goBackStep: () => void;
   goNextStep: () => void;
+  isImage: boolean;
+  currentStep: CreateMiganziType;
 }
 
-const CreateHeader = ({ goNextStep, goBackStep }: CreateHeaderProps) => {
+const CreateHeader = ({
+  goNextStep,
+  goBackStep,
+  isImage,
+  currentStep,
+}: CreateHeaderProps) => {
   return (
     <div className="w-full pb-4 flex-col items-center justify-between px-5 border-b-[1px] border-st-gray-03">
       <div className="flex justify-between">
@@ -20,7 +28,17 @@ const CreateHeader = ({ goNextStep, goBackStep }: CreateHeaderProps) => {
           <p className="translate-x-4 font-bold">게시글 작성</p>
         </div>
         <div>
-          <button onClick={() => goNextStep()}>다음</button>
+          <button
+            onClick={() => {
+              if (currentStep === "image") {
+                isImage ? goNextStep() : alert("이미지는 꼭 넣어주세요 ☺");
+              } else {
+                goNextStep();
+              }
+            }}
+          >
+            다음
+          </button>
         </div>
       </div>
     </div>

@@ -9,13 +9,13 @@ import {
   useState,
 } from "react";
 
-type ImageProps = {
-  setImage: Dispatch<SetStateAction<boolean>>;
-  setImageFile: Dispatch<SetStateAction<any>>;
+type Props = {
+  setIsImage: Dispatch<SetStateAction<boolean>>;
+  setImageValue?: Dispatch<SetStateAction<string | ArrayBuffer | null>>;
 };
 
-export default function ImageUpLoad() {
-  const [img, setImg] = useState<any>("");
+export default function ImageUpLoad({ setIsImage, setImageValue }: Props) {
+  const [img, setPreviewImage] = useState<any>("");
   const ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {}, []);
@@ -31,13 +31,17 @@ export default function ImageUpLoad() {
     const maxSizeInBytes = 10 * 1024 * 1024;
 
     reader.onloadend = () => {
-      setImg(reader?.result);
+      if (setImageValue) {
+        setImageValue(reader?.result);
+      }
+      setPreviewImage(reader?.result);
     };
     const checkAndReadImage = (imageFile: File) => {
       if (imageFile.size > maxSizeInBytes) {
         imageSizeAlert();
       } else {
         reader.readAsDataURL(imageFile);
+        setIsImage(true);
       }
     };
     if (file) {

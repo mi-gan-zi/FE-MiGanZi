@@ -1,24 +1,40 @@
 import { PinIcon, WihteSearchIcon } from "assets/Icon";
 import UseKeywordMap from "components/common/keyword_map/useKeywordMap";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import { Text } from "./Text";
 import TagList from "components/TagList";
-
-export default function Description() {
+import { tagsToBit } from "utils/tagsToBit";
+type Props = {
+  setTagValue: Dispatch<SetStateAction<any>>;
+  setMapMarkValue: Dispatch<SetStateAction<any>>;
+  setContentValue: Dispatch<SetStateAction<any>>;
+};
+export default function Description({
+  setTagValue,
+  setContentValue,
+  setMapMarkValue,
+}: Props) {
   const [keyWord, setKeyWord] = useState("");
   const [isPopUp, setIsPopUp] = useState(false);
-
+  const [tags, setTags] = useState<string[]>([]);
+  const [bit, setBit] = useState<string>("000000000000");
   const handleAddress = (data: any) => {
     setKeyWord(data.address);
     setIsPopUp(!isPopUp);
   };
 
+  useEffect(() => {
+    setBit((pre) => tagsToBit(tags));
+    setTagValue(bit);
+  }, [tags]);
   return (
     <div className="flex flex-col gap-4">
       <div className="py-5">
         <h1 className="font-bold text-xl px-5 pb-5">태그 선택</h1>
+        <TagList setTags={setTags} />
       </div>
+      <Text setContent={setContentValue} />
       <div className="w-[350px] h-[70px] font-bold text-xl flex items-center px-5">
         <h1>장소 입력</h1>
       </div>
@@ -48,7 +64,7 @@ export default function Description() {
         )}
       </div>
 
-      {/* <UseKeywordMap keyWord={keyWord} setMarkes={} /> */}
+      <UseKeywordMap keyWord={keyWord} setMarkes={setMapMarkValue} />
       <div className="border-t-[1px] border-st-gray-03 flex justify-center "></div>
     </div>
   );
