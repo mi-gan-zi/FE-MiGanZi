@@ -141,11 +141,11 @@ export const postReIssue = async (stableRefesh: any) => {
 //   }
 // };
 
-export const getPopularPost = async () => {
+export const getPopularPostService = async () => {
   return axiosClient
-    .get<IPopular[] | undefined>(`user/board/popular-post`)
-    .then((res: any) => res.data)
-    .catch((error: any) => {
+    .axios<IPopular[] | undefined>(`user/board/popular-post`)
+    .then((res) => res.data)
+    .catch((error) => {
       throw new Error(`PopularPost get ERR : ${error}`);
     });
 };
