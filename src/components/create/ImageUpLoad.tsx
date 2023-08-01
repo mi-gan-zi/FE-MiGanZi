@@ -14,13 +14,11 @@ type ImageProps = {
   setImageFile: Dispatch<SetStateAction<any>>;
 };
 
-export default function ImageUpLoad({ setImage, setImageFile }: ImageProps) {
+export default function ImageUpLoad() {
   const [img, setImg] = useState<any>("");
   const ref = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setImage(true);
-  }, []);
+  useEffect(() => {}, []);
 
   const handleCreateIMG = (e: any) => {
     const dropFile = e.dataTransfer?.files[0];
@@ -41,8 +39,6 @@ export default function ImageUpLoad({ setImage, setImageFile }: ImageProps) {
     reader.onloadend = () => {
       setImg(reader?.result);
     };
-    setImageFile(e.dataTransfer.files[0]);
-    setImage(false);
   };
   const handleDrop = useCallback((e: DragEvent): void => {
     e.preventDefault();
