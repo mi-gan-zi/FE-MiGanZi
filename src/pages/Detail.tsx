@@ -5,10 +5,10 @@ import Player from "../components/common/player/Player";
 import { musicList } from "../@types/music.type";
 import { tagList } from "../@types/tag.type";
 import { ReactComponent as Pre } from "../assets/pre.svg";
-import  { ReactComponent as Send } from '../assets/Send.svg';
-import { ReactComponent as Mark } from '../assets/Mark.svg';
-import { ReactComponent as CommentImg } from '../assets/Commentimg.svg';
-import { ReactComponent as Dot } from '../assets/Dot.svg';
+import { ReactComponent as Send } from "../assets/Send.svg";
+import { ReactComponent as Mark } from "../assets/Mark.svg";
+import { ReactComponent as CommentImg } from "../assets/Commentimg.svg";
+import { ReactComponent as Dot } from "../assets/Dot.svg";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getDetail, postComment } from "services/apis/miganziService";
 import useMoveToTop from "hooks/useMoveToTop";
@@ -39,17 +39,24 @@ interface CommentDetail {
   profileImage: string;
 }
 
-function Header({setPlaying} : {
-  setPlaying: Dispatch<SetStateAction<boolean>>
+function Header({
+  setPlaying,
+}: {
+  setPlaying: Dispatch<SetStateAction<boolean>>;
 }) {
   const navigate = useNavigate();
-  async function  newhamsu() {
-    await setPlaying(false); 
-    navigate('/');
+  async function newhamsu() {
+    await setPlaying(false);
+    navigate("/");
   }
-  return(
-    <div className = 'w-[390px] h-[70px] relative border-b-[1px] border-st-gray-03'>
-      <Pre onClick={() => {newhamsu(); }} className="absolute mt-[10px] left-[40px] cursor-pointer" ></Pre>
+  return (
+    <div className="w-[390px] h-[70px] relative border-b-[1px] border-st-gray-03">
+      <Pre
+        onClick={() => {
+          newhamsu();
+        }}
+        className="absolute mt-[10px] left-[40px] cursor-pointer"
+      ></Pre>
     </div>
   );
 }
@@ -67,11 +74,13 @@ function Content({
 }) {
   return (
     <>
-      <div className='w-[350px] h-[10px] bg-st-gray-10 mt-[32px] ml-[40px]'/>
-      <div className = 'w-[390px] h-[566px] relative'>
-        <div className = 'w-[330px] h-[21px] absolute right-[20px]'>
-          <span style={{borderLeft: '1px soild black'}}>{createdDate}</span> 
-          <span className="border-l-2 ml-[5px] pl-[5px] ">조회수 {viewCount}</span>
+      <div className="w-[350px] h-[10px] bg-st-gray-10 mt-[32px] ml-[40px]" />
+      <div className="w-[390px] h-[566px] relative">
+        <div className="w-[330px] h-[21px] absolute right-[20px]">
+          <span style={{ borderLeft: "1px soild black" }}>{createdDate}</span>
+          <span className="border-l-2 ml-[5px] pl-[5px] ">
+            조회수 {viewCount}
+          </span>
         </div>
         <div className="w-[330px] h-[60px] absolute top-[30px]  relative">
           <img
@@ -158,8 +167,8 @@ function CommentListItem({ comment }: { comment: CommentDetail }) {
             {comment.createdDate}
           </p>
         </div>
-        <div className = 'w-[96px] h-[60px] absolute right-0'>
-          <Dot className = 'w-[36px] h-[36px] absolute right-0' ></Dot>
+        <div className="w-[96px] h-[60px] absolute right-0">
+          <Dot className="w-[36px] h-[36px] absolute right-0"></Dot>
         </div>
       </div>
       <div className="w-[350px] h-[84px] absolute left-[20px] top-[108px]">
@@ -196,9 +205,9 @@ function CommentInput({
   onSendComment: () => void;
   token: boolean;
 }) {
-  const onKeyDown = (e:  React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
       onSendComment();
     }
   };
@@ -278,10 +287,10 @@ function Detail() {
   const headerRef =  useMoveToTop();
   const queryClient = useQueryClient()
   const [post, setPost] = useState<PostDetail>({
-    createdDate: "2023-07-31",
-    modifiedDate: "2023-07-31",
+    createdDate: "",
+    modifiedDate: "",
     id: 0,
-    nickname: "temp",
+    nickname: "",
     viewCount: 0,
     commentCount: 0,
     content: '',
@@ -290,7 +299,7 @@ function Detail() {
     address_name: '서울특별시',
     tags: '',
     tagsNum: 0,
-    music_id: '',
+    music_id: "",
   });
 
   const { data, isLoading } = useQuery({
@@ -333,7 +342,7 @@ function Detail() {
       //@ts-ignore
       setComment(res.userComments);
       //@ts-ignore
-      setCommentNum(res.userComments.length) 
+      setCommentNum(res.userComments.length);
     }
     getToken();
   }, [data]); 
@@ -351,11 +360,11 @@ function Detail() {
       navigate('/login');
     } */
     const formData = new FormData();
-    formData.append('content', newComment);
-    formData.append('postId', `${id}`)
+    formData.append("content", newComment);
+    formData.append("postId", `${id}`);
     //mutation.mutate(formData)
-    const res = await mutation.mutateAsync(formData)
-    console.log(res)
+    const res = await mutation.mutateAsync(formData);
+    console.log(res);
     //@ts-ignore
     setComment(res.data.commentsDto);
     //@ts-ignore

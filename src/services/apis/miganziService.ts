@@ -48,16 +48,27 @@ export const postComment = async (formData: any) => {
   }
 };
 
-export const postBoard = async (data: {}) => {
+export const postBoard = async (data: any) => {
+  let access_token = await localTokenRepoInstance.getAccess();
+
+  if (access_token === null) {
+    access_token = await localTokenRepoInstance.getAccess();
+    return access_token;
+  }
   try {
     const url = `user/board/post/write`;
     const headers = {
-      Authorization: "Bearer " + localTokenRepoInstance.getAccess(),
+      Authorization: "Bearer " + `${access_token}`,
       "Content-Type": "multipart/form-data",
       processData: false,
     };
+    const options = {
+      method: "post",
+      data,
+      headers,
+    };
 
-    const response = await axiosClient.axios(url, { headers, data });
+    const response = await axiosClient.axios(url, options);
     return response;
   } catch (error) {
     throw new Error(`POST Board Error: ${error}`);

@@ -1,13 +1,15 @@
-import { useEffect, useRef} from "react";
+import { useEffect, useRef } from "react";
 
 function useMoveToTop() {
-    const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        {ref.current && ref.current.scrollIntoView({ behavior: 'smooth' });}
-    }, [])
+  useEffect(() => {
+    {
+      ref.current && ref.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
 
-    return ref;
+  return ref;
 }
 
 export default useMoveToTop;
