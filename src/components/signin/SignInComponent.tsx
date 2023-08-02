@@ -8,12 +8,16 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "hooks/useAuth";
 import { localTokenRepoInstance } from "repository/LocalTokenRepository";
+import { useMutation } from "@tanstack/react-query";
 
 const SignInComponent = () => {
   const nickname_ref = useRef<HTMLInputElement>(null);
   const password_ref = useRef<HTMLInputElement>(null);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const mutation = useMutation({
+    mutationFn: (e) => loginHandle(e),
+  });
 
   const loginHandle = async (e: any) => {
     e.preventDefault();
@@ -29,7 +33,7 @@ const SignInComponent = () => {
 ${response}님`);
         navigate("/");
       } catch (error) {
-        console.error(error);
+        alert("닉네임과 비밀번호를 확인해주세요.");
       }
     }
   };
@@ -81,7 +85,7 @@ ${response}님`);
         </div> */}
       </div>
       <div className="flex flex-col items-center justify-center">
-        <form onSubmit={loginHandle} className="mb-[35px]">
+        <form onSubmit={(e: any) => mutation.mutate(e)} className="mb-[35px]">
           <input
             ref={nickname_ref}
             placeholder="nickname"
@@ -108,7 +112,10 @@ ${response}님`);
             </div>
             <span>비밀번호를 잊으셨나요?</span>
           </div>
-          <button className="w-[350px] h-[47px] rounded-lg py-[13px] px-[16px] bg-st-gray-09 text-st-white text-sm font-semibold">
+          <button
+            disabled={mutation.isLoading}
+            className="w-[350px] h-[47px] rounded-lg py-[13px] px-[16px] bg-st-gray-09 text-st-white text-sm font-semibold"
+          >
             Log in
           </button>
         </form>
