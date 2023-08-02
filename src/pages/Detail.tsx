@@ -12,6 +12,7 @@ import { ReactComponent as Dot } from '../assets/Dot.svg';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getDetail, postComment } from "services/apis/miganziService";
 import useMoveToTop from "hooks/useMoveToTop";
+import { localTokenRepoInstance } from "repository/LocalTokenRepository";
 
 interface PostDetail {
   createdDate: string;
@@ -202,6 +203,8 @@ function CommentInput({
     }
   };
   
+  const navigate = useNavigate();
+
   return(
     <div className = 'w-[390px] h-[85px] relative'>
       {token ? 
@@ -211,7 +214,7 @@ function CommentInput({
         <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSendComment} />
         </form>
       :
-        <button>로그인하세요</button> 
+        <button onClick={() => navigate('/') }>로그인하세요</button> 
       }
     </div>
   );
@@ -304,6 +307,11 @@ function Detail() {
     },
   })
   
+  const getToken = async () => {
+    let localToken = await localTokenRepoInstance.getAccess();
+    //@ts-ignore
+    setUserToken(localToken)
+  }
 
   useEffect(() => {
     if (data){
@@ -326,6 +334,7 @@ function Detail() {
       //@ts-ignore
       setCommentNum(res.userComments.length) 
     }
+    getToken();
   }, [data]); 
 
   const onSendComment = async () => {
