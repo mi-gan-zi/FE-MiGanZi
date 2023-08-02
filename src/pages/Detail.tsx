@@ -25,7 +25,7 @@ interface PostDetail {
   profileImage: string;
   imageUrl: string;
   address_name: string;
-  tag: string;
+  tags: string;
   tagsNum: number;
   music_id: string;
 }
@@ -97,7 +97,7 @@ function Content({
   );
 }
 
-function Tag({ tags }: { tags: PostDetail["tag"] }) {
+function Tag({ tags }: { tags: PostDetail["tags"] }) {
   //테스트용 const example = "010000000000"
   if (tags) {
     return (
@@ -109,8 +109,8 @@ function Tag({ tags }: { tags: PostDetail["tag"] }) {
             }
           })
           .map((item) => (
-            <div className="h-[26px] border-[1px] px-[10px] py-[2px] border-st-gray-07 rounded-[50px] ">
-              {item.name}
+            <div className="text-xs font-semibold border-[1px] px-[10px] py-[2px] border-st-gray-07 rounded-[50px]">
+            {item.name}
             </div>
           ))}
       </>
@@ -125,14 +125,14 @@ function ImageInfo({
   info,
   location,
 }: {
-  tags: PostDetail["tag"];
+  tags: PostDetail["tags"];
   info: PostDetail["content"];
   location: PostDetail["address_name"];
 }) {
   return (
     <div className="w-[390px] h-[284px] relative mt-[32px] mb-[32px]">
       <div className="w-[330px] h-[138px] absolute left-[40px]">
-        <div className="w-[330px] h-[26px] flex flex-row items-start gap-[10px]">
+        <div className="w-[330px] h-[56px] flex flex-wrap items-start gap-[10px]">
           <Tag tags={tags}></Tag>
         </div>
         <div className="w-[330px] h-[96px] mt-[16px] overflow-auto scrollbar-hide">
@@ -296,8 +296,8 @@ function Detail() {
     content: '',
     profileImage: '',
     imageUrl: '',
-    address_name: '',
-    tag: '',
+    address_name: '서울특별시',
+    tags: '',
     tagsNum: 0,
     music_id: "",
   });
@@ -325,6 +325,7 @@ function Detail() {
   useEffect(() => {
     if (data){
       const res = data.data
+      console.log(res)
       //@ts-ignore
       setPost(res);
       musicList.filter((item) => {
@@ -399,7 +400,7 @@ function Detail() {
           viewCount={post.viewCount}
         ></Content>
         <ImageInfo
-          tags={post.tag}
+          tags={post.tags}
           info={post.content}
           location={post.address_name}
         ></ImageInfo>
