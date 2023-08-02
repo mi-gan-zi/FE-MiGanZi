@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import MusicSelect from "./MusicSelect";
 import CreateHeader from "./CreateHeader";
 import ImageUpLoad from "./ImageUpLoad";
@@ -22,6 +22,7 @@ export default function Container() {
   const [contentValue, setContentValue] = useState("");
   const [mapMarkValue, setMapMarkValue] = useState<any>();
   const navigate = useNavigate();
+  console.log("play", playing);
   const createMutation = useMutation({
     mutationFn: postBoard,
     onSuccess: () => {
@@ -77,6 +78,7 @@ export default function Container() {
         createPost={createPost}
         setImageValue={setImageValue}
         isLoading={isLoading}
+        setPlaying={setPlaying}
       />
       {currentStep === "music" && (
         <MusicSelect

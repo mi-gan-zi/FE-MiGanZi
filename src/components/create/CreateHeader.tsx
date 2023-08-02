@@ -1,4 +1,3 @@
-// CreateHeader.tsx
 import Pre from "assets/pre.svg";
 import { CreateMiganziType } from "./CreateContainer";
 import { Dispatch, SetStateAction } from "react";
@@ -12,6 +11,7 @@ interface CreateHeaderProps {
   currentStep: CreateMiganziType;
   mapMarkValue: Object | undefined;
   isLoading: boolean;
+  setPlaying: Dispatch<SetStateAction<boolean>>;
 }
 
 const CreateHeader = ({
@@ -23,6 +23,7 @@ const CreateHeader = ({
   createPost,
   isLoading,
   setImageValue,
+  setPlaying,
 }: CreateHeaderProps) => {
   return (
     <div className="w-full pb-4 flex-col items-center justify-between px-5 border-b-[1px] border-st-gray-03">
@@ -39,10 +40,11 @@ const CreateHeader = ({
         </div>
         <div>
           <button
-            onClick={() => {
+            onClick={async () => {
               if (currentStep === "image") {
                 isImage ? goNextStep() : alert("이미지는 꼭 넣어주세요 ☺");
               } else {
+                await setPlaying(false);
                 goNextStep();
               }
             }}
