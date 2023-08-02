@@ -6,6 +6,7 @@ import {
   useCallback,
   useEffect,
   useRef,
+  useState,
 } from "react";
 
 type Props = {
@@ -20,6 +21,7 @@ export default function ImageUpLoad({
   imageValue,
 }: Props) {
   const ref = useRef<HTMLInputElement>(null);
+  const [preImage, setPreImage] = useState<any>();
 
   useEffect(() => {}, []);
   const imageSizeAlert = () => {
@@ -30,12 +32,11 @@ export default function ImageUpLoad({
     const dropFile = e.dataTransfer?.files[0];
     const file = ref.current?.files?.[0];
     const reader = new FileReader();
-    //TODO: 이미지 사이즈 10메가
     const maxSizeInBytes = 10 * 1024 * 1024;
-
     reader.onloadend = () => {
       if (setImageValue) {
-        setImageValue(reader?.result);
+        setImageValue(e.target.files[0]);
+        setPreImage(reader?.result);
       }
     };
     const checkAndReadImage = (imageFile: File) => {
@@ -43,7 +44,6 @@ export default function ImageUpLoad({
         imageSizeAlert();
       } else {
         reader.readAsDataURL(imageFile);
-        console.log(imageFile.size, maxSizeInBytes);
         setIsImage(true);
       }
     };
@@ -60,7 +60,6 @@ export default function ImageUpLoad({
     e.stopPropagation();
     handleCreateIMG(e);
   }, []);
-  console.log(imageValue);
   return (
     <div>
       <div className="w-[350px] h-[70px] font-bold text-xl flex items-center px-5">
@@ -70,7 +69,7 @@ export default function ImageUpLoad({
         <div
           className={
             "pre-img w-[350px] h-[467px] flex-col justify-center items-center flex " +
-            (imageValue
+            (preImage
               ? ""
               : "border-dashed border-st-gray-05 border-[1px] rounded-lg")
           }
@@ -79,9 +78,9 @@ export default function ImageUpLoad({
           }}
           onDrop={(e: DragEvent) => handleDrop(e)}
         >
-          {imageValue ? (
+          {preImage ? (
             <img
-              src={imageValue}
+              src={preImage}
               alt=""
               className=" max-w-xl rounded-md w-full h-auto aspect-[3/4] object-cover"
             />
