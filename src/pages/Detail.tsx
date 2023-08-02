@@ -12,6 +12,7 @@ import { ReactComponent as Dot } from "../assets/Dot.svg";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getDetail, postComment } from "services/apis/miganziService";
 import useMoveToTop from "hooks/useMoveToTop";
+import { localTokenRepoInstance } from "repository/LocalTokenRepository";
 
 interface PostDetail {
   createdDate: string;
@@ -197,10 +198,12 @@ function CommentInput({
   newComment,
   setNewComment,
   onSendComment,
+  token, 
 }: {
   newComment: string;
   setNewComment: Dispatch<SetStateAction<string>>;
   onSendComment: () => void;
+  token: boolean;
 }) {
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -208,25 +211,20 @@ function CommentInput({
       onSendComment();
     }
   };
+  
+  const navigate = useNavigate();
 
-  return (
-    <div className="w-[390px] h-[85px] relative">
-      <form className="w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02">
-        <input
-          className="w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none"
-          placeholder="댓글을 입력하세요"
-          value={newComment}
-          onChange={(event) => {
-            setNewComment(event.target.value);
-            console.log(event.target.value);
-          }}
-          onKeyDown={onKeyDown}
-        />
-        <Send
-          className="w-[24px] h-[24px] absolute right-[8px] top-[8px]"
-          onClick={onSendComment}
-        />
-      </form>
+  return(
+    <div className = 'w-[390px] h-[85px] relative'>
+      {token ? 
+        <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02' > 
+        <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} 
+          onChange={(event) => { setNewComment(event.target.value); console.log(event.target.value); }} onKeyDown={onKeyDown}/>    
+        <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSendComment} />
+        </form>
+      :
+        <button onClick={() => navigate('/') }>로그인하세요</button> 
+      }
     </div>
   );
 }
@@ -238,6 +236,7 @@ function Comment({
   setNewComment,
   onSendComment,
   commentEndRef,
+  token
 }: {
   comment: CommentDetail[] | undefined;
   commentNum: number;
@@ -246,6 +245,7 @@ function Comment({
   onSendComment: () => void;
   children: React.ReactNode;
   commentEndRef: React.ForwardedRef<HTMLDivElement>;
+  token: boolean
 }) {
   return (
     <div>
@@ -264,6 +264,7 @@ function Comment({
         newComment={newComment}
         setNewComment={setNewComment}
         onSendComment={onSendComment}
+        token={token}
       ></CommentInput>
     </div>
   );
@@ -279,24 +280,23 @@ function Detail() {
   const [artist, setArtist] = useState<string>("");
   const [playTitle, setPlayTitle] = useState();
   const [imgURL, setImgURL] = useState<string>();
-  //const [isCheck, setIsCheck] = useState<boolean>(false);
-  const [userToken, setUserToken] = useState("");
+  const [userToken, setUserToken] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
   const commentEndRef = useRef<HTMLDivElement>(null);
   const headerRef =  useMoveToTop();
   const queryClient = useQueryClient()
   const [post, setPost] = useState<PostDetail>({
-    createdDate: "2023-07-31",
-    modifiedDate: "2023-07-31",
+    createdDate: "",
+    modifiedDate: "",
     id: 0,
-    nickname: "temp",
+    nickname: "",
     viewCount: 0,
     commentCount: 0,
     content: '',
     profileImage: '',
     imageUrl: '',
-    address_name: '서울특별시',
+    address_name: '',
     tag: '',
     tagsNum: 0,
     music_id: "",
@@ -306,6 +306,7 @@ function Detail() {
     queryKey: ["board"],
     //@ts-ignore
     queryFn: () => getDetail(id.toString()),
+    cacheTime: 0
   });
 
   const mutation = useMutation({
@@ -313,12 +314,17 @@ function Detail() {
     onSuccess: () => {
       //queryClient.invalidateQueries({queryKey: ['comment'] })
     },
-  });
+  })
+  
+  const getToken = async () => {
+    let localToken = await localTokenRepoInstance.getAccess();
+    //@ts-ignore
+    setUserToken(localToken)
+  }
 
   useEffect(() => {
-    if (data) {
-      console.log(data.data);
-      const res = data.data;
+    if (data){
+      const res = data.data
       //@ts-ignore
       setPost(res);
       musicList.filter((item) => {
@@ -337,7 +343,8 @@ function Detail() {
       //@ts-ignore
       setCommentNum(res.userComments.length);
     }
-  }, []); 
+    getToken();
+  }, [data]); 
 
   const onSendComment = async () => {
     /* if (userToken != ''){
@@ -364,47 +371,51 @@ function Detail() {
     {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' });}
   }
 
-  return(
-    <>   
-      <div ref={headerRef}></div>
-      <Header setPlaying={setPlaying}></Header>
-      <div className="w-[390px] h-[14px] mb-[20px]">
-        <p className="text-[20px] font-bold mt-[20px] ml-[40px]">
-          같이 감상하면 좋은 곡
-        </p>
-      </div>
-      <Player
-        playing={playing}
-        setPlaying={setPlaying}
-        playList={playTitle}
-        song={song}
-        artist={artist}
-        imgURL={imgURL}
-      />
-      <div className="w-[390px] h-[14px] bg-st-gray-02 mt-[32px]"></div>
-      <Content
-        userName={post.nickname}
-        createdDate={post.createdDate}
-        imagePreview={post.imageUrl}
-        viewCount={post.viewCount}
-      ></Content>
-      <ImageInfo
-        tags={post.tag}
-        info={post.content}
-        location={post.address_name}
-      ></ImageInfo>
-      <div className="w-[390px] h-[14px] bg-st-gray-02"></div>
-      <Comment
-        comment={comment}
-        commentNum={commentNum}
-        newComment={newComment}
-        setNewComment={setNewComment}
-        onSendComment={onSendComment}
-        commentEndRef={commentEndRef}
-      >
-      </Comment>
-    </>
-  );
+  if (isLoading){
+    return(
+      <div>로딩중</div>
+    )
+  }else{
+    return(
+      <>   
+        <div ref={headerRef}></div>
+        <Header setPlaying={setPlaying}></Header>
+        <div className='w-[390px] h-[14px] mb-[20px]'>
+          <p className='text-[20px] font-bold mt-[20px] ml-[40px]'>같이 감상하면 좋은 곡</p>
+        </div>
+        <Player
+          playing={playing}
+          setPlaying={setPlaying}
+          playList={playTitle}
+          song={song}
+          artist={artist}
+          imgURL={imgURL}
+        />
+        <div className="w-[390px] h-[14px] bg-st-gray-02 mt-[32px]"></div>
+        <Content
+          userName={post.nickname}
+          createdDate={post.createdDate}
+          imagePreview={post.imageUrl}
+          viewCount={post.viewCount}
+        ></Content>
+        <ImageInfo
+          tags={post.tag}
+          info={post.content}
+          location={post.address_name}
+        ></ImageInfo>
+        <div className="w-[390px] h-[14px] bg-st-gray-02"></div>
+        <Comment
+          comment={comment}
+          commentNum={commentNum}
+          newComment={newComment}
+          setNewComment={setNewComment}
+          onSendComment={onSendComment}
+          commentEndRef={commentEndRef}
+          token = {userToken}
+        >
+        </Comment>
+      </>
+  )}
 }
 
 export default Detail;
