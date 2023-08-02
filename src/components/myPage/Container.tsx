@@ -12,7 +12,10 @@ export const Container = () => {
   const nickname = localStorage.getItem("nickname");
   const mutation = useMutation(() => postLogout(), {
     onSuccess: () => {
-      navigate("/login");
+      setLogout(true);
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     },
     onError: (e) => {
       console.log("errer mutation", e);

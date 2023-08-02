@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { validPassword } from "components/common/utils/vaild";
 import React, { useEffect, useRef, useState } from "react";
@@ -12,6 +13,10 @@ export const ChangePassword = () => {
   const password = password_ref.current?.value;
   const confirm = confirm_ref.current?.value;
   const axios = createAxiosInstance();
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: () => onClickSave(),
+  });
 
   useEffect(() => {
     if (password && !validPassword(password)) {
@@ -40,8 +45,7 @@ export const ChangePassword = () => {
 
     try {
       const res = await axios.post("user/update-password", formData);
-      console.log(res);
-      alert(res.data.data);
+      alert(res.data.message);
       setPwMsg("");
       setConfirmMsg("");
     } catch (err) {
@@ -78,7 +82,7 @@ export const ChangePassword = () => {
           </p>
         </div>
         <button
-          onClick={onClickSave}
+          onClick={() => mutation.mutate()}
           className="translate-y-[300px] w-[350px] px-4 py-[13px] rounded-lg bg-[#007DF0] text-st-white"
         >
           저장하기
