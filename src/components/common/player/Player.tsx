@@ -29,7 +29,6 @@ export default function Player(props: PropsType) {
   const [totalTime, setTotalTime] = useState(0);
   const [current, setCurrentTime] = useState(0);
   const [audio, setAudio] = useState(new Audio(playList));
-  const [playId, setPlay통d] = useState();
   const [ratio, setRatio] = useState(0);
 
   playing ? audio.play() : audio.pause();
