@@ -40,7 +40,6 @@ export class LocalTokenRepository {
     ): Promise<string | null> => {
       try {
         const response = await postReIssue(refreshToken);
-        console.log(response);
         return response;
       } catch (e) {
         return null;
