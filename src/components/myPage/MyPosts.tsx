@@ -42,10 +42,12 @@ export const MyPosts = () => {
     <>
       <div>
         <Header />
-        <div className="px-5">
-          <p className="text-st-gray-10 text-base font-medium">
-            내가 쓴 글 <span className="text-[#007DF0]">{total}</span>
-          </p>
+        <div>
+          <div className="px-5">
+            <p className="text-st-gray-10 text-base font-medium">
+              내가 쓴 글 <span className="text-[#007DF0]">{total}</span>
+            </p>
+          </div>
           {total === 0 && (
             <div className="w-full h-[560px] flex flex-col items-center justify-center">
               <NonImage />
@@ -63,7 +65,7 @@ export const MyPosts = () => {
             </div>
           )}
           {total !== 0 && (
-            <div className="flex flex-wrap flex-column w-[390px]">
+            <div className="flex flex-wrap flex-column w-[390px] px-3">
               {posts?.map((item) => {
                 return (
                   <img
