@@ -1,11 +1,13 @@
 // CreateHeader.tsx
 import Pre from "assets/pre.svg";
 import { CreateMiganziType } from "./CreateContainer";
+import { Dispatch, SetStateAction } from "react";
 
 interface CreateHeaderProps {
   goBackStep: () => void;
   goNextStep: () => void;
   createPost: (e: any) => Promise<void>;
+  setImageValue: Dispatch<SetStateAction<any>>;
   isImage: boolean;
   currentStep: CreateMiganziType;
   mapMarkValue: Object | undefined;
@@ -20,6 +22,7 @@ const CreateHeader = ({
   mapMarkValue,
   createPost,
   isLoading,
+  setImageValue,
 }: CreateHeaderProps) => {
   return (
     <div className="w-full pb-4 flex-col items-center justify-between px-5 border-b-[1px] border-st-gray-03">
@@ -27,6 +30,7 @@ const CreateHeader = ({
         <div
           className="flex cursor-pointer"
           onClick={() => {
+            currentStep === "image" && setImageValue("");
             goBackStep();
           }}
         >

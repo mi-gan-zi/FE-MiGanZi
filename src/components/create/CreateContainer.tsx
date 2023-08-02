@@ -22,7 +22,6 @@ export default function Container() {
   const [contentValue, setContentValue] = useState("");
   const [mapMarkValue, setMapMarkValue] = useState<any>();
   const navigate = useNavigate();
-
   const createMutation = useMutation({
     mutationFn: postBoard,
     onSuccess: () => {
@@ -34,7 +33,6 @@ export default function Container() {
     },
   });
   const isLoading = createMutation.isLoading;
-  console.log(isLoading);
 
   const goNextStep = () => {
     setPlaying(false);
@@ -54,16 +52,16 @@ export default function Container() {
 
     const nickname = localTokenRepoInstance.getNickName();
 
-    formData.append("music_id", musicValue);
-    if (imageValue) {
-      formData.append("imageFile", imageValue);
-    }
-    formData.append("tags", tagValue);
     formData.append("content", contentValue);
     formData.append("lat", mapMarkValue?.lat);
     formData.append("lng", mapMarkValue?.lng);
+    formData.append("tags", tagValue);
     if (nickname !== null) {
-      formData.append("nickname", nickname);
+      formData.append("address_name", nickname);
+    }
+    formData.append("music_id", musicValue);
+    if (imageValue) {
+      formData.append("imageFile", imageValue);
     }
     createMutation.mutate(formData);
   };
@@ -77,6 +75,7 @@ export default function Container() {
         currentStep={currentStep}
         mapMarkValue={mapMarkValue}
         createPost={createPost}
+        setImageValue={setImageValue}
         isLoading={isLoading}
       />
       {currentStep === "music" && (
@@ -88,7 +87,11 @@ export default function Container() {
         />
       )}
       {currentStep === "image" && (
-        <ImageUpLoad setIsImage={setIsImage} setImageValue={setImageValue} />
+        <ImageUpLoad
+          setIsImage={setIsImage}
+          setImageValue={setImageValue}
+          imageValue={imageValue}
+        />
       )}
       {currentStep === "description" && (
         <Description

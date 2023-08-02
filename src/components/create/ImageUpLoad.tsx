@@ -6,16 +6,19 @@ import {
   useCallback,
   useEffect,
   useRef,
-  useState,
 } from "react";
 
 type Props = {
   setIsImage: Dispatch<SetStateAction<boolean>>;
   setImageValue?: Dispatch<SetStateAction<string | ArrayBuffer | null>>;
+  imageValue: any;
 };
 
-export default function ImageUpLoad({ setIsImage, setImageValue }: Props) {
-  const [img, setPreviewImage] = useState<any>("");
+export default function ImageUpLoad({
+  setIsImage,
+  setImageValue,
+  imageValue,
+}: Props) {
   const ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {}, []);
@@ -34,7 +37,6 @@ export default function ImageUpLoad({ setIsImage, setImageValue }: Props) {
       if (setImageValue) {
         setImageValue(reader?.result);
       }
-      setPreviewImage(reader?.result);
     };
     const checkAndReadImage = (imageFile: File) => {
       if (imageFile.size > maxSizeInBytes) {
@@ -58,7 +60,7 @@ export default function ImageUpLoad({ setIsImage, setImageValue }: Props) {
     e.stopPropagation();
     handleCreateIMG(e);
   }, []);
-
+  console.log(imageValue);
   return (
     <div>
       <div className="w-[350px] h-[70px] font-bold text-xl flex items-center px-5">
@@ -68,7 +70,7 @@ export default function ImageUpLoad({ setIsImage, setImageValue }: Props) {
         <div
           className={
             "pre-img w-[350px] h-[467px] flex-col justify-center items-center flex " +
-            (img
+            (imageValue
               ? ""
               : "border-dashed border-st-gray-05 border-[1px] rounded-lg")
           }
@@ -77,9 +79,9 @@ export default function ImageUpLoad({ setIsImage, setImageValue }: Props) {
           }}
           onDrop={(e: DragEvent) => handleDrop(e)}
         >
-          {img ? (
+          {imageValue ? (
             <img
-              src={img}
+              src={imageValue}
               alt=""
               className=" max-w-xl rounded-md w-full h-auto aspect-[3/4] object-cover"
             />
