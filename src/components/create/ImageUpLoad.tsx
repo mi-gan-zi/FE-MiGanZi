@@ -104,10 +104,15 @@ export default function ImageUpLoad({
           )}
         </div>
         <label
-          className="block w-[350px] h=[50px] py-2 rounded-lg text-center bg-st-gray-05 text-st-white mt-3 cursor-pointer mb-[120px]"
+          className={
+            "block w-[350px] h=[50px] py-2 rounded-lg text-center " +
+            (imageValue
+              ? " bg-st-gray-05 text-st-white mt-3 cursor-pointer mb-[120px]"
+              : "bg-active-blue text-st-white mt-3 cursor-pointer mb-[120px]")
+          }
           htmlFor="file-upload"
         >
-          사진 업로드
+          {imageValue ? "다른 사진 선택" : "사진 업로드"}{" "}
         </label>
         <input
           type="file"
