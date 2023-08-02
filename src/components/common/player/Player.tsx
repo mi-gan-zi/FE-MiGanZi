@@ -86,7 +86,7 @@ export default function Player(props: PropsType) {
           </div>
         </article>
         <article className="record-box mr-2 w-[190px] relative">
-        <CircularProgressbarWithChildren
+          <CircularProgressbarWithChildren
             value={ratio}
             strokeWidth={5}
             className={"w-[120px] h-[120px] absolute right-[20px]"}

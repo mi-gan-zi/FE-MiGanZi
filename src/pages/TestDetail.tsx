@@ -10,18 +10,14 @@ export default function TestDetail() {
   const { isUser } = useAuth();
   // const path = window.location.pathname;
   const { pathname } = useLocation();
-  console.log(pathname);
   const getCheck = async () => {
     const response = await checkToken();
     if (response) {
       setIsAccessToken(response);
-      console.log(" testpage mypage", response);
     }
   };
   useEffect(() => {
     getCheck();
-    console.log(" testpage isUser", isUser);
-    console.log(" testpage isAccessToken", isAccessToken);
   }, [pathname]);
   return (
     <div>

@@ -16,13 +16,12 @@ export default function Container() {
   const currentStep = steps[currentStepIndex];
   const [playing, setPlaying] = useState(false);
   const [isImage, setIsImage] = useState(false);
-  const [musicValue, setMusicValue] = useState("");
+  const [musicValue, setMusicValue] = useState("0");
   const [imageValue, setImageValue] = useState<any>("");
   const [tagValue, setTagValue] = useState<any>();
   const [contentValue, setContentValue] = useState("");
   const [mapMarkValue, setMapMarkValue] = useState<any>();
   const navigate = useNavigate();
-  console.log("play", playing);
   const createMutation = useMutation({
     mutationFn: postBoard,
     onSuccess: () => {
@@ -52,7 +51,6 @@ export default function Container() {
     e.preventDefault();
 
     const nickname = localTokenRepoInstance.getNickName();
-
     formData.append("content", contentValue);
     formData.append("lat", mapMarkValue?.lat);
     formData.append("lng", mapMarkValue?.lng);
