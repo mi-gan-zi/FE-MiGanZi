@@ -5,10 +5,10 @@ import Player from "../components/common/player/Player";
 import { musicList } from "../@types/music.type";
 import { tagList } from "../@types/tag.type";
 import { ReactComponent as Pre } from "../assets/pre.svg";
-import  { ReactComponent as Send } from '../assets/Send.svg';
-import { ReactComponent as Mark } from '../assets/Mark.svg';
-import { ReactComponent as CommentImg } from '../assets/Commentimg.svg';
-import { ReactComponent as Dot } from '../assets/Dot.svg';
+import { ReactComponent as Send } from "../assets/Send.svg";
+import { ReactComponent as Mark } from "../assets/Mark.svg";
+import { ReactComponent as CommentImg } from "../assets/Commentimg.svg";
+import { ReactComponent as Dot } from "../assets/Dot.svg";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getDetail, postComment } from "services/apis/miganziService";
 import useMoveToTop from "hooks/useMoveToTop";
@@ -38,17 +38,24 @@ interface CommentDetail {
   profileImage: string;
 }
 
-function Header({setPlaying} : {
-  setPlaying: Dispatch<SetStateAction<boolean>>
+function Header({
+  setPlaying,
+}: {
+  setPlaying: Dispatch<SetStateAction<boolean>>;
 }) {
   const navigate = useNavigate();
-  async function  newhamsu() {
-    await setPlaying(false); 
-    navigate('/');
+  async function newhamsu() {
+    await setPlaying(false);
+    navigate("/");
   }
-  return(
-    <div className = 'w-[390px] h-[70px] relative border-b-[1px] border-st-gray-03'>
-      <Pre onClick={() => {newhamsu(); }} className="absolute mt-[10px] left-[40px] cursor-pointer" ></Pre>
+  return (
+    <div className="w-[390px] h-[70px] relative border-b-[1px] border-st-gray-03">
+      <Pre
+        onClick={() => {
+          newhamsu();
+        }}
+        className="absolute mt-[10px] left-[40px] cursor-pointer"
+      ></Pre>
     </div>
   );
 }
@@ -66,11 +73,13 @@ function Content({
 }) {
   return (
     <>
-      <div className='w-[350px] h-[10px] bg-st-gray-10 mt-[32px] ml-[40px]'/>
-      <div className = 'w-[390px] h-[566px] relative'>
-        <div className = 'w-[330px] h-[21px] absolute right-[20px]'>
-          <span style={{borderLeft: '1px soild black'}}>{createdDate}</span> 
-          <span className="border-l-2 ml-[5px] pl-[5px] ">조회수 {viewCount}</span>
+      <div className="w-[350px] h-[10px] bg-st-gray-10 mt-[32px] ml-[40px]" />
+      <div className="w-[390px] h-[566px] relative">
+        <div className="w-[330px] h-[21px] absolute right-[20px]">
+          <span style={{ borderLeft: "1px soild black" }}>{createdDate}</span>
+          <span className="border-l-2 ml-[5px] pl-[5px] ">
+            조회수 {viewCount}
+          </span>
         </div>
         <div className="w-[330px] h-[60px] absolute top-[30px]  relative">
           <img
@@ -157,8 +166,8 @@ function CommentListItem({ comment }: { comment: CommentDetail }) {
             {comment.createdDate}
           </p>
         </div>
-        <div className = 'w-[96px] h-[60px] absolute right-0'>
-          <Dot className = 'w-[36px] h-[36px] absolute right-0' ></Dot>
+        <div className="w-[96px] h-[60px] absolute right-0">
+          <Dot className="w-[36px] h-[36px] absolute right-0"></Dot>
         </div>
       </div>
       <div className="w-[350px] h-[84px] absolute left-[20px] top-[108px]">
@@ -193,19 +202,30 @@ function CommentInput({
   setNewComment: Dispatch<SetStateAction<string>>;
   onSendComment: () => void;
 }) {
-  const onKeyDown = (e:  React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
       onSendComment();
     }
   };
-  
-  return(
-    <div className = 'w-[390px] h-[85px] relative'>
-      <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02' > 
-        <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} 
-            onChange={(event) => { setNewComment(event.target.value); console.log(event.target.value); }} onKeyDown={onKeyDown}/>    
-        <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSendComment} />
+
+  return (
+    <div className="w-[390px] h-[85px] relative">
+      <form className="w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02">
+        <input
+          className="w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none"
+          placeholder="댓글을 입력하세요"
+          value={newComment}
+          onChange={(event) => {
+            setNewComment(event.target.value);
+            console.log(event.target.value);
+          }}
+          onKeyDown={onKeyDown}
+        />
+        <Send
+          className="w-[24px] h-[24px] absolute right-[8px] top-[8px]"
+          onClick={onSendComment}
+        />
       </form>
     </div>
   );
@@ -279,7 +299,7 @@ function Detail() {
     address_name: '서울특별시',
     tag: '',
     tagsNum: 0,
-    music_id: '',
+    music_id: "",
   });
 
   const { data, isLoading } = useQuery({
@@ -293,12 +313,12 @@ function Detail() {
     onSuccess: () => {
       //queryClient.invalidateQueries({queryKey: ['comment'] })
     },
-  })
-      
+  });
+
   useEffect(() => {
-    if (data){
+    if (data) {
       console.log(data.data);
-      const res = data.data
+      const res = data.data;
       //@ts-ignore
       setPost(res);
       musicList.filter((item) => {
@@ -315,7 +335,7 @@ function Detail() {
       //@ts-ignore
       setComment(res.userComments);
       //@ts-ignore
-      setCommentNum(res.userComments.length) 
+      setCommentNum(res.userComments.length);
     }
   }, []); 
 
@@ -332,11 +352,11 @@ function Detail() {
       navigate('/login');
     } */
     const formData = new FormData();
-    formData.append('content', newComment);
-    formData.append('postId', `${id}`)
+    formData.append("content", newComment);
+    formData.append("postId", `${id}`);
     //mutation.mutate(formData)
-    const res = await mutation.mutateAsync(formData)
-    console.log(res)
+    const res = await mutation.mutateAsync(formData);
+    console.log(res);
     //@ts-ignore
     setComment(res.data.commentsDto);
     //@ts-ignore
@@ -348,8 +368,10 @@ function Detail() {
     <>   
       <div ref={headerRef}></div>
       <Header setPlaying={setPlaying}></Header>
-      <div className='w-[390px] h-[14px] mb-[20px]'>
-        <p className='text-[20px] font-bold mt-[20px] ml-[40px]'>같이 감상하면 좋은 곡</p>
+      <div className="w-[390px] h-[14px] mb-[20px]">
+        <p className="text-[20px] font-bold mt-[20px] ml-[40px]">
+          같이 감상하면 좋은 곡
+        </p>
       </div>
       <Player
         playing={playing}
