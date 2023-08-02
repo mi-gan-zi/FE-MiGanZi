@@ -21,6 +21,7 @@ export default function Container() {
   const [tagValue, setTagValue] = useState<any>();
   const [contentValue, setContentValue] = useState("");
   const [mapMarkValue, setMapMarkValue] = useState<any>();
+  const [keyWord, setKeyWord] = useState("");
   const navigate = useNavigate();
   const createMutation = useMutation({
     mutationFn: postBoard,
@@ -50,14 +51,11 @@ export default function Container() {
     const formData = new FormData();
     e.preventDefault();
 
-    const nickname = localTokenRepoInstance.getNickName();
     formData.append("content", contentValue);
     formData.append("lat", mapMarkValue?.lat);
     formData.append("lng", mapMarkValue?.lng);
     formData.append("tags", tagValue);
-    if (nickname !== null) {
-      formData.append("address_name", nickname);
-    }
+    formData.append("address_name", keyWord);
     formData.append("music_id", musicValue);
     if (imageValue) {
       formData.append("imageFile", imageValue);
@@ -99,6 +97,8 @@ export default function Container() {
           setTagValue={setTagValue}
           setMapMarkValue={setMapMarkValue}
           setContentValue={setContentValue}
+          setKeyWord={setKeyWord}
+          keyWord={keyWord}
         />
       )}
     </>
