@@ -48,12 +48,6 @@ const PopularPost = () => {
     setShowNumber(START_PAGE);
   }
 
-  // const routePost = (id: number) => {
-  //   if (typeof id === "number") {
-  //     navigate(`detail/${String(id)}`);
-  //   }
-  // };
-
   const routePost = () => {
     const id = data && data[showNumber]?.id;
     navigate(`detail/${String(id)}`);
@@ -71,8 +65,7 @@ const PopularPost = () => {
       pos = data[showNumber]?.tags.indexOf("1", pos + 1);
     }
   }
-  console.log(showPostArray[showNumber]?.id);
-  console.log(data && data[showNumber]?.id);
+
   return (
     <>
       <div className="text-[20px] h-[70px] border-b-2 flex items-center ml-[40px]">
@@ -97,7 +90,6 @@ const PopularPost = () => {
         <div
           className="ml-[40px] mt-[5px] relative cursor-pointer"
           onClick={() => routePost()}
-          // onClick={() => routePost(showPostArray[showNumber]?.id)}
         >
           <div
             className="absolute top-[0%] bg-st-black w-full h-full opacity-30"
@@ -135,7 +127,7 @@ const PopularPost = () => {
               return (
                 <>
                   <div
-                    key={index}
+                    key={item.id}
                     className={
                       `${
                         index === showNumber
