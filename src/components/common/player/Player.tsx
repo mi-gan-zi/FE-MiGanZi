@@ -90,7 +90,7 @@ export default function Player(props: PropsType) {
           </div>
         </article>
         <article className="record-box mr-2 w-[190px] relative">
-          <CircularProgressbarWithChildren
+        <CircularProgressbarWithChildren
             value={ratio}
             strokeWidth={5}
             className={"w-[120px] h-[120px] absolute right-[20px]"}
@@ -121,7 +121,7 @@ export default function Player(props: PropsType) {
               <>
                 <img
                   className={
-                    `rounded-full w-[100px] h-[100px] absolute left-[60px] top-[200px]`
+                    `rounded-full w-[105px] h-[105px] absolute left-[50px] top-[190px]`
                     // (playing ? "animate-spin" : "")
                   }
                   src={defrecord}
