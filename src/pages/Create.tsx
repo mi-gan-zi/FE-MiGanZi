@@ -1,19 +1,17 @@
-import Container from "components/create/Container";
-import { useEffect } from "react";
+import Container from "components/create/CreateContainer";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Footer from "components/common/Layout/Footer";
 
 export default function Create() {
   const navigate = useNavigate();
-
+  const hasToken = localStorage.getItem("access_token");
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
+    if (!hasToken) {
       navigate("/login");
+    } else {
+      navigate("/create");
     }
-  }, []);
-  return (
-    <>
-      <Container />
-    </>
-  );
+  }, [hasToken]);
+
+  return <Container />;
 }

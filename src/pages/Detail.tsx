@@ -259,7 +259,7 @@ function Detail() {
   const [artist, setArtist] = useState<string>("");
   const [playTitle, setPlayTitle] = useState();
   const [imgURL, setImgURL] = useState<string>();
-  const [isCheck, setIsCheck] = useState<boolean>(false);
+  //const [isCheck, setIsCheck] = useState<boolean>(false);
   const [userToken, setUserToken] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
@@ -308,7 +308,6 @@ function Detail() {
           setSong(item.song);
           setPlayTitle(item.playList);
           setImgURL(item.imgURL);
-          setIsCheck(true);
           setPlaying(false);
           setMusicId(item.id.toString());
         }
@@ -359,7 +358,6 @@ function Detail() {
         song={song}
         artist={artist}
         imgURL={imgURL}
-        setIsCheck={setIsCheck}
       />
       <div className="w-[390px] h-[14px] bg-st-gray-02 mt-[32px]"></div>
       <Content

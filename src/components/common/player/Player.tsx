@@ -11,14 +11,12 @@ interface PropsType {
   imgURL?: string;
   playing: boolean;
   setPlaying: Dispatch<SetStateAction<boolean>>;
-  setIsCheck: Dispatch<SetStateAction<boolean>>;
 }
 export default function Player(props: PropsType) {
   const {
     song = "음악을 선택해주세요!",
     artist,
     playList,
-    setIsCheck,
     setPlaying,
     targetId,
     imgURL,
@@ -30,7 +28,8 @@ export default function Player(props: PropsType) {
   const [audio, setAudio] = useState(new Audio(playList));
   const [playId, setPlayId] = useState();
   const [ratio, setRatio] = useState(0);
-  const temp2 = "progress-bar border-[5px]  border-solid border-gray-500 rounded-full w-[120px] h-[120px] flex items-center justify-center shadow-xl relative"
+  const temp2 =
+    "progress-bar border-[5px]  border-solid border-gray-500 rounded-full w-[120px] h-[120px] flex items-center justify-center shadow-xl relative";
 
   useEffect(() => {
     if (audio) {
@@ -39,25 +38,17 @@ export default function Player(props: PropsType) {
         setTotalTime(audio.duration);
         audio.addEventListener("timeupdate", () => {
           setCurrentTime(audio.currentTime);
-          setRatio((audio.currentTime/audio.duration)*100)
-          if(audio.duration == audio.currentTime){
-            setPlaying(false)
+          setRatio((audio.currentTime / audio.duration) * 100);
+          if (audio.duration == audio.currentTime) {
+            setPlaying(false);
           }
         });
       }
     }
   }, [playing, targetId, audio]);
   useEffect(() => {
-    // if (playList) {
     setAudio(new Audio(playList));
-    setIsCheck(true);
-    // }
   }, [playList, targetId]);
-  // useEffect(() => {
-  //   // setPlaying(false);
-  //   // setAudio(new Audio());
-  //   // audio.play();
-  // }, [targetId]);
 
   const onStartPlay = () => {
     if (song !== "Happay") playing || setPlaying(true);
@@ -76,9 +67,9 @@ export default function Player(props: PropsType) {
     <div className="bg-yellow-300 flex justify-end">
       <div className="bg-[#F5F4F3] border-st-gray-03 border-[1px] w-[370px] h-[157px] rounded-l-xl py-4 flex justify-between px-6 relative">
         <article className="left_box flex-col flex">
-          <div className="description flex-col flex gap-1 mb-2 w-[130px] h-[120px]">
-            <p className="text-[15px]">{song}</p>
-            <p className="text-[15px]">{artist}</p>
+          <div className="description flex-col flex gap-1 mb-2">
+            <p>{song}</p>
+            <p>{artist}</p>
             <p className="thin">
               {moment(Number(current) * 1000).format("mm:ss")}
             </p>
@@ -99,27 +90,26 @@ export default function Player(props: PropsType) {
           </div>
         </article>
         <article className="record-box mr-2 w-[190px] relative">
-        <CircularProgressbarWithChildren
-              value={ratio}
-              strokeWidth={5}
-              className={"w-[120px] h-[120px] absolute right-[20px]"}
-              styles={{
-                
-                path: {
-                  stroke: "#007DF0",
-                  strokeLinecap: "butt",
-                  transition: "stroke-dashoffset 0.5s ease 0s",
-                },
-                trail: {
-                  stroke: "#d7d7d7",
-                },  
-              }}
-            >
+          <CircularProgressbarWithChildren
+            value={ratio}
+            strokeWidth={5}
+            className={"w-[120px] h-[120px] absolute right-[20px]"}
+            styles={{
+              path: {
+                stroke: "#007DF0",
+                strokeLinecap: "butt",
+                transition: "stroke-dashoffset 0.5s ease 0s",
+              },
+              trail: {
+                stroke: "#d7d7d7",
+              },
+            }}
+          >
             {playList ? (
               <>
                 <img
                   className={
-                    `rounded-full w-[104px] h-[104px] absolute left-[50px] top-[190px] ` +
+                    `rounded-full w-[100px] h-[100px] absolute left-[60px] top-[200px] ` +
                     (playing ? "animate-spin" : "")
                   }
                   src={imgURL}
@@ -131,16 +121,15 @@ export default function Player(props: PropsType) {
               <>
                 <img
                   className={
-                    `rounded-full w-[104px] h-[104px] absolute left-[51px] top-[190px]`
+                    `rounded-full w-[100px] h-[100px] absolute left-[60px] top-[200px]`
                     // (playing ? "animate-spin" : "")
                   }
                   src={defrecord}
                   alt=""
                 />
-                <div className="rounded-full w-[30px] h-[30px] bg-st-white absolute"></div>
+                <div className="rounded-full w-[10px] h-[10px] bg-st-white absolute"></div>
               </>
             )}
-
           </CircularProgressbarWithChildren>
         </article>
       </div>

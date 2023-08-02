@@ -1,5 +1,7 @@
 import { AxiosClient } from "services/axiosClient/axios";
 import { localTokenRepoInstance } from "repository/LocalTokenRepository";
+import { IPopular, IPost, IPostContent } from "../../@types/post.type";
+import { AxiosResponse } from "axios";
 
 // interface
 // 1. baseURL
@@ -25,7 +27,6 @@ export const getDetail = async (id: string) => {
   }
 };
 
- 
 export const postComment = async (formData: any) => {
   let localToken = await localTokenRepoInstance.getAccess();
   try {
@@ -56,7 +57,7 @@ export const postBoard = async (data: {}) => {
       processData: false,
     };
 
-    const response = await axiosClient.post(url, data, { headers });
+    const response = await axiosClient.axios(url, { headers, data });
     return response;
   } catch (error) {
     throw new Error(`POST Board Error: ${error}`);
@@ -71,18 +72,17 @@ export const postLogin = async (formData: any) => {
   try {
     const url = "user/login";
     const currentDate = Date.now().toString();
-    const response = await axiosClient.post(url, {}, formData);
-    //@ts-ignore
-    localTokenRepoInstance.setRefresh(response.data?.data?.refreshToken);
-    //@ts-ignore
-    localTokenRepoInstance.setAccess(response.data?.data?.accessToken);
-    //@ts-ignore
-    localTokenRepoInstance.setNickName(response.data?.data?.nickname);
+    const options = { method: "post", data: formData };
+    const response: AxiosResponse<any> = await axiosClient.axios(url, options);
+
+    localTokenRepoInstance.setRefresh(
+      response.data.data.refreshToken.toString()
+    );
+    localTokenRepoInstance.setAccess(response.data.data.accessToken);
+    localTokenRepoInstance.setNickName(response.data.data.nickname);
     localStorage.setItem("expier_time", currentDate);
-    //@ts-ignore
-    console.log(response.data?.data?.nickname);
-    //@ts-ignore
-    return response.data?.data?.nickname;
+
+    return response.data.data.nickname;
   } catch (error) {
     throw new Error(`POST Login Error: ${error}`);
   }
@@ -100,8 +100,9 @@ export const postLogout = async () => {
     const headers = {
       Authorization: `Bearer ${access_token}`,
     };
+    const options = { method: "post", headers };
     await axiosClient
-      .post(url, headers)
+      .axios(url, options)
       .then(() => localTokenRepoInstance.remove());
   } catch (error) {
     throw new Error(`POST Logout Error: ${error}`);
@@ -111,8 +112,13 @@ export const postLogout = async () => {
 export const postReIssue = async (stableRefesh: any) => {
   try {
     const url = `user/reissue`;
-    const headers = { Authorization: `Bearer ${stableRefesh}` };
-    const response = await axiosClient.post(url, headers);
+    const options = {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${stableRefesh}`,
+      },
+    };
+    const response = await axiosClient.axios(url, options);
 
     //@ts-ignore
     const newAccessToken = response.data?.data?.accessToken;
@@ -124,3 +130,31 @@ export const postReIssue = async (stableRefesh: any) => {
     throw new Error(`POST REISSUE Error[토큰 발급 실패]: ${error}`);
   }
 };
+
+// export const getPopularPost = async () => {
+//   try {
+//     const url = `user/board/popular-post`;
+//     const response = await axiosClient.axios(url);
+//     return response;
+//   } catch (error) {
+//     throw new Error(`PopularPost get ERR : ${error}`);
+//   }
+// };
+
+export const getPopularPostService = async () => {
+  return axiosClient
+    .axios<IPopular[] | undefined>(`user/board/popular-post`)
+    .then((res) => res.data)
+    .catch((error) => {
+      throw new Error(`PopularPost get ERR : ${error}`);
+    });
+};
+
+// export const getInfinityPost = async () => {
+//   return axiosClient
+//     .get<any>(`user/board/posts?page=0`) // data.content에서 타입에러 발생해서 any로 일단 처리
+//     .then((res) => res.data)
+//     .catch((error) => {
+//       throw new Error(`InfinityPost get ERR : ${error}`);
+//     });
+// };

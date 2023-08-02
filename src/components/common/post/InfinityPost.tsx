@@ -42,9 +42,6 @@ export function InfinityPost(props: { url: string }): React.ReactElement {
 
   return (
     <>
-      <div className="flex justify-center text-[20px] h-[70px] items-center">
-        새로 작성된 아티클을 확인해보세요
-      </div>
       <div className="flex flex-wrap flex-column w-[390px]">
         {post
           ? post.map((item) => {
