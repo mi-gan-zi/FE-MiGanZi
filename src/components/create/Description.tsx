@@ -9,15 +9,18 @@ type Props = {
   setTagValue: Dispatch<SetStateAction<any>>;
   setMapMarkValue: Dispatch<SetStateAction<any>>;
   setContentValue: Dispatch<SetStateAction<any>>;
+  setKeyWord: Dispatch<SetStateAction<string>>;
   mapMarkValue: Object | undefined;
+  keyWord: string;
 };
 export default function Description({
   setTagValue,
   setContentValue,
   setMapMarkValue,
+  setKeyWord,
+  keyWord,
   mapMarkValue,
 }: Props) {
-  const [keyWord, setKeyWord] = useState("");
   const [isPopUp, setIsPopUp] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [bit, setBit] = useState<string>("000000000000");
@@ -27,7 +30,7 @@ export default function Description({
   };
 
   useEffect(() => {
-    setBit((pre) => tagsToBit(tags));
+    setBit(tagsToBit(tags));
     setTagValue(bit);
   }, [tags]);
   return (
@@ -65,7 +68,6 @@ export default function Description({
           </div>
         )}
       </div>
-
       <UseKeywordMap keyWord={keyWord} setMarkes={setMapMarkValue} />
       <div className="border-t-[1px] border-st-gray-03 flex justify-center ">
         <button
