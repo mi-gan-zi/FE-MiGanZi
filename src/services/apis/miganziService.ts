@@ -67,6 +67,34 @@ export const postBoard = async (data: {}) => {
   }
 };
 
+export const getPopularPost = async () => {
+  try {
+    const url = `user/board/popular-post`;
+    const response = await axiosClient.axios(url);
+    return response;
+  } catch (error) {
+    throw new Error(`PopularPost get ERR : ${error}`);
+  }
+};
+
+export const getPopularPostService = async () => {
+  return axiosClient
+    .axios<IPopular[] | undefined>(`user/board/popular-post`)
+    .then((res) => res.data)
+    .catch((error) => {
+      throw new Error(`PopularPost get ERR : ${error}`);
+    });
+};
+
+export const getInfinityPost = async () => {
+  return axiosClient
+    .axios<{ content: [] }>(`user/board/posts?page=0`) // data.content에서 타입에러 발생해서 any로 일단 처리
+    .then((res) => console.log(res.data?.content))
+    .catch((error) => {
+      throw new Error(`InfinityPost get ERR : ${error}`);
+    });
+};
+
 /**
  * User API
  */
@@ -132,32 +160,4 @@ export const postReIssue = async (stableRefesh: {}) => {
   } catch (error) {
     throw new Error(`POST REISSUE Error[토큰 발급 실패]: ${error}`);
   }
-};
-
-// export const getPopularPost = async () => {
-//   try {
-//     const url = `user/board/popular-post`;
-//     const response = await axiosClient.axios(url);
-//     return response;
-//   } catch (error) {
-//     throw new Error(`PopularPost get ERR : ${error}`);
-//   }
-// };
-
-export const getPopularPostService = async () => {
-  return axiosClient
-    .axios<IPopular[] | undefined>(`user/board/popular-post`)
-    .then((res) => res.data)
-    .catch((error) => {
-      throw new Error(`PopularPost get ERR : ${error}`);
-    });
-};
-
-export const getInfinityPost = async () => {
-  return axiosClient
-    .get<{ content: [] }>(`user/board/posts?page=0`) // data.content에서 타입에러 발생해서 any로 일단 처리
-    .then((res) => console.log(res.data?.content))
-    .catch((error) => {
-      throw new Error(`InfinityPost get ERR : ${error}`);
-    });
 };
