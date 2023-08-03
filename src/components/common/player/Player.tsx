@@ -60,11 +60,11 @@ export default function Player(props: PropsType) {
     }
   };
   return (
-    <div className="bg-yellow-300 flex justify-end">
-      <div className="bg-[#F5F4F3] border-st-gray-03 border-[1px] w-[370px] h-[157px] rounded-l-xl py-4 flex justify-between px-6 relative">
-        <article className="left_box flex-col flex">
+    <div className="bg-yellow-300 flex justify-end ">
+      <div className="bg-[#F5F4F3] border-st-gray-03 border-[1px] w-[370px] h-[157px] rounded-l-xl py-4 flex justify-between px-6 relative ">
+        <article className="left_box flex-col ">
           <div className="description flex-col flex gap-1 mb-2">
-            <p>{song}</p>
+            <p className="w-[135px]">{song}</p>
             <p>{artist}</p>
             <p className="thin">
               {moment(Number(current) * 1000).format("mm:ss")}
@@ -85,11 +85,12 @@ export default function Player(props: PropsType) {
             </div>
           </div>
         </article>
-        <article className="record-box mr-2 w-[190px] relative">
+
+        <article className="record-box mr-1 w-[190px] relative  ">
           <CircularProgressbarWithChildren
             value={ratio}
             strokeWidth={5}
-            className={"w-[120px] h-[120px] absolute right-[20px]"}
+            className={"w-[120px] h-[120px] absolute right-[19px] top-[2px] "}
             styles={{
               path: {
                 stroke: "#007DF0",
