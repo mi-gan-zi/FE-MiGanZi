@@ -9,51 +9,57 @@ import {
   useState,
 } from "react";
 
-type ImageProps = {
-  setImage: Dispatch<SetStateAction<boolean>>;
-  setImageFile: Dispatch<SetStateAction<any>>;
+type Props = {
+  setIsImage: Dispatch<SetStateAction<boolean>>;
+  setImageValue?: Dispatch<SetStateAction<string | ArrayBuffer | null>>;
+  imageValue: any;
 };
 
-export default function ImageUpLoad({ setImage, setImageFile }: ImageProps) {
-  const [img, setImg] = useState<string>("");
+export default function ImageUpLoad({
+  setIsImage,
+  setImageValue,
+  imageValue,
+}: Props) {
   const ref = useRef<HTMLInputElement>(null);
+  const [preImage, setPreImage] = useState<any>();
 
-  useEffect(() => {
-    setImage(true);
-  }, []);
+  useEffect(() => {}, []);
+  const imageSizeAlert = () => {
+    alert("이미지 사이즈는 10메가 이하로 해주세요 😡");
+  };
 
   const handleCreateIMG = (e: any) => {
     const dropFile = e.dataTransfer?.files[0];
     const file = ref.current?.files?.[0];
-    const maxSizeInBytes = 3 * 1024 * 1024; // 3MB
-    if (
-      (file && file.size > maxSizeInBytes) ||
-      dropFile.size > maxSizeInBytes
-    ) {
-      alert("이미지 용량은 3MB이하로 올려주세요.");
-    } else {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImg(reader.result as string);
-      };
-      if (file) {
-        reader.readAsDataURL(file);
-        setImageFile(e.target.files[0]);
-        setImage(false);
-      } else if (dropFile) {
-        reader.readAsDataURL(dropFile);
-        setImageFile(e.target.files[0]);
-        setImage(false);
+    const reader = new FileReader();
+    const maxSizeInBytes = 10 * 1024 * 1024;
+    reader.onloadend = () => {
+      if (setImageValue) {
+        setImageValue(e.target.files[0]);
+        setPreImage(reader?.result);
       }
+    };
+    const checkAndReadImage = (imageFile: File) => {
+      if (imageFile.size > maxSizeInBytes) {
+        imageSizeAlert();
+      } else {
+        reader.readAsDataURL(imageFile);
+        setIsImage(true);
+      }
+    };
+    if (file) {
+      checkAndReadImage(file);
+    }
+
+    if (dropFile) {
+      checkAndReadImage(dropFile);
     }
   };
-
   const handleDrop = useCallback((e: DragEvent): void => {
     e.preventDefault();
     e.stopPropagation();
     handleCreateIMG(e);
   }, []);
-
   return (
     <div>
       <div className="w-[350px] h-[70px] font-bold text-xl flex items-center px-5">
@@ -63,7 +69,7 @@ export default function ImageUpLoad({ setImage, setImageFile }: ImageProps) {
         <div
           className={
             "pre-img w-[350px] h-[467px] flex-col justify-center items-center flex " +
-            (img
+            (preImage
               ? ""
               : "border-dashed border-st-gray-05 border-[1px] rounded-lg")
           }
@@ -72,9 +78,9 @@ export default function ImageUpLoad({ setImage, setImageFile }: ImageProps) {
           }}
           onDrop={(e: DragEvent) => handleDrop(e)}
         >
-          {img ? (
+          {preImage ? (
             <img
-              src={img}
+              src={preImage}
               alt=""
               className=" max-w-xl rounded-md w-full h-auto aspect-[3/4] object-cover"
             />
@@ -97,10 +103,15 @@ export default function ImageUpLoad({ setImage, setImageFile }: ImageProps) {
           )}
         </div>
         <label
-          className="block w-[350px] h=[50px] py-2 rounded-lg text-center bg-st-gray-05 text-st-white mt-3 cursor-pointer mb-[120px]"
+          className={
+            "block w-[350px] h=[50px] py-2 rounded-lg text-center " +
+            (imageValue
+              ? " bg-st-gray-05 text-st-white mt-3 cursor-pointer mb-[120px]"
+              : "bg-active-blue text-st-white mt-3 cursor-pointer mb-[120px]")
+          }
           htmlFor="file-upload"
         >
-          사진 업로드
+          {imageValue ? "다른 사진 선택" : "사진 업로드"}{" "}
         </label>
         <input
           type="file"

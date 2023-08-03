@@ -23,6 +23,8 @@ export const DeleteUser = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("refresh-token");
       localStorage.removeItem("nickname");
+      localStorage.removeItem("expier_time");
+
       setFinalModal(true);
       navigate("/");
     } catch (err) {

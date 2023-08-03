@@ -36,9 +36,14 @@ export function InfinityPost(props: { url: string }): React.ReactElement {
     }
   };
 
-  const target = useIntersectionObserver(async (entry: any, observer: any) => {
-    await getData();
-  });
+  const target = useIntersectionObserver(
+    async (
+      entry: IntersectionObserverEntry,
+      observer: IntersectionObserver
+    ) => {
+      await getData();
+    }
+  );
 
   return (
     <>

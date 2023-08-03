@@ -6,6 +6,7 @@ import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import { ReactComponent as NonImage } from "../../assets/non_image.svg";
 import InfinityPost from "components/common/post/InfinityPost";
 import { useNavigate } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const MyPosts = () => {
   const [posts, setPosts] = useState<Post[] | null>([]);
@@ -14,8 +15,14 @@ export const MyPosts = () => {
   const [total, setTotal] = useState<number>(0);
   const axios = createAxiosInstance();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const getPosts = async () => {
+  const { data } = useQuery({
+    queryKey: ["mypost"],
+    queryFn: () => getPosts(),
+  });
+
+  async function getPosts() {
     const res = await axios.get(`user/my-page/posts?page=0`);
     setTotal(res.data.postsDto.content.length);
     const newPosts = res.data.postsDto.content;
@@ -23,7 +30,7 @@ export const MyPosts = () => {
     setPageNumber((prevPage) => prevPage + 1);
     setcheckLast(res.data.postsDto.last);
     return newPosts;
-  };
+  }
 
   const target = useIntersectionObserver(async (entry: any, observer: any) => {
     await getPosts().then((result) => {
@@ -31,18 +38,16 @@ export const MyPosts = () => {
     });
   });
 
-  useEffect(() => {
-    getPosts();
-  }, []);
-
   return (
     <>
       <div>
         <Header />
-        <div className="px-5">
-          <p className="text-st-gray-10 text-base font-medium">
-            내가 쓴 글 <span className="text-[#007DF0]">{total}</span>
-          </p>
+        <div>
+          <div className="px-5">
+            <p className="text-st-gray-10 text-base font-medium">
+              내가 쓴 글 <span className="text-[#007DF0]">{total}</span>
+            </p>
+          </div>
           {total === 0 && (
             <div className="w-full h-[560px] flex flex-col items-center justify-center">
               <NonImage />
@@ -60,7 +65,7 @@ export const MyPosts = () => {
             </div>
           )}
           {total !== 0 && (
-            <div className="flex flex-wrap flex-column w-[390px]">
+            <div className="flex flex-wrap flex-column w-[390px] px-3">
               {posts?.map((item) => {
                 return (
                   <img

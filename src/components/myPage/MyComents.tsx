@@ -5,6 +5,7 @@ import createAxiosInstance from "utils/axiosConfig";
 import { Post } from "../../@types/post.type";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
 import { AlarmComponent } from "components/common/alarm/AlarmComponet";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const MyComents = () => {
   const [posts, setPosts] = useState<Post[] | null>(null);
@@ -12,10 +13,15 @@ export const MyComents = () => {
   const axios = createAxiosInstance();
   const [pageNumber, setPageNumber] = useState<number>(0);
   const [checkLast, setcheckLast] = useState<boolean>();
+  const queryClient = useQueryClient();
+
+  const { data } = useQuery({
+    queryKey: ["mycomment"],
+    queryFn: () => getComments(),
+  });
 
   const getComments = async () => {
     const res = await axios.get(`user/my-page/comments`);
-    console.log(res);
     setTotal(res.data.myCommentsDto.content.length);
     const newPosts = res.data.myCommentsDto.content;
     setPosts((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
@@ -27,17 +33,15 @@ export const MyComents = () => {
     await getComments();
   });
 
-  useEffect(() => {
-    getComments();
-  }, []);
-
   return (
     <div>
       <Header />
       <div className="px-5">
-        <p className="text-st-gray-10 text-base font-medium">
-          내가 쓴 댓글 <span className="text-[#007DF0]">{total}</span>
-        </p>
+        <div>
+          <p className="text-st-gray-10 text-base font-medium">
+            내가 쓴 댓글 <span className="text-[#007DF0]">{total}</span>
+          </p>
+        </div>
         {total === 0 && (
           <div className="w-full h-[560px] flex flex-col items-center justify-center">
             <NonImage />

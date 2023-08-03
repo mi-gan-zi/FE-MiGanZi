@@ -1,37 +1,45 @@
 import { PinIcon, WihteSearchIcon } from "assets/Icon";
 import UseKeywordMap from "components/common/keyword_map/useKeywordMap";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import { Text } from "./Text";
 import TagList from "components/TagList";
-import { MarkType } from "./Container";
-
+import { tagsToBit } from "utils/tagsToBit";
+type Props = {
+  setTagValue: Dispatch<SetStateAction<any>>;
+  setMapMarkValue: Dispatch<SetStateAction<any>>;
+  setContentValue: Dispatch<SetStateAction<any>>;
+  setKeyWord: Dispatch<SetStateAction<string>>;
+  mapMarkValue: Object | undefined;
+  keyWord: string;
+};
 export default function Description({
-  setMarkes,
-  setContent,
-  setTags,
-}: {
-  setMarkes: Dispatch<SetStateAction<MarkType>>;
-  setContent: Dispatch<SetStateAction<string>>;
-  setTags: Dispatch<SetStateAction<string[]>>;
-}) {
-  const [keyWord, setKeyWord] = useState("");
+  setTagValue,
+  setContentValue,
+  setMapMarkValue,
+  setKeyWord,
+  keyWord,
+  mapMarkValue,
+}: Props) {
   const [isPopUp, setIsPopUp] = useState(false);
-
+  const [tags, setTags] = useState<string[]>([]);
+  const [bit, setBit] = useState<string>("000000000000");
   const handleAddress = (data: any) => {
     setKeyWord(data.address);
     setIsPopUp(!isPopUp);
   };
 
-  console.log(keyWord);
-
+  useEffect(() => {
+    setBit(tagsToBit(tags));
+    setTagValue(bit);
+  }, [tags]);
   return (
     <div className="flex flex-col gap-4">
       <div className="py-5">
         <h1 className="font-bold text-xl px-5 pb-5">태그 선택</h1>
         <TagList setTags={setTags} />
       </div>
-      <Text setContent={setContent} />
+      <Text setContent={setContentValue} />
       <div className="w-[350px] h-[70px] font-bold text-xl flex items-center px-5">
         <h1>장소 입력</h1>
       </div>
@@ -60,9 +68,17 @@ export default function Description({
           </div>
         )}
       </div>
-
-      <UseKeywordMap keyWord={keyWord} setMarkes={setMarkes} />
-      <div className="border-t-[1px] border-st-gray-03 flex justify-center "></div>
+      <UseKeywordMap keyWord={keyWord} setMarkes={setMapMarkValue} />
+      <div className="border-t-[1px] border-st-gray-03 flex justify-center ">
+        <button
+          className={
+            " w-[350px] h-[50px] text-st-white font-bold  mt-2 rounded-md cursor-pointer " +
+            (mapMarkValue ? "bg-[#007DF0] " : "bg-st-gray-05")
+          }
+        >
+          다음으로
+        </button>
+      </div>
     </div>
   );
 }

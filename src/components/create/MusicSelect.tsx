@@ -1,82 +1,47 @@
 import Player from "components/common/player/Player";
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
-import MadeleineLove from "assets/music/MadeleineLove.mp3";
-import Winter from "assets/music/Winter.mp3";
-import sawal from "assets/music/sawal.mp3";
-import single from "assets/music/single.mp3";
-import feel from "assets/music/feel.mp3";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
-type MusicIdProps = {
-  setMusicId: Dispatch<SetStateAction<string>>;
-};
+import { CreateMiganziType } from "./CreateContainer";
+import { playList } from "./MusicDataList";
 
-export default function MusicSelect({ setMusicId }: MusicIdProps) {
-  const [playing, setPlaying] = useState(false);
+interface PropsType {
+  currentStep: CreateMiganziType;
+  playing: boolean;
+  setPlaying: Dispatch<SetStateAction<boolean>>;
+  setMusicValue: Dispatch<SetStateAction<string>>;
+}
+export default function MusicSelect({
+  playing,
+  setPlaying,
+  setMusicValue,
+}: PropsType) {
   const [song, setSong] = useState<string>();
   const [artist, setArtist] = useState<string>("");
   const [playTitle, setPlayTitle] = useState();
-  const [isCheck, setIsCheck] = useState<boolean>(false);
   const [targetId, setTargetId] = useState<number>();
   const [imgURL, setImgURL] = useState<string>();
-  const refList = useRef<HTMLInputElement>(null);
-  const playList = [
-    {
-      id: 1,
-      song: "Madeleine_Love",
-      artist: "CHEEZE(치즈)",
-      imgURL:
-        "https://image.bugsm.co.kr/album/images/original/5031/503179.jpg?version=undefined",
-      playList: MadeleineLove,
-    },
-    {
-      id: 2,
-      song: "A Winter Story",
-      artist: "Remedios",
-      imgURL:
-        "https://image.bugsm.co.kr/album/images/original/3580/358032.jpg?version=undefined",
-      playList: Winter,
-    },
-    {
-      id: 3,
-      song: "7102",
-      artist: "김 사월",
-      imgURL:
-        "https://image.bugsm.co.kr/album/images/original/201302/20130242.jpg?version=undefined",
-      playList: sawal,
-    },
-    {
-      id: 4,
-      song: "민들레",
-      artist: "우효(OOHYO)",
-      imgURL:
-        "https://image.bugsm.co.kr/album/images/original/201002/20100227.jpg?version=undefined",
-      playList: single,
-    },
-    {
-      id: 5,
-      song: "Feel Alright",
-      artist: "짙은",
-      imgURL:
-        "https://image.bugsm.co.kr/album/images/original/2263/226380.jpg?version=undefined",
-      playList: feel,
-    },
-  ];
-  const inputValue = (e: any) => {
-    const res = e.target?.value;
+
+  const inputValue = (event: any) => {
+    const res = event.target?.value;
     setTargetId(parseInt(res));
-    const isChecked = e.target.checked;
     playList.filter((id) => {
       if (id.id === parseInt(res)) {
         setArtist(id.artist);
         setSong(id.song);
         setPlayTitle(id.playList);
         setImgURL(id.imgURL);
-        setIsCheck(isChecked);
         setPlaying(false);
-        setMusicId(id.id.toString());
+        setMusicValue(id.id.toString());
       }
     });
   };
+
   return (
     <div>
       <h1 className="text-[20px] font-bold p-5">게시글의 첨부할 음악선택</h1>
@@ -87,11 +52,8 @@ export default function MusicSelect({ setMusicId }: MusicIdProps) {
         song={song}
         artist={artist}
         imgURL={imgURL}
-        setIsCheck={setIsCheck}
         targetId={targetId}
       />
-      {/* //빈지노의 브레이크
-      //한요한의 따릉에 */}
       <ul className="py-10 px-4">
         {playList.map((i) => (
           <li

@@ -2,12 +2,17 @@ import createAxiosInstance from "utils/axiosConfig";
 import { vaildNick } from "components/common/utils/vaild";
 import React, { useEffect, useRef, useState } from "react";
 import { Header } from "./Header";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const ChangeNickname = () => {
   const ref = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState<string>("");
   const nickname = ref.current?.value;
   const axios = createAxiosInstance();
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: () => changeNickname(),
+  });
 
   useEffect(() => {
     if (nickname && !vaildNick(nickname)) {
@@ -24,7 +29,6 @@ export const ChangeNickname = () => {
       formData.append("newNickname", nickname_content);
       try {
         const res = await axios.post("user/update-nickname", formData);
-        console.log(res);
         localStorage.clear();
         localStorage.setItem("nickname", res.data.data.nickname);
         localStorage.setItem("token", res.data.data.accessToken);
@@ -51,7 +55,7 @@ export const ChangeNickname = () => {
             className="w-[265px] border border-st-gray-05 rounded px-3 py-[10px] mr-3"
           />
           <button
-            onClick={changeNickname}
+            onClick={() => mutation.mutate()}
             className="rounded bg-[#007DF0] px-3 py-[10px] text-st-white text-sm"
           >
             중복확인

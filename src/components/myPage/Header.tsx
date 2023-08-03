@@ -6,13 +6,12 @@ export const Header = () => {
   const [title, setTitle] = useState<string>("");
   const navigate = useNavigate();
   const location = window.location.pathname.split("/")[1];
-  const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!localStorage.getItem("access_token")) {
+  //     navigate("/login");
+  //   }
+  // }, []);
 
   const handleTitle = () => {
     if (location === "nickname") {

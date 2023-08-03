@@ -1,12 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
-import { getDetail } from "services/apis/boardService";
+import { checkToken } from "components/common/utils/checkAccessToken";
+import useAuth from "hooks/useAuth";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { getDetail, postReIssue } from "services/apis/miganziService";
 
 export default function TestDetail() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["board"],
-    queryFn: () => getDetail("1"),
-  });
-  useEffect(() => {}, []);
-  return <div>ddsfdf</div>;
+  const [isAccessToken, setIsAccessToken] = useState(false);
+  const { isUser } = useAuth();
+  // const path = window.location.pathname;
+  const { pathname } = useLocation();
+  const getCheck = async () => {
+    const response = await checkToken();
+    if (response) {
+      setIsAccessToken(response);
+    }
+  };
+  useEffect(() => {
+    getCheck();
+  }, [pathname]);
+  return (
+    <div>
+      <button>sdfsdf</button>
+    </div>
+  );
 }
