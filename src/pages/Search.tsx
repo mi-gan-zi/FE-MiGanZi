@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import axios from "axios";
 import TagList from "components/TagList";
 import MapMark from "components/common/map/MapMark";
@@ -17,8 +17,8 @@ export default function Search() {
   const [lat, setLat] = useState<string | null>(null);
   const [lng, setLng] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
-  const [bit, setBit] = useState<string>("000000000000");
   const [posts, setPosts] = useState<Post[]>([]);
+  const bit = useMemo(() => tagsToBit(tags), [tags]);
 
   const getSearchList = useCallback(async () => {
     const res = await axios.get(`${process.env.REACT_APP_ENDPOINT}user/board/find-near-post/${lat}/${lng}/${bit}`);
@@ -26,7 +26,6 @@ export default function Search() {
   }, [lat, lng, bit]);
 
   useEffect(() => {
-    setBit(tagsToBit(tags));
     lat && lng && getSearchList();
   }, [getSearchList, lat, lng, tags]);
 
@@ -46,7 +45,6 @@ export default function Search() {
     setLat("");
     setLng("");
     setTags([]);
-    setBit("000000000000");
     setPosts([]);
   };
 
