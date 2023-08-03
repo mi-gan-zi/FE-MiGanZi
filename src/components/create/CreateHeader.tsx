@@ -26,7 +26,7 @@ const CreateHeader = ({
   setPlaying,
 }: CreateHeaderProps) => {
   return (
-    <div className="w-full pb-4 flex-col items-center justify-between px-5 border-b-[1px] border-st-gray-03">
+    <div className="w-full pb-4 flex-col items-center justify-between px-5 border-b-[1px] border-st-gray-03 mt-4">
       <div className="flex justify-between">
         <div
           className="flex cursor-pointer"
