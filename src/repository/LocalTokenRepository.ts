@@ -12,7 +12,6 @@ export class LocalTokenRepository {
 
   setAccess(access_token: string) {
     localStorage.setItem(this.access_token, access_token);
-    // localStorage.setItem(this.access_token, expier_time.toString());
   }
 
   setNickName(nickname: string) {
