@@ -16,15 +16,8 @@ interface PropsType {
 // const temp2 =
 //   "progress-bar border-[5px]  border-solid border-gray-500 rounded-full w-[120px] h-[120px] flex items-center justify-center shadow-xl relative";
 export default function Player(props: PropsType) {
-  const {
-    song = "음악을 선택해주세요!",
-    artist,
-    playList,
-    setPlaying,
-    targetId,
-    imgURL,
-    playing,
-  } = props;
+  const { song, artist, playList, setPlaying, targetId, imgURL, playing } =
+    props;
   // const [playing, setPlaying] = useState(false);
   const [totalTime, setTotalTime] = useState(0);
   const [current, setCurrentTime] = useState(0);
@@ -60,11 +53,11 @@ export default function Player(props: PropsType) {
     }
   };
   return (
-    <div className="bg-yellow-300 flex justify-end ">
+    <div className="bg-yellow-300 flex justify-end">
       <div className="bg-[#F5F4F3] border-st-gray-03 border-[1px] w-[370px] h-[157px] rounded-l-xl py-4 flex justify-between px-6 relative ">
         <article className="left_box flex-col ">
           <div className="description flex-col flex gap-1 mb-2">
-            <p className="w-[135px]">{song}</p>
+            <p className="w-[120px]">{song}</p>
             <p>{artist}</p>
             <p className="thin">
               {moment(Number(current) * 1000).format("mm:ss")}
@@ -85,12 +78,11 @@ export default function Player(props: PropsType) {
             </div>
           </div>
         </article>
-
-        <article className="record-box mr-1 w-[190px] relative  ">
+        <article className="record-box mr-2 w-[190px] relative">
           <CircularProgressbarWithChildren
             value={ratio}
             strokeWidth={5}
-            className={"w-[120px] h-[120px] absolute right-[19px] top-[2px] "}
+            className={"w-[125px] h-[125px] absolute right-[16px]"}
             styles={{
               path: {
                 stroke: "#007DF0",
@@ -106,19 +98,19 @@ export default function Player(props: PropsType) {
               <>
                 <img
                   className={
-                    `rounded-full w-[100px] h-[100px] absolute left-[60px] top-[200px] ` +
+                    `rounded-full w-[105px] h-[105px] absolute left-[60px] top-[200px] ` +
                     (playing ? "animate-spin" : "")
                   }
                   src={imgURL}
                   alt=""
                 />
-                <div className="rounded-full w-[30px] h-[30px] bg-st-white absolute"></div>
+                <div className="rounded-full w-[30px] h-[30px] bg-st-white absolute top-[235px] right-[62px] text-active-blue" />
               </>
             ) : (
               <>
                 <img
                   className={
-                    `rounded-full w-[105px] h-[105px] absolute left-[50px] top-[190px]`
+                    `rounded-full w-[105px] h-[105px] absolute left-[60px] top-[200px]`
                     // (playing ? "animate-spin" : "")
                   }
                   src={defrecord}
