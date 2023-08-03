@@ -19,7 +19,7 @@ export const getDetail = async (id: string) => {
   }
 };
 
-export const postComment = async (formData: any) => {
+export const postComment = async (formData: {}) => {
   let localToken = await localTokenRepoInstance.getAccess();
   try {
     const url = `user/board/comment/write`;
@@ -40,7 +40,7 @@ export const postComment = async (formData: any) => {
   }
 };
 
-export const postBoard = async (data: any) => {
+export const postBoard = async (data: {}) => {
   let access_token = await localTokenRepoInstance.getAccess();
 
   if (access_token === null) {
@@ -71,7 +71,7 @@ export const postBoard = async (data: any) => {
  * User API
  */
 
-export const postLogin = async (formData: any) => {
+export const postLogin = async (formData: {}) => {
   try {
     const url = "user/login";
     const currentDate = Date.now().toString();
@@ -112,7 +112,7 @@ export const postLogout = async () => {
   }
 };
 
-export const postReIssue = async (stableRefesh: any) => {
+export const postReIssue = async (stableRefesh: {}) => {
   try {
     const url = `user/reissue`;
     const options = {
