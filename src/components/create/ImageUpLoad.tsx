@@ -8,6 +8,8 @@ import {
   useRef,
   useState,
 } from "react";
+import { Cropper, ReactCropperElement } from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
 type Props = {
   setIsImage: Dispatch<SetStateAction<boolean>>;
@@ -22,6 +24,8 @@ export default function ImageUpLoad({
 }: Props) {
   const ref = useRef<HTMLInputElement>(null);
   const [preImage, setPreImage] = useState<any>();
+  const [image, setImage] = useState<null | string>(null);
+  const cropperRef = useRef<ReactCropperElement>(null);
 
   useEffect(() => {}, []);
   const imageSizeAlert = () => {
@@ -34,6 +38,7 @@ export default function ImageUpLoad({
     const reader = new FileReader();
     const maxSizeInBytes = 10 * 1024 * 1024;
     reader.onloadend = () => {
+      setImage(reader?.result as string);
       if (setImageValue) {
         setImageValue(e.target.files[0]);
         setPreImage(reader?.result);
@@ -55,11 +60,36 @@ export default function ImageUpLoad({
       checkAndReadImage(dropFile);
     }
   };
+
+  const [test, setTest] = useState();
+  const cropTest = (e: any) => {
+    // if (typeof cropperRef.current?.cropper !== "undefined") {
+    //   setImage(null);
+    //   setPreImage(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+    //   //@ts-ignore
+    //   setTest(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+    //   // console.log(e.target.files[0]);
+    // }
+  };
+  console.log(test);
+
+  const getCropData = () => {
+    if (typeof cropperRef.current?.cropper !== "undefined") {
+      setImage(null);
+      setPreImage(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+      // console.log(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+      //   .getCroppedCanvas()
+      //   .toBlob((blob) => {});
+      // console.log(base64ToBlob(URL, "image/png"));
+    }
+  };
+
   const handleDrop = useCallback((e: DragEvent): void => {
     e.preventDefault();
     e.stopPropagation();
     handleCreateIMG(e);
   }, []);
+
   return (
     <div>
       <div className="w-[350px] h-[70px] font-bold text-xl flex items-center px-5">
@@ -102,6 +132,35 @@ export default function ImageUpLoad({
             </div>
           )}
         </div>
+        {image && (
+          <div className="container">
+            <div className="backdrop" />
+            <div className="modal">
+              <div className="content-wrapper">
+                <div className="content">
+                  <Cropper
+                    id="CropperId"
+                    ref={cropperRef}
+                    src={image}
+                    viewMode={2}
+                    zoomOnWheel={false}
+                    zoomOnTouch={false}
+                    zoomable={false}
+                    scalable={false}
+                    checkOrientation={false}
+                    aspectRatio={3 / 4}
+                  />
+                </div>
+              </div>
+              <div className="footer">
+                <button onClick={() => setImage(null)}>취소</button>
+                <button className="crop" onClick={cropTest}>
+                  적용
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <label
           className={
             "block w-[350px] h=[50px] py-2 rounded-lg text-center " +
@@ -111,7 +170,7 @@ export default function ImageUpLoad({
           }
           htmlFor="file-upload"
         >
-          {imageValue ? "다른 사진 선택" : "사진 업로드"}{" "}
+          {imageValue ? "다른 사진 선택" : "사진 업로드"}
         </label>
         <input
           type="file"
