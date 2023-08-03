@@ -31,7 +31,6 @@ export default function ImageUpLoad({
   const imageSizeAlert = () => {
     alert("이미지 사이즈는 10메가 이하로 해주세요 😡");
   };
-  console.log(imageValue);
 
   const handleCreateIMG = (e: any) => {
     const dropFile = e.dataTransfer?.files[0];
@@ -41,9 +40,7 @@ export default function ImageUpLoad({
     reader.onloadend = () => {
       setImage(reader?.result as string);
       if (setImageValue) {
-        // setImageValue(e.target.files[0]);
         setPreImage(reader?.result);
-        // console.log(e.target.files[0]);
       }
     };
     const checkAndReadImage = (imageFile: File) => {
@@ -66,7 +63,6 @@ export default function ImageUpLoad({
   const getCropData = () => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
       setImage(null);
-      // setPreImage(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
       const file = base64toFile(
         cropperRef.current?.cropper.getCroppedCanvas().toDataURL(),
         "image_file.png"
@@ -74,7 +70,7 @@ export default function ImageUpLoad({
 
       //@ts-ignore
       setImageValue(file);
-      setPreImage(file);
+      console.log(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
     }
   };
 
@@ -156,7 +152,7 @@ export default function ImageUpLoad({
                     zoomable={false}
                     scalable={false}
                     checkOrientation={false}
-                    aspectRatio={3 / 4}
+                    aspectRatio={NaN}
                   />
                 </div>
               </div>
