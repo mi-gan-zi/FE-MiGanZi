@@ -21,7 +21,7 @@ export const MyComents = () => {
   });
 
   const getComments = async () => {
-    const res = await axios.get(`user/my-page/comments?page=0`);
+    const res = await axios.get(`user/my-page/comments`);
     setTotal(res.data.myCommentsDto.content.length);
     const newPosts = res.data.myCommentsDto.content;
     setPosts((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
