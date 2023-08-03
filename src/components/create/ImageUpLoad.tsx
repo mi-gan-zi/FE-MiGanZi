@@ -13,7 +13,7 @@ import "cropperjs/dist/cropper.css";
 
 type Props = {
   setIsImage: Dispatch<SetStateAction<boolean>>;
-  setImageValue?: Dispatch<SetStateAction<string | ArrayBuffer | null>>;
+  setImageValue?: Dispatch<SetStateAction<string>>;
   imageValue: any;
 };
 

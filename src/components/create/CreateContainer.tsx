@@ -17,10 +17,13 @@ export default function Container() {
   const [playing, setPlaying] = useState(false);
   const [isImage, setIsImage] = useState(false);
   const [musicValue, setMusicValue] = useState("0");
-  const [imageValue, setImageValue] = useState<any>("");
-  const [tagValue, setTagValue] = useState<any>();
+  const [imageValue, setImageValue] = useState("");
+  const [tagValue, setTagValue] = useState("");
   const [contentValue, setContentValue] = useState("");
-  const [mapMarkValue, setMapMarkValue] = useState<any>();
+  const [mapMarkValue, setMapMarkValue] = useState<{
+    lat: string;
+    lng: string;
+  }>();
   const [keyWord, setKeyWord] = useState("");
   const navigate = useNavigate();
   const createMutation = useMutation({
@@ -52,7 +55,9 @@ export default function Container() {
     e.preventDefault();
 
     formData.append("content", contentValue);
+    //@ts-ignore
     formData.append("lat", mapMarkValue?.lat);
+    //@ts-ignore
     formData.append("lng", mapMarkValue?.lng);
     formData.append("tags", tagValue);
     formData.append("address_name", keyWord);
