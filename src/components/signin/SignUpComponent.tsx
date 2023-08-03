@@ -1,41 +1,55 @@
-import axios from "axios";
-import React, { useRef, useState } from "react";
+import axios, { AxiosResponse } from "axios";
+import useDebounce from "hooks/useDebounce";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const SignUp = () => {
   const [check, setCheck] = useState(false);
+  const [checkNickValue, setCheckNickValue] = useState<string | undefined>();
+  const [checked, setChecked] = useState<any>();
   const [err, setErr] = useState<string>("");
   const [msg, setMsg] = useState<string>("");
+
   const nickname_ref = useRef<HTMLInputElement>(null);
   const password_ref = useRef<HTMLInputElement>(null);
   const check_ref = useRef<HTMLInputElement>(null);
+  const debouncedValue = useDebounce({ value: checkNickValue, delay: 400 });
   const navigate = useNavigate();
-
-  const checkNickname = async () => {
-    const nickname = nickname_ref.current?.value;
-    if (nickname) {
+  const nickNameValue = async (e: ChangeEvent<HTMLInputElement>) => {
+    const nickname = e.target.value;
+    setCheckNickValue(nickname);
+  };
+  const checkhandler = async () => {
+    if (debouncedValue) {
       const res = await axios.get(
-        process.env.REACT_APP_ENDPOINT + "user/check/" + `${nickname}`
+        process.env.REACT_APP_ENDPOINT + "user/check/" + `${debouncedValue}`
       );
-      if (res.data === "noNickName") {
-        setErr("닉네임이 형식에 맞지 않습니다.");
+      setChecked(res?.data);
+      if (debouncedValue) {
+        if (res?.data === "noNickName") {
+          setErr("닉네임이 형식에 맞지 않습니다.");
+        }
+        if (res?.data === "length") {
+          setErr("닉네임을 8자 이하로 작성해주세요");
+        }
+        if (res?.data === "exits") {
+          setErr("중복된 닉네임입니다.");
+        }
+        if (res?.data === "OK") {
+          setErr("");
+          setCheck(true);
+          setMsg("사용 가능한 닉네임입니다.");
+        }
+      } else if (debouncedValue === "") {
+        setErr("닉네임을 입력해주세요");
+      } else {
+        setErr("닉네임을 입력해주세요");
       }
-      if (res.data === "length") {
-        setErr("닉네임을 8자 이하로 작성해주세요");
-      }
-      if (res.data === "exits") {
-        setErr("중복된 닉네임입니다.");
-      }
-      if (res.data === "OK") {
-        setErr("");
-        setCheck(true);
-        setMsg("사용 가능한 닉네임입니다.");
-      }
-    } else {
-      setErr("닉네임을 입력해주세요");
     }
   };
-
+  useEffect(() => {
+    checkhandler();
+  }, [debouncedValue]);
   const signup = async (e: any) => {
     e.preventDefault();
     const nickname = nickname_ref.current?.value;
@@ -62,25 +76,30 @@ export const SignUp = () => {
     }
   };
 
+  console.log(checked);
   return (
     <form onSubmit={signup} className="px-5 overflow-y-auto">
       <div className="mt-10">
         <p className="text-xl font-bold">닉네임</p>
-        <p className="text-active-blue">{msg}</p>
+        {checked === "OK" ? (
+          <p className="text-active-blue">{msg}</p>
+        ) : (
+          <p className="text-alert-red ">{err}</p>
+        )}
         <div className="mt-[30px] mb-[70px]">
           <input
-            disabled={check}
-            className="w-[265px] h-[44px] px-3 py-2.5 border border-st-gray-05 rounded mr-3 focus:outline-none"
+            className="w-[350px] h-[44px] px-3 py-2.5 border border-st-gray-05 rounded mr-3 focus:outline-none"
             ref={nickname_ref}
+            onChange={nickNameValue}
             placeholder="닉네임 입력"
           />
-          <button
+          {/* <button
             type="button"
-            onClick={() => checkNickname()}
+            // onClick={() => checkNickname()}
             className="w-[73px] h-[44px] px-3 py-2.5 bg-active-blue text-sm font-medium text-st-white rounded"
           >
             중복확인
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="mb-[90px]">
