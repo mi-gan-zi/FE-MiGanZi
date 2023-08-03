@@ -57,6 +57,7 @@ export const ChangeNickname = () => {
           <button
             onClick={() => mutation.mutate()}
             className="rounded bg-[#007DF0] px-3 py-[10px] text-st-white text-sm"
+            disabled={mutation.isLoading}
           >
             중복확인
           </button>
