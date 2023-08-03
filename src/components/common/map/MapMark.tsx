@@ -123,7 +123,7 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
         </button>
       </div>
       {address ? (
-        <p className="px-3 pb-5 text-sm text-active-blue">다른 장소를 탐색하려면 마커를 끌어서 이동시키세요</p>
+        <p className="px-4 pb-5 text-sm text-active-blue">다른 장소를 탐색하려면 마커를 끌어서 이동시키세요</p>
       ) : (
         ""
       )}
