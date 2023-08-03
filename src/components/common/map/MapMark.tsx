@@ -47,6 +47,7 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
           map.setBounds(bounds);
         }
       });
+    setAddress(null);
   }, [map, keyword]);
 
   function selectOverlay(type: kakao.maps.drawing.OverlayType.MARKER) {
