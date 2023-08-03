@@ -25,11 +25,12 @@ export const Container = () => {
     mutation.mutate();
   };
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     navigate("/login");
-  //   }
-  // }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
 
   // const logOut = async () => {
   //   const res = await axios.post("user/logout", {});
