@@ -58,7 +58,10 @@ export const MyPosts = () => {
                 <p className="text-st-gray-06 text-base font-medium">
                   당신만의 장소를 기록해보세요
                 </p>
-                <button className="bg-[#007DF0] rounded-lg px-4 py-[9px] text-st-white">
+                <button
+                  onClick={() => navigate("create")}
+                  className="bg-[#007DF0] rounded-lg px-4 py-[9px] text-st-white"
+                >
                   글 작성하기
                 </button>
               </div>
