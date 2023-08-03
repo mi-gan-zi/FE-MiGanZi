@@ -31,6 +31,7 @@ export default function ImageUpLoad({
   const imageSizeAlert = () => {
     alert("이미지 사이즈는 10메가 이하로 해주세요 😡");
   };
+  console.log(imageValue);
 
   const handleCreateIMG = (e: any) => {
     const dropFile = e.dataTransfer?.files[0];
@@ -40,8 +41,9 @@ export default function ImageUpLoad({
     reader.onloadend = () => {
       setImage(reader?.result as string);
       if (setImageValue) {
-        setImageValue(e.target.files[0]);
+        // setImageValue(e.target.files[0]);
         setPreImage(reader?.result);
+        // console.log(e.target.files[0]);
       }
     };
     const checkAndReadImage = (imageFile: File) => {
@@ -61,28 +63,34 @@ export default function ImageUpLoad({
     }
   };
 
-  const [test, setTest] = useState();
-  const cropTest = (e: any) => {
-    // if (typeof cropperRef.current?.cropper !== "undefined") {
-    //   setImage(null);
-    //   setPreImage(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
-    //   //@ts-ignore
-    //   setTest(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
-    //   // console.log(e.target.files[0]);
-    // }
-  };
-  console.log(test);
-
   const getCropData = () => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
       setImage(null);
-      setPreImage(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
-      // console.log(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
-      //   .getCroppedCanvas()
-      //   .toBlob((blob) => {});
-      // console.log(base64ToBlob(URL, "image/png"));
+      // setPreImage(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+      const file = base64toFile(
+        cropperRef.current?.cropper.getCroppedCanvas().toDataURL(),
+        "image_file.png"
+      );
+
+      //@ts-ignore
+      setImageValue(file);
+      setPreImage(file);
     }
   };
+
+  function base64toFile(base_data: any, filename: any) {
+    var arr = base_data.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+  }
 
   const handleDrop = useCallback((e: DragEvent): void => {
     e.preventDefault();
@@ -154,7 +162,7 @@ export default function ImageUpLoad({
               </div>
               <div className="footer">
                 <button onClick={() => setImage(null)}>취소</button>
-                <button className="crop" onClick={cropTest}>
+                <button className="crop" onClick={getCropData}>
                   적용
                 </button>
               </div>
