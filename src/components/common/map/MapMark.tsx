@@ -2,13 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { DrawingManager, Map } from "react-kakao-maps-sdk";
 import { ReactComponent as BluePin } from "assets/blue_pin.svg";
 
-const MapMark = ({
-  keyword,
-  setCoordinate,
-}: {
-  keyword: string;
-  setCoordinate: (y: string, x: string) => void;
-}) => {
+const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (y: string, x: string) => void }) => {
   type DrawingManagerType =
     /*global kakao*/
     kakao.maps.drawing.DrawingManager<kakao.maps.drawing.OverlayType.MARKER>;
@@ -16,9 +10,7 @@ const MapMark = ({
   let managerRef = useRef<DrawingManagerType>(null);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [address, setAddress] = useState(null);
-  const [overlayData, setOverlayData] = useState<
-    ReturnType<DrawingManagerType["getData"]>
-  >({
+  const [overlayData, setOverlayData] = useState<ReturnType<DrawingManagerType["getData"]>>({
     arrow: [],
     circle: [],
     ellipse: [],
@@ -27,6 +19,7 @@ const MapMark = ({
     polyline: [],
     rectangle: [],
   });
+  let bgColor = address ? "bg-st-gray-07" : "bg-active-blue";
 
   useEffect(() => {
     if (!map) return;
@@ -50,28 +43,21 @@ const MapMark = ({
             // @ts-ignore
             bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
           }
-          // TODO: 도로명 주소 검색 결과 마커 연결
-          // let lat = Number(markers[0].position.lat);
-          // let lng = Number(markers[0].position.lng);
-
           // @ts-ignore
           map.setBounds(bounds);
         }
       });
-    setAddress(null);
-    // TODO: 남아있는 이전 마커 이벤트 초기화
-    // return () => managerRef.current?.remove(overlayData);
   }, [map, keyword]);
 
   function selectOverlay(type: kakao.maps.drawing.OverlayType.MARKER) {
     const manager = managerRef.current;
-    manager && manager.cancel();
-    manager && manager.select(type);
+    manager?.cancel();
+    manager?.select(type);
   }
 
   function drawOverlayData() {
     const manager = managerRef.current;
-    if (manager !== null) {
+    if (manager !== null && manager.getData().marker.length !== 0) {
       let lng = manager.getData().marker[0].x.toString();
       let lat = manager.getData().marker[0].y.toString();
       setCoordinate(lat, lng);
@@ -80,12 +66,19 @@ const MapMark = ({
     }
   }
 
+  function setStatus() {
+    const manager = managerRef.current;
+    if (manager !== null && manager.getData().marker.length === 0) {
+      setAddress(null);
+    }
+    // FIXME: 요청 횟수 계속 증가하는 오류 -> 응답 완료전에 마커 삭제시 정상 동작 안함
+    drawOverlayData();
+  }
+
   function searchAddrFromCoords(manager: any) {
     const geocoder = new kakao.maps.services.Geocoder();
-    geocoder.coord2Address(
-      manager?.getData().marker[0].x,
-      manager?.getData().marker[0].y,
-      (result: any) => setAddress(result[0].address.address_name)
+    geocoder.coord2Address(manager?.getData().marker[0].x, manager?.getData().marker[0].y, (result: any) =>
+      setAddress(result[0].address.address_name)
     );
   }
 
@@ -109,19 +102,18 @@ const MapMark = ({
           guideTooltip={["draw", "drag"]}
           markerOptions={{
             draggable: true,
-            removable: false,
+            removable: true,
           }}
-          onStateChanged={() => drawOverlayData()}
+          onStateChanged={() => setStatus()}
         />
       </Map>
-
       <div className="px-3 py-5 flex justify-between items-center">
         <div className="gap-2 flex flex-row items-center">
           {address ? <BluePin /> : ""}
-          <div className="font-medium text-st-gray-07 ">{address}</div>
+          <p className="font-medium text-st-gray-07">{address}</p>
         </div>
         <button
-          className="px-3 py-1.5 text-[14px] text-[#fff] rounded bg-active-blue"
+          className={`px-3 py-1.5 text-[14px] text-[#fff] rounded ${bgColor}`}
           onClick={(e) => {
             selectOverlay(kakao.maps.drawing.OverlayType.MARKER);
           }}
@@ -130,6 +122,11 @@ const MapMark = ({
           마커 찍기
         </button>
       </div>
+      {address ? (
+        <p className="px-4 pb-5 text-sm text-active-blue">다른 장소를 탐색하려면 마커를 끌어서 이동시키세요</p>
+      ) : (
+        ""
+      )}
     </>
   );
 };
