@@ -3,17 +3,9 @@ import { localTokenRepoInstance } from "repository/LocalTokenRepository";
 import { IPopular, IPost, IPostContent } from "../../@types/post.type";
 import { AxiosResponse } from "axios";
 
-// interface
-// 1. baseURL
-// 2. refresh_token
-// 3. access_token
 const axiosClient = new AxiosClient(process.env.REACT_APP_ENDPOINT, "");
 // const axiosClient = new AxiosClient("http://localhost:4000/", "");
 
-// interface
-// 1. url
-// 2. data ?
-// 3. option? ( header{ Authorization}, params, timeout)
 /**
  * Board API
  */
@@ -27,7 +19,7 @@ export const getDetail = async (id: string) => {
   }
 };
 
-export const postComment = async (formData: any) => {
+export const postComment = async (formData: {}) => {
   let localToken = await localTokenRepoInstance.getAccess();
   try {
     const url = `user/board/comment/write`;
@@ -48,7 +40,7 @@ export const postComment = async (formData: any) => {
   }
 };
 
-export const postBoard = async (data: any) => {
+export const postBoard = async (data: {}) => {
   let access_token = await localTokenRepoInstance.getAccess();
 
   if (access_token === null) {
@@ -79,7 +71,7 @@ export const postBoard = async (data: any) => {
  * User API
  */
 
-export const postLogin = async (formData: any) => {
+export const postLogin = async (formData: {}) => {
   try {
     const url = "user/login";
     const currentDate = Date.now().toString();
@@ -120,7 +112,7 @@ export const postLogout = async () => {
   }
 };
 
-export const postReIssue = async (stableRefesh: any) => {
+export const postReIssue = async (stableRefesh: {}) => {
   try {
     const url = `user/reissue`;
     const options = {
@@ -161,11 +153,11 @@ export const getPopularPostService = async () => {
     });
 };
 
-// export const getInfinityPost = async () => {
-//   return axiosClient
-//     .get<any>(`user/board/posts?page=0`) // data.content에서 타입에러 발생해서 any로 일단 처리
-//     .then((res) => res.data)
-//     .catch((error) => {
-//       throw new Error(`InfinityPost get ERR : ${error}`);
-//     });
-// };
+export const getInfinityPost = async () => {
+  return axiosClient
+    .get<{ content: [] }>(`user/board/posts?page=0`) // data.content에서 타입에러 발생해서 any로 일단 처리
+    .then((res) => console.log(res.data?.content))
+    .catch((error) => {
+      throw new Error(`InfinityPost get ERR : ${error}`);
+    });
+};
