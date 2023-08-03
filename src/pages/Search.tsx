@@ -27,7 +27,7 @@ export default function Search() {
 
   useEffect(() => {
     lat && lng && getSearchList();
-  }, [getSearchList, lat, lng, tags]);
+  }, [getSearchList, lat, lng]);
 
   const setCoordinate = (y: string, x: string) => {
     setLat(y);
@@ -40,11 +40,8 @@ export default function Search() {
     setIsTagOpen(!isTagOpen);
   };
   const handleFilterReset = () => {
-    // TODO: MapMark 컴포넌트 데이터까지 초기화 필요
-    setKeyWord("");
-    setLat("");
-    setLng("");
-    setTags([]);
+    setIsMapOpen(!isMapOpen);
+    setIsTagOpen(!isTagOpen);
     setPosts([]);
   };
 
