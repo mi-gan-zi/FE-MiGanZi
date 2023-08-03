@@ -63,6 +63,8 @@ export default function Container() {
     createMutation.mutate(formData);
   };
 
+  console.log("imgv : ", imageValue);
+
   return (
     <>
       <CreateHeader
