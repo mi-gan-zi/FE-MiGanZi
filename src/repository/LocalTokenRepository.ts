@@ -33,7 +33,7 @@ export class LocalTokenRepository {
     const currentTime = Date.now();
 
     const timeElapsed = currentTime - expierToNum;
-    const isExpier = Math.floor(timeElapsed / 1000) > 1800;
+    const isExpire = Math.floor(timeElapsed / 1000) > 1800;
 
     const getNewAccessToken = async (
       refreshToken: string
@@ -45,8 +45,7 @@ export class LocalTokenRepository {
         return null;
       }
     };
-
-    const result: any = isExpier
+    const result: any = isExpire
       ? //@ts-ignore
         getNewAccessToken(refreshToken)
       : stableAccessToken;
@@ -60,6 +59,7 @@ export class LocalTokenRepository {
   remove() {
     localStorage.removeItem(this.access_token);
     localStorage.removeItem(this.refresh_token);
+    localStorage.removeItem(this.expire_time);
     localStorage.removeItem(this.nickname);
   }
 }
