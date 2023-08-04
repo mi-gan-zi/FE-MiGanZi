@@ -75,13 +75,15 @@ export default function Container() {
       <CreateHeader
         goNextStep={goNextStep}
         goBackStep={goBackStep}
-        isImage={isImage}
         currentStep={currentStep}
         mapMarkValue={mapMarkValue}
+        setMapMarkValue={setMapMarkValue}
         createPost={createPost}
         setImageValue={setImageValue}
-        isLoading={isLoading}
         setPlaying={setPlaying}
+        setIsImage={setIsImage}
+        isLoading={isLoading}
+        isImage={isImage}
       />
       {currentStep === "music" && (
         <MusicSelect
