@@ -47,7 +47,7 @@ function Header({
   const navigate = useNavigate();
   async function newhamsu() {
     await setPlaying(false);
-    navigate("/");
+    navigate("-1");
   }
   return (
     <div className="w-[390px] h-[70px] relative border-b-[1px] border-st-gray-03">
@@ -217,13 +217,15 @@ function CommentInput({
   return(
     <div className = 'w-[390px] h-[85px] relative'>
       {token ? 
-        <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02' > 
+        <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02' onSubmit={(event)=>{ event.preventDefault(); onSendComment(); }} > 
         <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} 
-          onChange={(event) => { setNewComment(event.target.value); console.log(event.target.value); }} onKeyDown={onKeyDown}/>    
-        <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSendComment} />
+          onChange={(event) => { setNewComment(event.target.value); }} />    
+        <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSendComment}/>
         </form>
       :
-        <button onClick={() => navigate('/') }>로그인하세요</button> 
+        <div className="flex justify-center">
+          <button onClick={() => navigate('/login') }> 로그인 페이지</button> 
+        </div>
       }
     </div>
   );
@@ -280,7 +282,6 @@ function Detail() {
   const [artist, setArtist] = useState<string>("");
   const [playTitle, setPlayTitle] = useState();
   const [imgURL, setImgURL] = useState<string>();
-  const [userToken, setUserToken] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
   const commentEndRef = useRef<HTMLDivElement>(null);
@@ -296,7 +297,7 @@ function Detail() {
     content: '',
     profileImage: '',
     imageUrl: '',
-    address_name: '서울특별시',
+    address_name: '',
     tags: '',
     tagsNum: 0,
     music_id: "",
@@ -316,16 +317,14 @@ function Detail() {
     },
   })
   
-  const getToken = async () => {
-    let localToken = await localTokenRepoInstance.getAccess();
-    //@ts-ignore
-    setUserToken(localToken)
+  let userToken = false
+  if (localStorage.getItem('refresh_token')){
+    userToken = true;
   }
 
   useEffect(() => {
     if (data){
       const res = data.data
-      console.log(res)
       //@ts-ignore
       setPost(res);
       musicList.filter((item) => {
@@ -344,32 +343,20 @@ function Detail() {
       //@ts-ignore
       setCommentNum(res.userComments.length);
     }
-    getToken();
   }, [data]); 
 
   const onSendComment = async () => {
-    /* if (userToken != ''){
-      //postComment();
-      mutation.mutate({
-        id: Date.now(),
-        title: 'Do Laundry',
-      })
-      {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' });}
-    }
-    else{
-      navigate('/login');
-    } */
     const formData = new FormData();
     formData.append("content", newComment);
     formData.append("postId", `${id}`);
     //mutation.mutate(formData)
     const res = await mutation.mutateAsync(formData);
-    console.log(res);
     //@ts-ignore
     setComment(res.data.commentsDto);
     //@ts-ignore
     setCommentNum(res.data.numberOfComments)
     {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' });}
+    setNewComment('');
   }
 
   if (isLoading){
