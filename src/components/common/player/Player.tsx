@@ -78,7 +78,7 @@ export default function Player(props: PropsType) {
           <CircularProgressbarWithChildren
             value={ratio}
             strokeWidth={5}
-            className={"w-[125px] h-[125px] absolute right-[16px]"}
+            className={"w-[125px] h-[125px] absolute right-[15px]"}
             styles={{
               path: {
                 stroke: "#007DF0",
