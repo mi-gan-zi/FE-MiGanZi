@@ -45,34 +45,4 @@ export class AxiosClient {
     });
     return response;
   }
-
-  async get<T>(
-    url: string,
-    options: AxiosRequestConfig = {}
-  ): Promise<AxiosResponse<T>> {
-    return this.axios<T>(url, { ...options, method: "GET" });
-  }
-
-  async post<T>(
-    url: string,
-    data?: any,
-    options: AxiosRequestConfig = {}
-  ): Promise<AxiosResponse<T>> {
-    return this.axios<T>(url, { ...options, method: "POST", data });
-  }
-
-  async put<T>(
-    url: string,
-    data?: any,
-    options: AxiosRequestConfig = {}
-  ): Promise<AxiosResponse<T>> {
-    return this.axios<T>(url, { ...options, method: "PUT", data });
-  }
-
-  async delete<T>(
-    url: string,
-    options: AxiosRequestConfig = {}
-  ): Promise<AxiosResponse<T>> {
-    return this.axios<T>(url, { ...options, method: "DELETE" });
-  }
 }

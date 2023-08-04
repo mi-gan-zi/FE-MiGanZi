@@ -11,8 +11,8 @@ export default function useAuth() {
     if (nickName && password) {
       formData.append("nickname", nickName);
       formData.append("password", password);
-      const response = await postLogin(formData)
-      setUser(response)
+      const response = await postLogin(formData);
+      setUser(response);
     }
     return nickName;
   };

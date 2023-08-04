@@ -12,7 +12,10 @@ export const Container = () => {
   const nickname = localStorage.getItem("nickname");
   const mutation = useMutation(() => postLogout(), {
     onSuccess: () => {
-      navigate("/login");
+      setLogout(true);
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     },
     onError: (e) => {
       console.log("errer mutation", e);
@@ -22,11 +25,12 @@ export const Container = () => {
     mutation.mutate();
   };
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     navigate("/login");
-  //   }
-  // }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
 
   // const logOut = async () => {
   //   const res = await axios.post("user/logout", {});

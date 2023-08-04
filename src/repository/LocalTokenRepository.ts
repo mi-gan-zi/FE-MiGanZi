@@ -12,7 +12,6 @@ export class LocalTokenRepository {
 
   setAccess(access_token: string) {
     localStorage.setItem(this.access_token, access_token);
-    // localStorage.setItem(this.access_token, expier_time.toString());
   }
 
   setNickName(nickname: string) {
@@ -20,7 +19,7 @@ export class LocalTokenRepository {
   }
 
   getNickName() {
-    localStorage.getItem(this.nickname);
+    return localStorage.getItem(this.nickname);
   }
   getAccess(): Promise<string | null> {
     const stableAccessToken = localStorage.getItem(this.access_token);
@@ -33,21 +32,19 @@ export class LocalTokenRepository {
     const currentTime = Date.now();
 
     const timeElapsed = currentTime - expierToNum;
-    const isExpier = Math.floor(timeElapsed / 1000) > 1800;
+    const isExpire = Math.floor(timeElapsed / 1000) > 1800;
 
     const getNewAccessToken = async (
       refreshToken: string
     ): Promise<string | null> => {
       try {
         const response = await postReIssue(refreshToken);
-        console.log(response)
         return response;
       } catch (e) {
         return null;
       }
     };
-
-    const result: any = isExpier
+    const result: any = isExpire
       ? //@ts-ignore
         getNewAccessToken(refreshToken)
       : stableAccessToken;
@@ -61,6 +58,7 @@ export class LocalTokenRepository {
   remove() {
     localStorage.removeItem(this.access_token);
     localStorage.removeItem(this.refresh_token);
+    localStorage.removeItem(this.expire_time);
     localStorage.removeItem(this.nickname);
   }
 }

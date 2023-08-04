@@ -9,23 +9,24 @@ import React, {
 
 import { CreateMiganziType } from "./CreateContainer";
 import { playList } from "./MusicDataList";
+import PlayerCon from "./testPlayer/PlayerCon";
 
 interface PropsType {
   currentStep: CreateMiganziType;
   playing: boolean;
   setPlaying: Dispatch<SetStateAction<boolean>>;
+  setMusicValue: Dispatch<SetStateAction<string>>;
 }
 export default function MusicSelect({
-  currentStep,
   playing,
   setPlaying,
+  setMusicValue,
 }: PropsType) {
   const [song, setSong] = useState<string>();
   const [artist, setArtist] = useState<string>("");
   const [playTitle, setPlayTitle] = useState();
   const [targetId, setTargetId] = useState<number>();
   const [imgURL, setImgURL] = useState<string>();
-  const refList = useRef<HTMLInputElement>(null);
 
   const inputValue = (event: any) => {
     const res = event.target?.value;
@@ -37,7 +38,7 @@ export default function MusicSelect({
         setPlayTitle(id.playList);
         setImgURL(id.imgURL);
         setPlaying(false);
-        // setMusicId(id.id.toString());
+        setMusicValue(id.id.toString());
       }
     });
   };
@@ -80,6 +81,15 @@ export default function MusicSelect({
           </li>
         ))}
       </ul>
+      {/* <PlayerCon
+        playing={playing}
+        setPlaying={setPlaying}
+        playList={playTitle}
+        song={song}
+        artist={artist}
+        imgURL={imgURL}
+        targetId={targetId}
+      /> */}
     </div>
   );
 }

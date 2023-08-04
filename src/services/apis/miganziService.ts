@@ -3,17 +3,9 @@ import { localTokenRepoInstance } from "repository/LocalTokenRepository";
 import { IPopular, IPost, IPostContent } from "../../@types/post.type";
 import { AxiosResponse } from "axios";
 
-// interface
-// 1. baseURL
-// 2. refresh_token
-// 3. access_token
 const axiosClient = new AxiosClient(process.env.REACT_APP_ENDPOINT, "");
 // const axiosClient = new AxiosClient("http://localhost:4000/", "");
 
-// interface
-// 1. url
-// 2. data ?
-// 3. option? ( header{ Authorization}, params, timeout)
 /**
  * Board API
  */
@@ -27,7 +19,7 @@ export const getDetail = async (id: string) => {
   }
 };
 
-export const postComment = async (formData: any) => {
+export const postComment = async (formData: {}) => {
   let localToken = await localTokenRepoInstance.getAccess();
   try {
     const url = `user/board/comment/write`;
@@ -49,26 +41,65 @@ export const postComment = async (formData: any) => {
 };
 
 export const postBoard = async (data: {}) => {
+  let access_token = await localTokenRepoInstance.getAccess();
+
+  if (access_token === null) {
+    access_token = await localTokenRepoInstance.getAccess();
+    return access_token;
+  }
   try {
     const url = `user/board/post/write`;
     const headers = {
-      Authorization: "Bearer " + localTokenRepoInstance.getAccess(),
+      Authorization: "Bearer " + `${access_token}`,
       "Content-Type": "multipart/form-data",
       processData: false,
     };
+    const options = {
+      method: "post",
+      data,
+      headers,
+    };
 
-    const response = await axiosClient.axios(url, { headers, data });
+    const response = await axiosClient.axios(url, options);
     return response;
   } catch (error) {
     throw new Error(`POST Board Error: ${error}`);
   }
 };
 
+export const getPopularPost = async () => {
+  try {
+    const url = `user/board/popular-post`;
+    const response = await axiosClient.axios(url);
+    return response;
+  } catch (error) {
+    throw new Error(`PopularPost get ERR : ${error}`);
+  }
+};
+
+export const getPopularPostService = async () => {
+  return axiosClient
+    .axios<IPopular[] | undefined>(`user/board/popular-post`)
+    .then((res) => res.data)
+    .catch((error) => {
+      throw new Error(`PopularPost get ERR : ${error}`);
+    });
+};
+
+export const getInfinityPost = async () => {
+  return axiosClient
+    .axios<{ content: [] }>(`user/board/posts?page=0`) // data.content에서 타입에러 발생해서 any로 일단 처리
+    .then((res) => console.log(res.data?.content))
+    .catch((error) => {
+      throw new Error(`InfinityPost get ERR : ${error}`);
+    });
+};
+
 /**
  * User API
  */
 
-export const postLogin = async (formData: any) => {
+export const postLogin = async (formData: {}) => {
   try {
     const url = "user/login";
     const currentDate = Date.now().toString();
@@ -109,7 +140,7 @@ export const postLogout = async () => {
   }
 };
 
-export const postReIssue = async (stableRefesh: any) => {
+export const postReIssue = async (stableRefesh: {}) => {
   try {
     const url = `user/reissue`;
     const options = {
@@ -130,31 +161,3 @@ export const postReIssue = async (stableRefesh: any) => {
     throw new Error(`POST REISSUE Error[토큰 발급 실패]: ${error}`);
   }
 };
-
-// export const getPopularPost = async () => {
-//   try {
-//     const url = `user/board/popular-post`;
-//     const response = await axiosClient.axios(url);
-//     return response;
-//   } catch (error) {
-//     throw new Error(`PopularPost get ERR : ${error}`);
-//   }
-// };
-
-export const getPopularPostService = async () => {
-  return axiosClient
-    .axios<IPopular[] | undefined>(`user/board/popular-post`)
-    .then((res) => res.data)
-    .catch((error) => {
-      throw new Error(`PopularPost get ERR : ${error}`);
-    });
-};
-
-// export const getInfinityPost = async () => {
-//   return axiosClient
-//     .get<any>(`user/board/posts?page=0`) // data.content에서 타입에러 발생해서 any로 일단 처리
-//     .then((res) => res.data)
-//     .catch((error) => {
-//       throw new Error(`InfinityPost get ERR : ${error}`);
-//     });
-// };

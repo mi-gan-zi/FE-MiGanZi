@@ -8,38 +8,101 @@ import {
   useRef,
   useState,
 } from "react";
+import { Cropper, ReactCropperElement } from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
-type ImageProps = {
-  setImage: Dispatch<SetStateAction<boolean>>;
-  setImageFile: Dispatch<SetStateAction<any>>;
+type Props = {
+  setIsImage: Dispatch<SetStateAction<boolean>>;
+  setImageValue?: Dispatch<SetStateAction<string>>;
+  imageValue: any;
 };
 
-export default function ImageUpLoad() {
-  const [img, setImg] = useState<any>("");
+export default function ImageUpLoad({
+  setIsImage,
+  setImageValue,
+  imageValue,
+}: Props) {
   const ref = useRef<HTMLInputElement>(null);
+  const [preImage, setPreImage] = useState<any>();
+  const [image, setImage] = useState<null | string>(null);
+  const cropperRef = useRef<ReactCropperElement>(null);
 
   useEffect(() => {}, []);
+  const imageSizeAlert = (type: string) => {
+    type === "size" && alert("이미지 사이즈는 10메가 이하로 해주세요 😡");
+    type === "width" && alert("이미지 가로확인 😡");
+    type === "height" && alert("이미지 세로확인 😡");
+  };
 
   const handleCreateIMG = (e: any) => {
     const dropFile = e.dataTransfer?.files[0];
     const file = ref.current?.files?.[0];
-    //TODO: 이미지 사이즈 10메가
-    const maxSizeInBytes = 10 * 1024 * 1024; // 3MB
-
     const reader = new FileReader();
-    console.log(reader);
-    //@ts-ignore
+    const maxSizeInBytes = 10 * 1024 * 1024;
+    reader.onloadend = () => {
+      setImage(reader?.result as string);
+      // if (setImageValue) {
+      //   setPreImage(reader?.result);
+      // }
+    };
+    console.log(preImage);
+    const checkAndReadImage = (imageFile: File) => {
+      if (imageFile.size > maxSizeInBytes) imageSizeAlert("size");
+
+      reader.readAsDataURL(imageFile);
+      setIsImage(true);
+    };
     if (file) {
-      reader?.readAsDataURL(file);
+      checkAndReadImage(file);
     }
 
     if (dropFile) {
-      reader?.readAsDataURL(dropFile);
+      checkAndReadImage(dropFile);
     }
-    reader.onloadend = () => {
-      setImg(reader?.result);
-    };
   };
+
+  useEffect(() => {
+    const imageType = new Image();
+    imageType.src = preImage;
+
+    imageType.onload = () => {
+      const width = imageType.naturalWidth;
+      const height = imageType.naturalHeight;
+      console.log("가로해상도", width);
+      console.log("세로해상도", height);
+      if (width && width < 350) imageSizeAlert("width");
+      if (height && height < 467) imageSizeAlert("height");
+    };
+  }, [preImage, image]);
+
+  const getCropData = () => {
+    if (typeof cropperRef.current?.cropper !== "undefined") {
+      setImage(null);
+      const file = base64toFile(
+        cropperRef.current?.cropper.getCroppedCanvas().toDataURL(),
+        "image_file.png"
+      );
+
+      //@ts-ignore
+      setImageValue(file);
+      setPreImage(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+    }
+  };
+
+  function base64toFile(base_data: any, filename: any) {
+    var arr = base_data.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+  }
+
   const handleDrop = useCallback((e: DragEvent): void => {
     e.preventDefault();
     e.stopPropagation();
@@ -55,7 +118,7 @@ export default function ImageUpLoad() {
         <div
           className={
             "pre-img w-[350px] h-[467px] flex-col justify-center items-center flex " +
-            (img
+            (preImage
               ? ""
               : "border-dashed border-st-gray-05 border-[1px] rounded-lg")
           }
@@ -64,9 +127,9 @@ export default function ImageUpLoad() {
           }}
           onDrop={(e: DragEvent) => handleDrop(e)}
         >
-          {img ? (
+          {preImage ? (
             <img
-              src={img}
+              src={preImage}
               alt=""
               className=" max-w-xl rounded-md w-full h-auto aspect-[3/4] object-cover"
             />
@@ -88,11 +151,45 @@ export default function ImageUpLoad() {
             </div>
           )}
         </div>
+        {image && (
+          <div className="container">
+            <div className="backdrop" />
+            <div className="modal">
+              <div className="content-wrapper">
+                <div className="content">
+                  <Cropper
+                    id="CropperId"
+                    ref={cropperRef}
+                    src={image}
+                    viewMode={2}
+                    zoomOnWheel={false}
+                    zoomOnTouch={false}
+                    zoomable={false}
+                    scalable={false}
+                    checkOrientation={false}
+                    aspectRatio={NaN}
+                  />
+                </div>
+              </div>
+              <div className="footer">
+                <button onClick={() => setImage(null)}>취소</button>
+                <button className="crop" onClick={getCropData}>
+                  적용
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <label
-          className="block w-[350px] h=[50px] py-2 rounded-lg text-center bg-st-gray-05 text-st-white mt-3 cursor-pointer mb-[120px]"
+          className={
+            "block w-[350px] h=[50px] py-2 rounded-lg text-center " +
+            (imageValue
+              ? " bg-st-gray-05 text-st-white mt-3 cursor-pointer mb-[120px]"
+              : "bg-active-blue text-st-white mt-3 cursor-pointer mb-[120px]")
+          }
           htmlFor="file-upload"
         >
-          사진 업로드
+          {imageValue ? "다른 사진 선택" : "사진 업로드"}
         </label>
         <input
           type="file"
