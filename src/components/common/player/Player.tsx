@@ -12,13 +12,9 @@ interface PropsType {
   playing: boolean;
   setPlaying: Dispatch<SetStateAction<boolean>>;
 }
-//TODO: 리펙터링 하고 필요없으면 휴지통
-// const temp2 =
-//   "progress-bar border-[5px]  border-solid border-gray-500 rounded-full w-[120px] h-[120px] flex items-center justify-center shadow-xl relative";
 export default function Player(props: PropsType) {
   const { song, artist, playList, setPlaying, targetId, imgURL, playing } =
     props;
-  // const [playing, setPlaying] = useState(false);
   const [totalTime, setTotalTime] = useState(0);
   const [current, setCurrentTime] = useState(0);
   const [audio, setAudio] = useState(new Audio(playList));
