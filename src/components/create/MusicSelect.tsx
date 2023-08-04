@@ -9,6 +9,7 @@ import React, {
 
 import { CreateMiganziType } from "./CreateContainer";
 import { playList } from "./MusicDataList";
+import PlayerCon from "./testPlayer/PlayerCon";
 
 interface PropsType {
   currentStep: CreateMiganziType;
@@ -80,6 +81,15 @@ export default function MusicSelect({
           </li>
         ))}
       </ul>
+      {/* <PlayerCon
+        playing={playing}
+        setPlaying={setPlaying}
+        playList={playTitle}
+        song={song}
+        artist={artist}
+        imgURL={imgURL}
+        targetId={targetId}
+      /> */}
     </div>
   );
 }

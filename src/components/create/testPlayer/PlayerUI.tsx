@@ -1,53 +1,35 @@
 import moment from "moment";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import defrecord from "assets/defrecord.png";
+import React, { Dispatch, SetStateAction } from "react";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
-
-interface PropsType {
+import { playList } from "../MusicDataList";
+import defrecord from "assets/defrecord.png";
+export interface PlayerUIProps {
   song?: string;
   artist?: string;
-  playList: any;
-  targetId?: number;
   imgURL?: string;
+  current: number;
+  totalTime: number;
+  ratio: number;
   playing: boolean;
-  setPlaying: Dispatch<SetStateAction<boolean>>;
+  targetId: any;
+  onStartPlay: () => void;
+  onStopPlay: () => void;
+  setPlaying: Dispatch<SetStateAction<any>>;
 }
-export default function Player(props: PropsType) {
-  const { song, artist, playList, setPlaying, targetId, imgURL, playing } =
-    props;
-  const [totalTime, setTotalTime] = useState(0);
-  const [current, setCurrentTime] = useState(0);
-  const [audio, setAudio] = useState(new Audio(playList));
-  const [ratio, setRatio] = useState(0);
 
-  playing ? audio.play() : audio.pause();
-  useEffect(() => {
-    if (audio) {
-      if (playing) {
-        setTotalTime(audio.duration);
-        audio.addEventListener("timeupdate", () => {
-          setCurrentTime(audio.currentTime);
-          setRatio((audio.currentTime / audio.duration) * 100);
-          if (audio.duration == audio.currentTime) {
-            setPlaying(false);
-          }
-        });
-      }
-    }
-  }, [playing, targetId, audio]);
-  useEffect(() => {
-    setAudio(new Audio(playList));
-  }, [playList, targetId]);
-
-  const onStartPlay = () => {
-    if (song !== "Happay") playing || setPlaying(true);
-  };
-
-  const onStopPlay = () => {
-    if (playing) {
-      setPlaying(false);
-    }
-  };
+const PlayerUI: React.FC<PlayerUIProps> = ({
+  song,
+  artist,
+  imgURL,
+  current,
+  totalTime,
+  ratio,
+  targetId,
+  onStartPlay,
+  onStopPlay,
+  setPlaying,
+  playing,
+}) => {
   return (
     <div className="bg-yellow-300 flex justify-end">
       <div className="bg-[#F5F4F3] border-st-gray-03 border-[1px] w-[370px] h-[157px] rounded-l-xl py-4 flex justify-between px-6 relative ">
@@ -78,7 +60,7 @@ export default function Player(props: PropsType) {
           <CircularProgressbarWithChildren
             value={ratio}
             strokeWidth={5}
-            className={"w-[125px] h-[125px] absolute right-[15px]"}
+            className={"w-[125px] h-[125px] absolute right-[16px]"}
             styles={{
               path: {
                 stroke: "#007DF0",
@@ -105,10 +87,7 @@ export default function Player(props: PropsType) {
             ) : (
               <>
                 <img
-                  className={
-                    `rounded-full w-[105px] h-[105px] absolute left-[60px] top-[200px]`
-                    // (playing ? "animate-spin" : "")
-                  }
+                  className={`rounded-full w-[105px] h-[105px] absolute left-[60px] top-[200px]`}
                   src={defrecord}
                   alt=""
                 />
@@ -120,4 +99,6 @@ export default function Player(props: PropsType) {
       </div>
     </div>
   );
-}
+};
+
+export default PlayerUI;
