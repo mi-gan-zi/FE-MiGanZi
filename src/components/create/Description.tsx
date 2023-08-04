@@ -1,6 +1,6 @@
 import { PinIcon, WihteSearchIcon } from "assets/Icon";
 import UseKeywordMap from "components/common/keyword_map/useKeywordMap";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import { Text } from "./Text";
 import TagList from "components/TagList";
@@ -19,14 +19,20 @@ export default function Description({
   setMapMarkValue,
   setKeyWord,
   keyWord,
-  mapMarkValue,
 }: Props) {
   const [isPopUp, setIsPopUp] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [bit, setBit] = useState<string>("000000000000");
+  const scrollMapRef = useRef<HTMLDivElement>(null);
+
   const handleAddress = (data: any) => {
     setKeyWord(data.address);
     setIsPopUp(!isPopUp);
+    setTimeout(() => {
+      scrollMapRef.current?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }, 500);
   };
 
   useEffect(() => {
@@ -63,22 +69,23 @@ export default function Description({
           )}
         </div>
         {isPopUp && (
-          <div>
+          <div ref={scrollMapRef}>
             <DaumPostCode onComplete={handleAddress} autoClose />
           </div>
         )}
       </div>
       <UseKeywordMap keyWord={keyWord} setMarkes={setMapMarkValue} />
-      <div className="border-t-[1px] border-st-gray-03 flex justify-center ">
-        <button
+      {/* <div className="bottom border-t-[1px] border-st-gray-03 flex justify-center h-10 bg-st-gray-08 "> */}
+      {/* <button
           className={
             " w-[350px] h-[50px] text-st-white font-bold  mt-2 rounded-md cursor-pointer " +
             (mapMarkValue ? "bg-[#007DF0] " : "bg-st-gray-05")
           }
         >
           다음으로
-        </button>
-      </div>
+        </button> */}
+      {/* </div> */}
+      <div ref={scrollMapRef}></div>
     </div>
   );
 }
