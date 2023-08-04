@@ -28,8 +28,10 @@ export default function ImageUpLoad({
   const cropperRef = useRef<ReactCropperElement>(null);
 
   useEffect(() => {}, []);
-  const imageSizeAlert = () => {
-    alert("이미지 사이즈는 10메가 이하로 해주세요 😡");
+  const imageSizeAlert = (type: string) => {
+    type === "size" && alert("이미지 사이즈는 10메가 이하로 해주세요 😡");
+    type === "width" && alert("이미지 가로확인 😡");
+    type === "height" && alert("이미지 세로확인 😡");
   };
 
   const handleCreateIMG = (e: any) => {
@@ -39,17 +41,16 @@ export default function ImageUpLoad({
     const maxSizeInBytes = 10 * 1024 * 1024;
     reader.onloadend = () => {
       setImage(reader?.result as string);
-      if (setImageValue) {
-        setPreImage(reader?.result);
-      }
+      // if (setImageValue) {
+      //   setPreImage(reader?.result);
+      // }
     };
+    console.log(preImage);
     const checkAndReadImage = (imageFile: File) => {
-      if (imageFile.size > maxSizeInBytes) {
-        imageSizeAlert();
-      } else {
-        reader.readAsDataURL(imageFile);
-        setIsImage(true);
-      }
+      if (imageFile.size > maxSizeInBytes) imageSizeAlert("size");
+
+      reader.readAsDataURL(imageFile);
+      setIsImage(true);
     };
     if (file) {
       checkAndReadImage(file);
@@ -59,6 +60,20 @@ export default function ImageUpLoad({
       checkAndReadImage(dropFile);
     }
   };
+
+  useEffect(() => {
+    const imageType = new Image();
+    imageType.src = preImage;
+
+    imageType.onload = () => {
+      const width = imageType.naturalWidth;
+      const height = imageType.naturalHeight;
+      console.log("가로해상도", width);
+      console.log("세로해상도", height);
+      if (width && width < 350) imageSizeAlert("width");
+      if (height && height < 467) imageSizeAlert("height");
+    };
+  }, [preImage, image]);
 
   const getCropData = () => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
@@ -70,7 +85,7 @@ export default function ImageUpLoad({
 
       //@ts-ignore
       setImageValue(file);
-      console.log(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+      setPreImage(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
     }
   };
 
