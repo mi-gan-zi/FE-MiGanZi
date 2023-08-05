@@ -1,15 +1,10 @@
 import Player from "components/common/player/Player";
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import { CreateMiganziType } from "./CreateContainer";
 import { playList } from "./MusicDataList";
-import PlayerCon from "./testPlayer/PlayerCon";
+//TODO: custom hook
+// import PlayerCon from "./testPlayer/PlayerCon";
 
 interface PropsType {
   currentStep: CreateMiganziType;
@@ -22,25 +17,31 @@ export default function MusicSelect({
   setPlaying,
   setMusicValue,
 }: PropsType) {
-  const [song, setSong] = useState<string>();
-  const [artist, setArtist] = useState<string>("");
-  const [playTitle, setPlayTitle] = useState();
-  const [targetId, setTargetId] = useState<number>();
-  const [imgURL, setImgURL] = useState<string>();
+  const [playlistItem, setPlaylistItem] = useState({
+    song: "",
+    artist: "",
+    playList: "",
+    targetId: 0,
+    imgURL: "",
+  });
 
   const inputValue = (event: any) => {
     const res = event.target?.value;
-    setTargetId(parseInt(res));
-    playList.filter((id) => {
-      if (id.id === parseInt(res)) {
-        setArtist(id.artist);
-        setSong(id.song);
-        setPlayTitle(id.playList);
-        setImgURL(id.imgURL);
-        setPlaying(false);
-        setMusicValue(id.id.toString());
-      }
-    });
+    const selectedPlaylistItem = playList.find(
+      (item) => item.id === parseInt(res)
+    );
+
+    if (selectedPlaylistItem) {
+      setPlaylistItem({
+        song: selectedPlaylistItem.song,
+        artist: selectedPlaylistItem.artist,
+        playList: selectedPlaylistItem.playList,
+        targetId: selectedPlaylistItem.id,
+        imgURL: selectedPlaylistItem.imgURL,
+      });
+      setPlaying(false);
+      setMusicValue(selectedPlaylistItem.id.toString());
+    }
   };
 
   return (
@@ -49,11 +50,11 @@ export default function MusicSelect({
       <Player
         playing={playing}
         setPlaying={setPlaying}
-        playList={playTitle}
-        song={song}
-        artist={artist}
-        imgURL={imgURL}
-        targetId={targetId}
+        playList={playlistItem.playList}
+        song={playlistItem.song}
+        artist={playlistItem.artist}
+        imgURL={playlistItem.imgURL}
+        targetId={playlistItem.targetId}
       />
       <ul className="py-10 px-4">
         {playList.map((i) => (
@@ -61,7 +62,7 @@ export default function MusicSelect({
             key={i.id}
             className={
               `flex border-b-st-gray-04 border-b-[1px] justify-between px-5 py-2 ` +
-              (i.id === targetId ? " " : "opacity-50 disabled")
+              (i.id === playlistItem.targetId ? " " : "opacity-50 disabled")
             }
           >
             <div className="flex justify-center items-center gap-3">
@@ -75,12 +76,12 @@ export default function MusicSelect({
               type="checkbox"
               value={i.id}
               onChange={inputValue}
-              checked={targetId === i.id ? true : false}
-              // disabled={targetId === i.id ? true : false}
+              checked={playlistItem.targetId === i.id ? true : false}
             />
           </li>
         ))}
       </ul>
+      {/* TODO: custom hook */}
       {/* <PlayerCon
         playing={playing}
         setPlaying={setPlaying}
