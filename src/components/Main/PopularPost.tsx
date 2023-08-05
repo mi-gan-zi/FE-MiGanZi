@@ -21,22 +21,22 @@ const PopularPost = () => {
     queryFn: () => getPopularPostService(),
   });
 
-  const getPopularPost = async () => {
-    try {
-      const response = await axios.get(`user/board/popular-post`, {
-        headers: {
-          Authorization: ``,
-        },
-      });
-      setPopularPost(response.data);
-    } catch (e) {
-      throw new Error(`Popular post ERROR ! , ${e}`);
-    }
-  };
+  // const getPopularPost = async () => {
+  //   try {
+  //     const response = await axios.get(`user/board/popular-post`, {
+  //       headers: {
+  //         Authorization: ``,
+  //       },
+  //     });
+  //     setPopularPost(response.data);
+  //   } catch (e) {
+  //     throw new Error(`Popular post ERROR ! , ${e}`);
+  //   }
+  // };
 
-  useEffect(() => {
-    getPopularPost();
-  }, []);
+  // useEffect(() => {
+  //   getPopularPost();
+  // }, []);
 
   useInterval(() => setShowNumber((number) => number + 1), 3000);
 
@@ -57,7 +57,7 @@ const PopularPost = () => {
     setShowNumber(id);
   };
 
-  const position = new Array();
+  const position = [];
   if (data) {
     let pos = data[showNumber]?.tags.indexOf("1");
     while (pos > -1) {
