@@ -6,7 +6,7 @@ type FinalProps = {
 
 export const FinalModal = ({ setFinalModal }: FinalProps) => {
   return (
-    <div className="w-full h-screen bg-st-gray-07/50 flex items-center justify-center absolute z-20">
+    <div className="w-full h-screen bg-st-gray-07/50 flex items-center justify-center absolute inset-y-0 z-20">
       <div className="w-[280px] h-[154px] rounded-xl bg-st-white flex flex-col items-center justify-between translate-y-20">
         <div className="text-center translate-y-9">
           <p>미(간)지에서</p>

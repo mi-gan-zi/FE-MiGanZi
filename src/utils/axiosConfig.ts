@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 export const reissueToken = async () => {
   try {
     const response = await axios.post(
-      `${process.env.REACT_APP_ENDPOINT}user/reissue`,
+      `${process.env.REACT_APP_ENDPOINT}user/reissue`,{},
       {
         headers: {
           Authorization: `Bearer ` + localStorage.getItem("refresh_token"),

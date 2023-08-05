@@ -111,7 +111,7 @@ export const postLogin = async (formData: {}) => {
     );
     localTokenRepoInstance.setAccess(response.data.data.accessToken);
     localTokenRepoInstance.setNickName(response.data.data.nickname);
-    localStorage.setItem("expier_time", currentDate);
+    localStorage.setItem("expire_time", currentDate);
 
     return response.data.data.nickname;
   } catch (error) {
@@ -145,12 +145,13 @@ export const postReIssue = async (stableRefesh: {}) => {
     const url = `user/reissue`;
     const options = {
       method: "post",
+      data:{},
       headers: {
         Authorization: `Bearer ${stableRefesh}`,
       },
     };
     const response = await axiosClient.axios(url, options);
-
+    console.log(response)
     //@ts-ignore
     const newAccessToken = response.data?.data?.accessToken;
     //@ts-ignore
