@@ -57,7 +57,7 @@ const PopularPost = () => {
     setShowNumber(id);
   };
 
-  const position = new Array();
+  const position = [];
   if (data) {
     let pos = data[showNumber]?.tags.indexOf("1");
     while (pos > -1) {
