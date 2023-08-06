@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOutModal } from "./LogOutModal";
 import { useMutation } from "@tanstack/react-query";
-import { postLogout } from "services/apis/miganziService";
-import useAuth from "hooks/useAuth";
+// import { postLogout } from "services/apis/miganziService";
 import axios from "axios";
 
 export const Container = () => {

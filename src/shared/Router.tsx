@@ -6,24 +6,13 @@ import { DeleteUser } from "components/myPage/DeleteUser";
 import { MyPosts } from "components/myPage/MyPosts";
 import { MyComents } from "components/myPage/MyComents";
 import { Alarm } from "pages/Alarm";
-import { useState } from "react";
-import {
-  Create,
-  Detail,
-  Layout,
-  Main,
-  Search,
-  SignIn,
-  SignUp,
-  TestDetail,
-} from "pages";
+import { Create, Detail, Layout, Main, Search, SignIn, SignUp } from "pages";
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/testde" element={<TestDetail />} />
           <Route path="/" element={<Main />} />
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="/search" element={<Search />} />

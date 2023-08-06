@@ -5,4 +5,3 @@ export { default as SignIn } from "./SignIn";
 export { default as Create } from "./Create";
 export { default as Layout } from "../components/common/Layout/Layout";
 export { default as SignUp } from "./SignUp";
-export { default as TestDetail } from "./TestDetail";
