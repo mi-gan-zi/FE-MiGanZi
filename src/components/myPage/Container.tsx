@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOutModal } from "./LogOutModal";
 import { useMutation } from "@tanstack/react-query";
+import createAxiosInstance from "utils/axiosConfig";
 // import { postLogout } from "services/apis/miganziService";
-import axios from "axios";
 
 export const Container = () => {
   const [enabled, setEnabled] = useState(false);
   const [logout, setLogout] = useState(false);
   const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");
+  const axios = createAxiosInstance();
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -22,11 +23,11 @@ export const Container = () => {
     const res = await axios.post("user/logout", {});
     if (res.status === 200) {
       setLogout(true);
+      localStorage.clear();
+      localStorage.removeItem("token");
+      localStorage.removeItem("nickname");
+      localStorage.removeItem("refresh-token");
       const logoutTime = setTimeout(() => {
-        setLogout(false);
-        localStorage.removeItem("token");
-        localStorage.removeItem("nickname");
-        localStorage.removeItem("refresh-token");
         navigate("/login");
       }, 2000);
       clearTimeout(logoutTime);
