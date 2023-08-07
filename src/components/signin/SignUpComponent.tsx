@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
 import useDebounce from "hooks/useDebounce";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -14,6 +15,11 @@ export const SignUp = () => {
   const password_ref = useRef<HTMLInputElement>(null);
   const check_ref = useRef<HTMLInputElement>(null);
   const debouncedValue = useDebounce({ value: checkNickValue, delay: 400 });
+
+  const mutation = useMutation({
+    mutationFn: (e) => signup(e),
+  });
+
   const navigate = useNavigate();
   const nickNameValue = async (e: ChangeEvent<HTMLInputElement>) => {
     const nickname = e.target.value;
@@ -50,6 +56,7 @@ export const SignUp = () => {
   useEffect(() => {
     checkhandler();
   }, [debouncedValue]);
+
   const signup = async (e: any) => {
     e.preventDefault();
     const nickname = nickname_ref.current?.value;
@@ -78,7 +85,10 @@ export const SignUp = () => {
 
   console.log(checked);
   return (
-    <form onSubmit={signup} className="px-5 overflow-y-auto">
+    <form
+      onSubmit={(e: any) => mutation.mutate(e)}
+      className="px-5 overflow-y-auto"
+    >
       <div className="mt-10">
         <p className="text-xl font-bold">닉네임</p>
         {checked === "OK" ? (
@@ -121,7 +131,10 @@ export const SignUp = () => {
         />
       </div>
       <p className="text-alert-red text-center">{err}</p>
-      <button className="w-[350px] h-[50px] px-[16px] py-[13px] bg-active-blue font-semibold text-st-white rounded-lg">
+      <button
+        disabled={mutation.isLoading}
+        className="w-[350px] h-[50px] px-[16px] py-[13px] bg-active-blue font-semibold text-st-white rounded-lg"
+      >
         가입완료
       </button>
     </form>
