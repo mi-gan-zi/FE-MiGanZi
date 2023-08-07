@@ -11,6 +11,7 @@ export const Container = () => {
   const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");
   const axios = createAxiosInstance();
+  let logoutTime: any;
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -27,11 +28,11 @@ export const Container = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("nickname");
       localStorage.removeItem("refresh-token");
-      const logoutTime = setTimeout(() => {
+      logoutTime = setTimeout(() => {
         navigate("/login");
       }, 2000);
-      clearTimeout(logoutTime);
     }
+    return () => clearTimeout(logoutTime);
   };
   return (
     <div>
