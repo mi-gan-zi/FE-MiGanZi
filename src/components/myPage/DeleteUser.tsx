@@ -19,12 +19,7 @@ export const DeleteUser = () => {
       const formData = new FormData();
       checkNickName && formData.append("checkNickname", checkNickName);
       const res = axios.post("user/withdrawal", formData);
-      console.log(res);
       localStorage.clear();
-      localStorage.removeItem("token");
-      localStorage.removeItem("refresh-token");
-      localStorage.removeItem("nickname");
-      localStorage.removeItem("expire_time");
 
       setFinalModal(true);
       navigate("/");
