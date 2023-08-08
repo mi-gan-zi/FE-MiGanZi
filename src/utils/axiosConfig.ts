@@ -1,8 +1,8 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosResponse } from "axios";
 export const reissueToken = async () => {
   try {
     const response = await axios.post(
-      `${process.env.REACT_APP_ENDPOINT}user/reissue`,
+      `${process.env.REACT_APP_ENDPOINT}user/reissue`,{},
       {
         headers: {
           Authorization: `Bearer ` + localStorage.getItem("refresh_token"),
@@ -11,7 +11,13 @@ export const reissueToken = async () => {
     );
     return response;
   } catch (error) {
-    throw new Error("토큰 발급에 실패했습니다.");
+    try{
+      const response = await axios.post(`${process.env.REACT_APP_ENDPOINT}user/logout`,{})
+      localStorage.clear();
+      alert("만료시간이 종료 되었습니다. 재로그인 부탁드립니다.")
+    }catch(error){
+      throw new Error("토큰 발급에 실패했습니다.");
+    }
   }
 };
 
@@ -48,15 +54,16 @@ const createAxiosInstance = (): AxiosInstance => {
     async (error) => {
       if (error.response && error.response.status === 401) {
         try {
-          const response = await reissueToken();
+          const response  = await reissueToken();
           localStorage.removeItem("access_token");
           localStorage.removeItem("nickname");
-          localStorage.setItem("access_token", response.data.data.accessToken);
-          localStorage.setItem("nickname", response.data.data.nickname);
-          error.config.headers.Authorization = `Bearer ${response.data.data.accessToken}`;
-          return axios.request(error.config);
+          if(response){
+            localStorage.setItem("access_token", response.data.data.accessToken);
+            localStorage.setItem("nickname", response.data.data.nickname);
+            error.config.headers.Authorization = `Bearer ${response.data.data.accessToken}`;
+            return axios.request(error.config);
+          }
         } catch (reissueError) {
-          // console.log(reissueError);
           throw new Error("토큰 발급에 실패했습니다.");
         }
       }

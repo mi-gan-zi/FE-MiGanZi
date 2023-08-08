@@ -6,7 +6,7 @@ import { FinalModal } from "./FinalModal";
 import { Header } from "./Header";
 
 export const DeleteUser = () => {
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(true);
   const [finalModal, setFinalModal] = useState(false);
   const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");

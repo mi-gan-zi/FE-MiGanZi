@@ -3,7 +3,7 @@ import { localTokenRepoInstance } from "repository/LocalTokenRepository";
 import { IPopular, IPost, IPostContent } from "../../@types/post.type";
 import { AxiosResponse } from "axios";
 
-const axiosClient = new AxiosClient(process.env.REACT_APP_ENDPOINT, "");
+export const axiosClient = new AxiosClient(process.env.REACT_APP_ENDPOINT, "");
 // const axiosClient = new AxiosClient("http://localhost:4000/", "");
 
 /**
@@ -102,7 +102,7 @@ export const getInfinityPost = async () => {
 export const postLogin = async (formData: {}) => {
   try {
     const url = "user/login";
-    const currentDate = Date.now().toString();
+    // const currentDate = Date.now().toString();
     const options = { method: "post", data: formData };
     const response: AxiosResponse<any> = await axiosClient.axios(url, options);
 
@@ -111,7 +111,6 @@ export const postLogin = async (formData: {}) => {
     );
     localTokenRepoInstance.setAccess(response.data.data.accessToken);
     localTokenRepoInstance.setNickName(response.data.data.nickname);
-    localStorage.setItem("expier_time", currentDate);
 
     return response.data.data.nickname;
   } catch (error) {
@@ -140,7 +139,13 @@ export const postLogout = async () => {
   }
 };
 
-export const postReIssue = async (stableRefesh: {}) => {
+interface ResponseData {
+  data: {
+    data: { accessToken: string };
+  };
+}
+
+export const postReIssue = async (stableRefesh: string): Promise<string> => {
   try {
     const url = `user/reissue`;
     const options = {
@@ -149,13 +154,11 @@ export const postReIssue = async (stableRefesh: {}) => {
         Authorization: `Bearer ${stableRefesh}`,
       },
     };
-    const response = await axiosClient.axios(url, options);
+    const response: ResponseData = await axiosClient.axios(url, options);
 
-    //@ts-ignore
-    const newAccessToken = response.data?.data?.accessToken;
-    //@ts-ignore
+    const newAccessToken = response.data.data.accessToken;
+
     localTokenRepoInstance.setAccess(newAccessToken);
-    //@ts-ignore
     return newAccessToken;
   } catch (error) {
     throw new Error(`POST REISSUE Error[토큰 발급 실패]: ${error}`);

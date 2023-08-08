@@ -2,28 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOutModal } from "./LogOutModal";
 import { useMutation } from "@tanstack/react-query";
-import { postLogout } from "services/apis/miganziService";
-import useAuth from "hooks/useAuth";
+import createAxiosInstance from "utils/axiosConfig";
+// import { postLogout } from "services/apis/miganziService";
 
 export const Container = () => {
   const [enabled, setEnabled] = useState(false);
   const [logout, setLogout] = useState(false);
   const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");
-  const mutation = useMutation(() => postLogout(), {
-    onSuccess: () => {
-      setLogout(true);
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
-    },
-    onError: (e) => {
-      console.log("errer mutation", e);
-    },
-  });
-  const logOut = () => {
-    mutation.mutate();
-  };
+  const axios = createAxiosInstance();
+  let logoutTime: any;
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -32,20 +20,20 @@ export const Container = () => {
     }
   }, []);
 
-  // const logOut = async () => {
-  //   const res = await axios.post("user/logout", {});
-  //   if (res.status === 200) {
-  //     setLogout(true);
-  //     const logoutTime = setTimeout(() => {
-  //       setLogout(false);
-  //       localStorage.removeItem("token");
-  //       localStorage.removeItem("nickname");
-  //       localStorage.removeItem("refresh-token");
-  //       navigate("/login");
-  //     }, 2000);
-  //     clearTimeout(logoutTime);
-  //   }
-  // };
+  const logOut = async () => {
+    const res = await axios.post("user/logout", {});
+    if (res.status === 200) {
+      setLogout(true);
+      localStorage.clear();
+      localStorage.removeItem("token");
+      localStorage.removeItem("nickname");
+      localStorage.removeItem("refresh-token");
+      logoutTime = setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    }
+    return () => clearTimeout(logoutTime);
+  };
   return (
     <div>
       <div className="w-full h-[62px] flex items-center justify-start text-st-gray-10 text-xl font-semibold px-5">

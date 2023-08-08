@@ -7,12 +7,16 @@ import { ReactComponent as Kakao } from "../../assets/kakao.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import constants from "utils/consts/LocalRepo";
+import { useMutation } from "@tanstack/react-query";
 
 const SignInComponent = () => {
   const nickname_ref = useRef<HTMLInputElement>(null);
   const password_ref = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const currentDate = Date.now().toString();
+  const mutation = useMutation({
+    mutationFn: (e) => login(e),
+  });
 
   const login = async (e: any) => {
     e.preventDefault();
@@ -29,7 +33,6 @@ const SignInComponent = () => {
           process.env.REACT_APP_ENDPOINT + "user/login",
           formData
         );
-        console.log(res);
         if (res.status === 200) {
           localStorage.setItem(
             constants.ACCESS_TOKEN_KEY,
@@ -71,7 +74,7 @@ const SignInComponent = () => {
         </div> */}
       </div>
       <div className="flex flex-col items-center justify-center">
-        <form onSubmit={login} className="mb-[35px]">
+        <form onSubmit={(e: any) => mutation.mutate(e)} className="mb-[35px]">
           <input
             ref={nickname_ref}
             placeholder="nickname"
@@ -90,7 +93,10 @@ const SignInComponent = () => {
             </div>
             <span>비밀번호를 잊으셨나요?</span>
           </div>
-          <button className="w-[350px] h-[47px] rounded-lg py-[13px] px-[16px] bg-st-gray-09 text-st-white text-sm font-semibold">
+          <button
+            disabled={mutation.isLoading}
+            className="w-[350px] h-[47px] rounded-lg py-[13px] px-[16px] bg-st-gray-09 text-st-white text-sm font-semibold"
+          >
             Log in
           </button>
         </form>
