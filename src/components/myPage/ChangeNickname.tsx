@@ -3,6 +3,7 @@ import { vaildNick } from "components/common/utils/vaild";
 import React, { useEffect, useRef, useState } from "react";
 import { Header } from "./Header";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import constants from "utils/consts/LocalRepo";
 
 export const ChangeNickname = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -30,9 +31,12 @@ export const ChangeNickname = () => {
       try {
         const res = await axios.post("user/update-nickname", formData);
         localStorage.clear();
-        localStorage.setItem("nickname", res.data.data.nickname);
-        localStorage.setItem("token", res.data.data.accessToken);
-        localStorage.setItem("refresh-token", res.data.data.refreshToken);
+        localStorage.setItem(constants.NiCK_NAME_KEY, res.data.data.nickname);
+        localStorage.setItem(
+          constants.ACCESS_TOKEN_KEY,
+          res.data.data.accessToken
+        );
+        localStorage.setItem(constants.REFRESH_KEY, res.data.data.refreshToken);
         alert(`${res.data.data.nickname}님으로 변경되셨습니다.`);
       } catch (err) {
         console.log(err);
