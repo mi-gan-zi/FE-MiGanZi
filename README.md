@@ -106,6 +106,11 @@ yarn start
 |     **메인 페이지**    |    **검색 페이지** |
 | ![메인페이지]() | ![아티스트페이지]() |
 
+## gif file
+
+![realtimecheck](https://github.com/mi-gan-zi/FE-MiGanZi/assets/116594422/b2fc1d9f-7f20-42a3-a872-ee04bae4d876)
+![music](https://github.com/mi-gan-zi/FE-MiGanZi/assets/116594422/0dc140e5-169d-4dfe-a0ae-4a0f255d5571)
+![description](https://github.com/mi-gan-zi/FE-MiGanZi/assets/116594422/e0b8469d-e5dc-46f2-a714-93d9019b43aa)
 
 
 
