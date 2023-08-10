@@ -110,7 +110,7 @@ function Tag({ tags }: { tags: PostDetail["tags"] }) {
           })
           .map((item) => (
             <div className="text-xs font-semibold border-[1px] px-[10px] py-[2px] border-st-gray-07 rounded-[50px]">
-            {item.name}
+              {item.name}
             </div>
           ))}
       </>
@@ -227,9 +227,9 @@ function CommentInput({
         </>
       :
         <div className="flex justify-center">
-          <button onClick={() => navigate('/login') }> 로그인 페이지</button> 
+          <button onClick={() => navigate("/login")}> 로그인 페이지</button>
         </div>
-      }
+      )}
     </div>
   );
 }
@@ -298,11 +298,11 @@ function Detail() {
     nickname: "",
     viewCount: 0,
     commentCount: 0,
-    content: '',
-    profileImage: '',
-    imageUrl: '',
-    address_name: '',
-    tags: '',
+    content: "",
+    profileImage: "",
+    imageUrl: "",
+    address_name: "",
+    tags: "",
     tagsNum: 0,
     music_id: "",
   });
@@ -311,7 +311,7 @@ function Detail() {
     queryKey: ["board"],
     //@ts-ignore
     queryFn: () => getDetail(id.toString()),
-    cacheTime: 0
+    cacheTime: 0,
   });
 
   const mutation = useMutation({
@@ -330,8 +330,8 @@ function Detail() {
   }
 
   useEffect(() => {
-    if (data){
-      const res = data.data
+    if (data) {
+      const res = data.data;
       //@ts-ignore
       setPost(res);
       musicList.filter((item) => {
@@ -350,7 +350,7 @@ function Detail() {
       //@ts-ignore
       setCommentNum(res.userComments.length);
     }
-  }, [data]); 
+  }, [data]);
 
   const onSendComment = async () => {
     const formData = new FormData();
@@ -366,17 +366,17 @@ function Detail() {
     setNewComment('');
   }
 
-  if (isLoading){
-    return(
-      <div>로딩중</div>
-    )
-  }else{
-    return(
-      <>   
+  if (isLoading) {
+    return <div>로딩중</div>;
+  } else {
+    return (
+      <>
         <div ref={headerRef}></div>
         <Header setPlaying={setPlaying}></Header>
-        <div className='w-[390px] h-[14px] mb-[20px]'>
-          <p className='text-[20px] font-bold mt-[20px] ml-[40px]'>같이 감상하면 좋은 곡</p>
+        <div className="w-[390px] h-[14px] mb-[20px]">
+          <p className="text-[20px] font-bold mt-[20px] ml-[40px]">
+            같이 감상하면 좋은 곡
+          </p>
         </div>
         <Player
           playing={playing}
@@ -411,7 +411,8 @@ function Detail() {
         >
         </Comment>
       </>
-  )}
+    );
+  }
 }
 
 export default Detail;
