@@ -45,7 +45,6 @@ function Header({
 }) {
   const navigate = useNavigate();
   async function backToMove() {
-    await setPlaying(false);
     navigate("-1");
   }
   return (
@@ -103,8 +102,10 @@ function Tag({ tags }: { tags: PostDetail["tags"] }) {
       <>
         {tagList
           .filter((item) => {
-            if (tags[item.id] == "1") {
+            if (tags[item.id] === "1") {
               return item;
+            }else{
+              return null
             }
           })
           .map((item) => (
@@ -288,10 +289,8 @@ function Detail() {
   const [playTitle, setPlayTitle] = useState();
   const [imgURL, setImgURL] = useState<string>();
   const { id } = useParams();
-  const navigate = useNavigate();
   const commentEndRef = useRef<HTMLDivElement>(null);
   const headerRef =  useMoveToTop();
-  const queryClient = useQueryClient()
   const [post, setPost] = useState<PostDetail>({
     createdDate: "",
     modifiedDate: "",
@@ -363,7 +362,7 @@ function Detail() {
     setComment(res.data.commentsDto);
     //@ts-ignore
     setCommentNum(res.data.numberOfComments)
-    {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' });}
+    {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' }) }
     setNewComment('');
   }
 

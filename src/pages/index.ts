@@ -4,4 +4,5 @@ export { default as Search } from "./Search";
 export { default as SignIn } from "./SignIn";
 export { default as Create } from "./Create";
 export { default as Layout } from "../components/common/Layout/Layout";
+export { default as LayoutDetail } from "../components/common/Layout/LayoutDetail";
 export { default as SignUp } from "./SignUp";

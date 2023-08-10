@@ -17,27 +17,33 @@ export default function Player(props: PropsType) {
     props;
   const [totalTime, setTotalTime] = useState(0);
   const [current, setCurrentTime] = useState(0);
-  const [audio, setAudio] = useState(new Audio(playList));
   const [ratio, setRatio] = useState(0);
 
-  playing ? audio.play() : audio.pause();
   useEffect(() => {
-    if (audio) {
-      if (playing) {
-        setTotalTime(audio.duration);
-        audio.addEventListener("timeupdate", () => {
-          setCurrentTime(audio.currentTime);
-          setRatio((audio.currentTime / audio.duration) * 100);
-          if (audio.duration == audio.currentTime) {
-            setPlaying(false);
-          }
-        });
+    const audio = new Audio(playList);
+
+    const timeUpdateHandler = () => {
+      setCurrentTime(audio.currentTime);
+      setRatio((audio.currentTime / audio.duration) * 100);
+      if (audio.duration === audio.currentTime) {
+        setPlaying(false);
       }
+    };
+
+    if (playing) {
+      audio.play().then(() => {
+        audio.addEventListener("timeupdate", timeUpdateHandler);
+      });
+    } else {
+      audio.pause();
+      audio.removeEventListener("timeupdate", timeUpdateHandler);
     }
-  }, [playing, targetId, audio]);
-  useEffect(() => {
-    setAudio(new Audio(playList));
-  }, [playList, targetId]);
+
+    return () => {
+      audio.pause();
+      audio.removeEventListener("timeupdate", timeUpdateHandler);
+    };
+  }, [playing, playList, setPlaying]);
 
   const onStartPlay = () => {
     if (song !== "Happay") playing || setPlaying(true);

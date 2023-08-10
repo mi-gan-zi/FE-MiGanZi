@@ -13,21 +13,11 @@ export const Container = () => {
   const axios = createAxiosInstance();
   let logoutTime: any;
 
-  useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      navigate("/login");
-    }
-  }, []);
-
   const logOut = async () => {
     const res = await axios.post("user/logout", {});
     if (res.status === 200) {
       setLogout(true);
       localStorage.clear();
-      localStorage.removeItem("token");
-      localStorage.removeItem("nickname");
-      localStorage.removeItem("refresh-token");
       logoutTime = setTimeout(() => {
         navigate("/login");
       }, 2000);
