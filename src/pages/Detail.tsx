@@ -418,6 +418,7 @@ function Detail() {
           onSendComment={onSendComment}
           commentEndRef={commentEndRef}
           token={userToken}
+          children={undefined}
         ></Comment>
       </>
     );

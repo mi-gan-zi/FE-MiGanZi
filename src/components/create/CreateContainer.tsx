@@ -9,7 +9,16 @@ import { postBoard } from "services/apis/miganziService";
 import { useNavigate } from "react-router-dom";
 
 export type CreateMiganziType = "music" | "image" | "description";
-
+export interface CreateFormDataType {
+  music_id: string;
+  imageFile: string;
+  tags: string;
+  content: string;
+  map: {
+    position: { lat: string; lng: string };
+    content: string;
+  };
+}
 export default function Container() {
   const steps: CreateMiganziType[] = ["music", "image", "description"];
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -25,6 +34,7 @@ export default function Container() {
     lng: string;
   }>();
   const [keyWord, setKeyWord] = useState("");
+  const [stepData, setStepData] = useState<CreateFormDataType>();
   const navigate = useNavigate();
   const createMutation = useMutation({
     mutationFn: postBoard,
@@ -50,6 +60,9 @@ export default function Container() {
       setCurrentStepIndex((index) => index - 1);
     }
   };
+  const addFormDataHandler = (data: CreateFormDataType) => {
+    setStepData((pre) => ({ ...pre, ...data }));
+  };
   const createPost = async (e: any) => {
     const formData = new FormData();
     e.preventDefault();
@@ -67,8 +80,6 @@ export default function Container() {
     }
     createMutation.mutate(formData);
   };
-
-  console.log("imgv : ", imageValue);
 
   return (
     <>
