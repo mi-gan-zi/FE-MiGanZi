@@ -104,8 +104,8 @@ function Tag({ tags }: { tags: PostDetail["tags"] }) {
           .filter((item) => {
             if (tags[item.id] === "1") {
               return item;
-            }else{
-              return null
+            } else {
+              return null;
             }
           })
           .map((item) => (
@@ -199,7 +199,7 @@ function CommentInput({
   setNewComment,
   onSendComment,
   userToken,
-  isCommentLoading
+  isCommentLoading,
 }: {
   newComment: string;
   setNewComment: Dispatch<SetStateAction<string>>;
@@ -207,25 +207,40 @@ function CommentInput({
   userToken: boolean;
   isCommentLoading: boolean;
 }) {
-  
   const navigate = useNavigate();
 
-  return(
-    <div className = 'w-[390px] h-[85px] relative'>
-      {userToken ? 
+  return (
+    <div className="w-[390px] h-[85px] relative">
+      {userToken ? (
         <>
-          {isCommentLoading ?  
-            <p>댓글 저장중...</p> :
+          {isCommentLoading ? (
+            <p>댓글 저장중...</p>
+          ) : (
             <>
-            <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02' onSubmit={(event)=>{ event.preventDefault(); onSendComment(); }} > 
-            <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} 
-            onChange={(event) => { setNewComment(event.target.value); }} />    
-            <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSendComment}/>
-            </form>
+              <form
+                className="w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  onSendComment();
+                }}
+              >
+                <input
+                  className="w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none"
+                  placeholder="댓글을 입력하세요"
+                  value={newComment}
+                  onChange={(event) => {
+                    setNewComment(event.target.value);
+                  }}
+                />
+                <Send
+                  className="w-[24px] h-[24px] absolute right-[8px] top-[8px]"
+                  onClick={onSendComment}
+                />
+              </form>
             </>
-          }
+          )}
         </>
-      :
+      ) : (
         <div className="flex justify-center">
           <button onClick={() => navigate("/login")}> 로그인 페이지</button>
         </div>
@@ -242,7 +257,7 @@ function Comment({
   onSendComment,
   commentEndRef,
   userToken,
-  isCommentLoading
+  isCommentLoading,
 }: {
   comment: CommentDetail[] | undefined;
   commentNum: number;
@@ -290,7 +305,7 @@ function Detail() {
   const [imgURL, setImgURL] = useState<string>();
   const { id } = useParams();
   const commentEndRef = useRef<HTMLDivElement>(null);
-  const headerRef =  useMoveToTop();
+  const headerRef = useMoveToTop();
   const [post, setPost] = useState<PostDetail>({
     createdDate: "",
     modifiedDate: "",
@@ -316,16 +331,15 @@ function Detail() {
 
   const mutation = useMutation({
     mutationFn: postComment,
-    onSuccess: () => {
-    },
+    onSuccess: () => {},
     onError: () => {
       alert("서버에서 에러가 났어요 😡");
     },
-  })
+  });
   const isCommentLoading = mutation.isLoading;
-  
-  let userToken = false
-  if (localStorage.getItem('refresh_token')){
+
+  let userToken = false;
+  if (localStorage.getItem("refresh_token")) {
     userToken = true;
   }
 
@@ -361,10 +375,13 @@ function Detail() {
     //@ts-ignore
     setComment(res.data.commentsDto);
     //@ts-ignore
-    setCommentNum(res.data.numberOfComments)
-    {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' }) }
-    setNewComment('');
-  }
+    setCommentNum(res.data.numberOfComments);
+    {
+      commentEndRef.current &&
+        commentEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+    setNewComment("");
+  };
 
   if (isLoading) {
     return <div>로딩중</div>;
@@ -406,10 +423,10 @@ function Detail() {
           setNewComment={setNewComment}
           onSendComment={onSendComment}
           commentEndRef={commentEndRef}
-          userToken = {userToken}
+          userToken={userToken}
           isCommentLoading={isCommentLoading}
-        >
-        </Comment>
+          children={undefined}
+        ></Comment>
       </>
     );
   }
