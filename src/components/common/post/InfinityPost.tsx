@@ -22,11 +22,7 @@ export function InfinityPost(props: { url: string }): React.ReactElement {
 
   const getData = async () => {
     try {
-      const posts = await axios.get(`${API_ADDRESS}${page}`, {
-        headers: {
-          Authorization: ``,
-        },
-      });
+      const posts = await axios.get(`${API_ADDRESS}${page}`);
       const newPosts = posts.data.content;
       setPost((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
       setPage((prevPage) => prevPage + 1);
