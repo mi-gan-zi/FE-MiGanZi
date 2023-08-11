@@ -11,7 +11,7 @@
 ## 실행 방법
 1. 깃 클론
 ```
-git clone https://github.com/mi-gan-zi/FE-MiGanZi
+git clone https://github.com/mi-gan-zi/FE-MiGanZi.git
 ```
 2. 패키지 인스톨
 ```
