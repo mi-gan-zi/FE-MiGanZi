@@ -35,6 +35,6 @@ code {
     @apply border-[1px] border-[#c1c1c1];
   }
   .postButtonClick {
-    @apply border-[1px] border-[#74b9ff];
+    @apply border-[1px] border-[#636e72];
   }
 }
