@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { ReactComponent as Logo } from "../../assets/miganzi.svg";
 import { ReactComponent as Notification } from "../../assets/notification.svg";
 import { ReactComponent as MyProfile } from "../../assets/myProfile.svg";
+import { ReactComponent as HaveNotification } from "../../assets/haveNotification.svg";
 import { useNavigate } from "react-router-dom";
+
 const HeaderComponent = () => {
+  const [isNotification, setIsNotification] = useState<boolean>(false);
   const isLoggedIn = !!localStorage.getItem("access_token");
   const navigate = useNavigate();
 
@@ -25,7 +28,7 @@ const HeaderComponent = () => {
                 <MyProfile />
               </div>
               <div className="w-[34px] cursor-pointer ml-[5px]">
-                <Notification />
+                {isNotification ? <HaveNotification /> : <Notification />}
               </div>
             </>
           ) : (
