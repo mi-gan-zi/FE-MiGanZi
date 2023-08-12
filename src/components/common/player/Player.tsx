@@ -110,14 +110,31 @@ export default function Player(props: PropsType) {
               </>
             ) : (
               <>
-                <img
+                {/* <img
                   className={
                     `rounded-full w-[105px] h-[105px] absolute left-[60px] top-[200px]`
                     // (playing ? "animate-spin" : "")
                   }
                   src={defrecord}
                   alt=""
-                />
+                /> */}
+                <div
+                  className={
+                    `record w-[100px] h-[100px] bg-st-gray-09 rounded-full flex justify-center items-center shadow-md absolute left-[63px] top-[202.5px] ` +
+                    (playing ? "animate-spin" : "")
+                  }
+                >
+                  <div className="first-line border-b-[1px] border-solid border-b-st-gray-05 w-[90px] h-[90px]  rounded-full items-center justify-center flex">
+                    <div className="first-line border-b-[1px] border-solid border-b-st-gray-05 w-[75px] h-[75px]  rounded-full items-center justify-center flex">
+                      <div className="first-line border-b-[1px] border-solid border-st-gray-05 w-[60px] h-[60px]  rounded-full items-center justify-center flex">
+                        <div className="first-line border-b-[1px] border-solid border-st-gray-05 w-[45px] h-[45px]  rounded-full items-center justify-center flex">
+                          <div className="w-7 h-7 rounded-full bg-st-white"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="rounded-full w-[10px] h-[10px] bg-st-white absolute"></div>
               </>
             )}
