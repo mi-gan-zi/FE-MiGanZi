@@ -12,7 +12,6 @@ import { ReactComponent as Dot } from "../assets/Dot.svg";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getDetail, postComment } from "services/apis/miganziService";
 import useMoveToTop from "hooks/useMoveToTop";
-import { localTokenRepoInstance } from "repository/LocalTokenRepository";
 
 interface PostDetail {
   createdDate: string;
@@ -45,15 +44,14 @@ function Header({
   setPlaying: Dispatch<SetStateAction<boolean>>;
 }) {
   const navigate = useNavigate();
-  async function newhamsu() {
-    await setPlaying(false);
+  async function backToMove() {
     navigate("-1");
   }
   return (
     <div className="w-[390px] h-[70px] relative border-b-[1px] border-st-gray-03">
       <Pre
         onClick={() => {
-          newhamsu();
+          backToMove();
         }}
         className="absolute mt-[10px] left-[40px] cursor-pointer"
       ></Pre>
@@ -104,13 +102,15 @@ function Tag({ tags }: { tags: PostDetail["tags"] }) {
       <>
         {tagList
           .filter((item) => {
-            if (tags[item.id] == "1") {
+            if (tags[item.id] === "1") {
               return item;
+            } else {
+              return null;
             }
           })
           .map((item) => (
             <div className="text-xs font-semibold border-[1px] px-[10px] py-[2px] border-st-gray-07 rounded-[50px]">
-            {item.name}
+              {item.name}
             </div>
           ))}
       </>
@@ -198,35 +198,53 @@ function CommentInput({
   newComment,
   setNewComment,
   onSendComment,
-  token, 
+  userToken,
+  isCommentLoading,
 }: {
   newComment: string;
   setNewComment: Dispatch<SetStateAction<string>>;
   onSendComment: () => void;
-  token: boolean;
+  userToken: boolean;
+  isCommentLoading: boolean;
 }) {
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      onSendComment();
-    }
-  };
-  
   const navigate = useNavigate();
 
-  return(
-    <div className = 'w-[390px] h-[85px] relative'>
-      {token ? 
-        <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02' onSubmit={(event)=>{ event.preventDefault(); onSendComment(); }} > 
-        <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} 
-          onChange={(event) => { setNewComment(event.target.value); }} />    
-        <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSendComment}/>
-        </form>
-      :
+  return (
+    <div className="w-[390px] h-[85px] relative">
+      {userToken ? (
+        <>
+          {isCommentLoading ? (
+            <p>댓글 저장중...</p>
+          ) : (
+            <>
+              <form
+                className="w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  onSendComment();
+                }}
+              >
+                <input
+                  className="w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none"
+                  placeholder="댓글을 입력하세요"
+                  value={newComment}
+                  onChange={(event) => {
+                    setNewComment(event.target.value);
+                  }}
+                />
+                <Send
+                  className="w-[24px] h-[24px] absolute right-[8px] top-[8px]"
+                  onClick={onSendComment}
+                />
+              </form>
+            </>
+          )}
+        </>
+      ) : (
         <div className="flex justify-center">
-          <button onClick={() => navigate('/login') }> 로그인 페이지</button> 
+          <button onClick={() => navigate("/login")}> 로그인 페이지</button>
         </div>
-      }
+      )}
     </div>
   );
 }
@@ -238,7 +256,8 @@ function Comment({
   setNewComment,
   onSendComment,
   commentEndRef,
-  token
+  userToken,
+  isCommentLoading,
 }: {
   comment: CommentDetail[] | undefined;
   commentNum: number;
@@ -247,7 +266,8 @@ function Comment({
   onSendComment: () => void;
   children: React.ReactNode;
   commentEndRef: React.ForwardedRef<HTMLDivElement>;
-  token: boolean
+  userToken: boolean;
+  isCommentLoading: boolean;
 }) {
   return (
     <div>
@@ -266,7 +286,8 @@ function Comment({
         newComment={newComment}
         setNewComment={setNewComment}
         onSendComment={onSendComment}
-        token={token}
+        userToken={userToken}
+        isCommentLoading={isCommentLoading}
       ></CommentInput>
     </div>
   );
@@ -283,10 +304,8 @@ function Detail() {
   const [playTitle, setPlayTitle] = useState();
   const [imgURL, setImgURL] = useState<string>();
   const { id } = useParams();
-  const navigate = useNavigate();
   const commentEndRef = useRef<HTMLDivElement>(null);
-  const headerRef =  useMoveToTop();
-  const queryClient = useQueryClient()
+  const headerRef = useMoveToTop();
   const [post, setPost] = useState<PostDetail>({
     createdDate: "",
     modifiedDate: "",
@@ -294,11 +313,11 @@ function Detail() {
     nickname: "",
     viewCount: 0,
     commentCount: 0,
-    content: '',
-    profileImage: '',
-    imageUrl: '',
-    address_name: '',
-    tags: '',
+    content: "",
+    profileImage: "",
+    imageUrl: "",
+    address_name: "",
+    tags: "",
     tagsNum: 0,
     music_id: "",
   });
@@ -307,24 +326,26 @@ function Detail() {
     queryKey: ["board"],
     //@ts-ignore
     queryFn: () => getDetail(id.toString()),
-    cacheTime: 0
+    cacheTime: 0,
   });
 
   const mutation = useMutation({
     mutationFn: postComment,
-    onSuccess: () => {
-      //queryClient.invalidateQueries({queryKey: ['comment'] })
+    onSuccess: () => {},
+    onError: () => {
+      alert("서버에서 에러가 났어요 😡");
     },
-  })
-  
-  let userToken = false
-  if (localStorage.getItem('refresh_token')){
+  });
+  const isCommentLoading = mutation.isLoading;
+
+  let userToken = false;
+  if (localStorage.getItem("refresh_token")) {
     userToken = true;
   }
 
   useEffect(() => {
-    if (data){
-      const res = data.data
+    if (data) {
+      const res = data.data;
       //@ts-ignore
       setPost(res);
       musicList.filter((item) => {
@@ -343,7 +364,7 @@ function Detail() {
       //@ts-ignore
       setCommentNum(res.userComments.length);
     }
-  }, [data]); 
+  }, [data]);
 
   const onSendComment = async () => {
     const formData = new FormData();
@@ -354,22 +375,25 @@ function Detail() {
     //@ts-ignore
     setComment(res.data.commentsDto);
     //@ts-ignore
-    setCommentNum(res.data.numberOfComments)
-    {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' });}
-    setNewComment('');
-  }
+    setCommentNum(res.data.numberOfComments);
+    {
+      commentEndRef.current &&
+        commentEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+    setNewComment("");
+  };
 
-  if (isLoading){
-    return(
-      <div>로딩중</div>
-    )
-  }else{
-    return(
-      <>   
+  if (isLoading) {
+    return <div>로딩중</div>;
+  } else {
+    return (
+      <>
         <div ref={headerRef}></div>
         <Header setPlaying={setPlaying}></Header>
-        <div className='w-[390px] h-[14px] mb-[20px]'>
-          <p className='text-[20px] font-bold mt-[20px] ml-[40px]'>같이 감상하면 좋은 곡</p>
+        <div className="w-[390px] h-[14px] mb-[20px]">
+          <p className="text-[20px] font-bold mt-[20px] ml-[40px]">
+            같이 감상하면 좋은 곡
+          </p>
         </div>
         <Player
           playing={playing}
@@ -399,11 +423,13 @@ function Detail() {
           setNewComment={setNewComment}
           onSendComment={onSendComment}
           commentEndRef={commentEndRef}
-          token = {userToken}
-        >
-        </Comment>
+          userToken={userToken}
+          isCommentLoading={isCommentLoading}
+          children={undefined}
+        ></Comment>
       </>
-  )}
+    );
+  }
 }
 
 export default Detail;

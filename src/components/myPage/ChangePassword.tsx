@@ -83,6 +83,7 @@ export const ChangePassword = () => {
         </div>
         <button
           onClick={() => mutation.mutate()}
+          disabled={mutation.isLoading}
           className="translate-y-[300px] w-[350px] px-4 py-[13px] rounded-lg bg-[#007DF0] text-st-white"
         >
           저장하기

@@ -29,12 +29,12 @@ code {
 
 @layer components {
   .postButton {
-    @apply w-[12px] h-[12px] rounded-full mr-[5px];
+    @apply w-[55px] h-[2px] rounded-full mr-[6px];
   }
   .postButtonNonClick {
-    @apply border-2 border-[#c1c1c1];
+    @apply border-[1px] border-[#c1c1c1];
   }
   .postButtonClick {
-    @apply border-2 border-[#74b9ff];
+    @apply border-[1px] border-[#636e72];
   }
 }
