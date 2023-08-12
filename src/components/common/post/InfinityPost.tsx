@@ -37,7 +37,9 @@ export function InfinityPost(props: { url: string }): React.ReactElement {
       entry: IntersectionObserverEntry,
       observer: IntersectionObserver
     ) => {
-      await getData();
+      if (entry.isIntersecting && !checkLast) {
+        await getData();
+      }
     }
   );
 
@@ -58,6 +60,7 @@ export function InfinityPost(props: { url: string }): React.ReactElement {
             })
           : null}
       </div>
+
       {checkLast ? null : <div ref={target} className="h-[90px]" />}
     </>
   );
