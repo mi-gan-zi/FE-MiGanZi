@@ -90,7 +90,7 @@ export default function ImageUpLoad({
   };
 
   function base64toFile(base_data: any, filename: any) {
-    var arr = base_data.split(","),
+    let arr = base_data.split(","),
       mime = arr[0].match(/:(.*?);/)[1],
       bstr = atob(arr[1]),
       n = bstr.length,
@@ -133,7 +133,7 @@ export default function ImageUpLoad({
                 <img
                   src={preImage}
                   alt=""
-                  className=" max-w-xl rounded-md w-full h-auto aspect-[3/4] object-cover"
+                  className=" max-w-xl rounded-md w-full h-auto aspect-[3/4] object-cover "
                 />
               ) : (
                 <div
@@ -182,11 +182,11 @@ export default function ImageUpLoad({
                     zoomable={false}
                     scalable={false}
                     checkOrientation={false}
-                    aspectRatio={NaN}
+                    aspectRatio={3 / 4}
                   />
                 </div>
               </div>
-              <div className="footer my-[5px] ">
+              <div className="footer my-[10px] flex justify-center gap-2">
                 <button
                   className="bg-[#1e90ff] hover:bg-[#70a1ff] text-[#ffffff]  py-2 px-4  border border-[#1e90ff] rounded"
                   onClick={() => setImage(null)}

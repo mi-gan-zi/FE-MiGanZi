@@ -10,7 +10,6 @@ interface ImageCropperProps {
 const ImageCropper = ({ src, onCrop }: ImageCropperProps) => {
   const cropperRef = useRef<ReactCropperElement>(null);
 
-
   const handleCrop = () => {
     if (cropperRef.current) {
       const croppedImage = cropperRef.current;
@@ -35,4 +34,3 @@ const ImageCropper = ({ src, onCrop }: ImageCropperProps) => {
 };
 
 export default ImageCropper;
-
