@@ -426,8 +426,8 @@ function Detail() {
           commentEndRef={commentEndRef}
           userToken={userToken}
           isCommentLoading={isCommentLoading}
-        >
-        </Comment>
+          children={undefined}
+        ></Comment>
       </>
     );
   }
