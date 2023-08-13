@@ -9,7 +9,7 @@ const Layout = () => {
       <div className="overflow-y-scroll  scroll h-screen pb-28">
         {/* <Header /> */}
         <main>
-          <Outlet/>
+          <Outlet />
         </main>
       </div>
       <div className="fixed bottom-0 w-[390px]  bg-st-white pt-2">
