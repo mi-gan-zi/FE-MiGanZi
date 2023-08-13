@@ -23,7 +23,7 @@ export const MyPosts = () => {
   });
 
   async function getPosts() {
-    const res = await axios.get(`user/my-page/posts?page=0`);
+    const res = await axios.get(`user/my-page/posts?page=${pageNumber}`);
     setTotal(res.data.postsDto.content.length);
     const newPosts = res.data.postsDto.content;
     setPosts((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
@@ -32,11 +32,16 @@ export const MyPosts = () => {
     return newPosts;
   }
 
-  const target = useIntersectionObserver(async (entry: any, observer: any) => {
-    await getPosts().then((result) => {
-      setPosts([...result]);
-    });
-  });
+  const target = useIntersectionObserver(
+    async (
+      entry: IntersectionObserverEntry,
+      observer: IntersectionObserver
+    ) => {
+      if (entry.isIntersecting && !checkLast) {
+        await getPosts();
+      }
+    }
+  );
 
   return (
     <>
@@ -82,8 +87,8 @@ export const MyPosts = () => {
               })}
             </div>
           )}
+          {checkLast ? null : <div ref={target} className="h-[90px]" />}
         </div>
-        {/* {checkLast ? null : <div ref={target} className="h-[90px]" />} */}
       </div>
     </>
   );
