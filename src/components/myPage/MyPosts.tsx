@@ -59,7 +59,7 @@ export const MyPosts = () => {
                   당신만의 장소를 기록해보세요
                 </p>
                 <button
-                  onClick={() => navigate("create")}
+                  onClick={() => navigate("/create")}
                   className="bg-[#007DF0] rounded-lg px-4 py-[9px] text-st-white"
                 >
                   글 작성하기
