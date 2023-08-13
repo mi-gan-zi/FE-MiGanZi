@@ -45,15 +45,15 @@ function Header({
 }) {
   const navigate = useNavigate();
   async function backToMove() {
-    navigate("-1");
+    navigate(-1);
   }
   return (
-    <div className="w-[390px] h-[70px] relative border-b-[1px] border-st-gray-03">
+    <div className="w-[390px] h-[98px] relative border-b-[1px] border-st-gray-03">
       <Pre
         onClick={() => {
           backToMove();
         }}
-        className="absolute mt-[10px] left-[40px] cursor-pointer"
+        className="absolute mt-[58px] left-[40px] cursor-pointer"
       ></Pre>
     </div>
   );
@@ -72,22 +72,22 @@ function Content({
 }) {
   return (
     <>
-      <div className="w-[350px] h-[10px] bg-st-gray-10 mt-[32px] ml-[40px]" />
+      <div className="w-[350px] h-[2px] bg-st-gray-10 mt-[24px] ml-[40px]" />
       <div className="w-[390px] h-[566px] relative">
-        <div className="w-[330px] h-[21px] absolute right-[20px]">
+        <div className="w-[330px] h-[27px] absolute right-[20px] pt-[6px]">
           <span style={{ borderLeft: "1px soild black" }}>{createdDate}</span>
-          <span className="border-l-2 ml-[5px] pl-[5px] ">
+          <span className="border-l-2 ml-[12px] pl-[12px] ">
             조회수 {viewCount}
           </span>
         </div>
-        <div className="w-[330px] h-[60px] absolute top-[30px]  relative">
+        <div className="w-[330px] h-[66px] absolute top-[27px] pt-[6px] relative">
           <img
             src="https://storage.googleapis.com/miganzi-bucket/profile_image.png"
             className="h-[60px] w-[60px] absolute left-[40px]"
           ></img>
-          <p className="absolute left-[120px] top-[20px] ">{userName}</p>
+          <p className="absolute left-[123px] top-[20px] ">{userName}</p>
         </div>
-        <div className="w-[350px] h-[467px] absolute top-[100px] right-[0px]">
+        <div className="w-[350px] h-[467px] absolute top-[99px] right-[0px]">
           <img src={imagePreview} className="w-[350px] h-[467px]" />
         </div>
       </div>
@@ -104,8 +104,8 @@ function Tag({ tags }: { tags: PostDetail["tags"] }) {
           .filter((item) => {
             if (tags[item.id] === "1") {
               return item;
-            }else{
-              return null
+            } else {
+              return null;
             }
           })
           .map((item) => (
@@ -130,22 +130,22 @@ function ImageInfo({
   location: PostDetail["address_name"];
 }) {
   return (
-    <div className="w-[390px] h-[284px] relative mt-[32px] mb-[32px]">
-      <div className="w-[330px] h-[138px] absolute left-[40px]">
-        <div className="w-[330px] h-[56px] flex flex-wrap items-start gap-[10px]">
+    <div className="w-[390px] h-[336px] relative mt-[24px]">
+      <div className="w-[330px] h-[142px] absolute left-[40px]">
+        <div className="w-[330px] h-[30px] flex flex-wrap items-start">
           <Tag tags={tags}></Tag>
         </div>
         <div className="w-[330px] h-[96px] mt-[16px] overflow-auto scrollbar-hide">
           {info}
         </div>
       </div>
-      <div className="w-[390px] h-[114px] absolute top-[170px]">
+      <div className="w-[390px] h-[114px] absolute top-[198px]">
         <div className="w-[330px] h-[70px] absolute left-[40px]">
           <p className="absolute top-[20px] text-[20px] font-bold">
             이 장소는 어디인가요?
           </p>
         </div>
-        <div className="w-[330px] h-[44px] absolute top-[70px] left-[40px] border-2">
+        <div className="w-[330px] h-[44px] absolute top-[70px] left-[40px] border-2 rounded-[4px]">
           <Mark className="absolute top-[14px] left-[14px]"></Mark>
           <span className="w-[281px] h-[24px] text-[16px] absolute left-[39px] top-[10px]">
             {location}
@@ -158,20 +158,20 @@ function ImageInfo({
 
 function CommentListItem({ comment }: { comment: CommentDetail }) {
   return (
-    <div className="w-[390px] h-[216px] relative">
-      <div className="w-[350px] h-[60px] absolute top-[24px] left-[20px]">
+    <div className="w-[390px] h-[192px] relative border-b-[1px] border-st-gray-03">
+      <div className="w-[350px] h-[60px] absolute top-[12px] left-[20px]">
         <CommentImg className="w-[60px] h-[60px] absolute left-0"></CommentImg>
-        <div className="w-[182px] h-[60px] absolute left-[72px]">
-          <p className="w-[182px] h-[21px]">{comment.nickname}</p>
-          <p className="w-[182px] h-[21px] absolute top-[29px]">
+        <div className="w-[230px] h-[60px] absolute left-[92px]">
+          <p className="w-[230px] h-[21px]">{comment.nickname}</p>
+          <p className="w-[230px] h-[21px] absolute top-[29px]">
             {comment.createdDate}
           </p>
         </div>
-        <div className="w-[96px] h-[60px] absolute right-0">
+        <div className="w-[36px] h-[36px] absolute right-0">
           <Dot className="w-[36px] h-[36px] absolute right-0"></Dot>
         </div>
       </div>
-      <div className="w-[350px] h-[84px] absolute left-[20px] top-[108px]">
+      <div className="w-[350px] h-[84px] absolute left-[20px] top-[96px]">
         {comment.content}
       </div>
     </div>
@@ -186,7 +186,7 @@ function CommentList({
   commentEndRef: React.ForwardedRef<HTMLDivElement>;
 }) {
   return (
-    <div className="w-[390px] h-[432px] overflow-auto scrollbar-hide">
+    <div className="w-[390px] h-[510px] overflow-auto scrollbar-hide">
       {comment &&
         comment.map((subItem, index) => <CommentListItem comment={subItem} />)}
       <div ref={commentEndRef}></div>
@@ -199,7 +199,7 @@ function CommentInput({
   setNewComment,
   onSendComment,
   userToken,
-  isCommentLoading
+  isCommentLoading,
 }: {
   newComment: string;
   setNewComment: Dispatch<SetStateAction<string>>;
@@ -207,25 +207,40 @@ function CommentInput({
   userToken: boolean;
   isCommentLoading: boolean;
 }) {
-  
   const navigate = useNavigate();
 
-  return(
-    <div className = 'w-[390px] h-[85px] relative'>
-      {userToken ? 
+  return (
+    <div className="w-[390px] h-[66px] relative">
+      {userToken ? (
         <>
-          {isCommentLoading ?  
-            <p>댓글 저장중...</p> :
+          {isCommentLoading ? (
+            <p>댓글 저장중...</p>
+          ) : (
             <>
-            <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02' onSubmit={(event)=>{ event.preventDefault(); onSendComment(); }} > 
-            <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} 
-            onChange={(event) => { setNewComment(event.target.value); }} />    
-            <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' onClick={onSendComment}/>
-            </form>
+              <form
+                className="w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02 rounded-[12px]"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  onSendComment();
+                }}
+              >
+                <input
+                  className="w-[330px] h-[48px] bg-st-gray-02 px-[16px]  rounded-[12px] focus:outline-none"
+                  placeholder="댓글을 입력하세요"
+                  value={newComment}
+                  onChange={(event) => {
+                    setNewComment(event.target.value);
+                  }}
+                />
+                <Send
+                  className="w-[24px] h-[24px] absolute right-[8px] top-[8px]"
+                  onClick={onSendComment}
+                />
+              </form>
             </>
-          }
+          )}
         </>
-      :
+      ) : (
         <div className="flex justify-center">
           <button onClick={() => navigate("/login")}> 로그인 페이지</button>
         </div>
@@ -242,7 +257,7 @@ function Comment({
   onSendComment,
   commentEndRef,
   userToken,
-  isCommentLoading
+  isCommentLoading,
 }: {
   comment: CommentDetail[] | undefined;
   commentNum: number;
@@ -255,11 +270,12 @@ function Comment({
   isCommentLoading: boolean;
 }) {
   return (
-    <div>
-      <div className="w-[390px] h-[70px] mt-[32px]  relative">
-        <p className="text-[20px] absolute left-[40px] top-[20px]">
-          댓글 {commentNum}
-        </p>
+    <div className="h-[638px]">
+      <div className="w-[390px] h-[62px] relative">
+        <div className="h-[30px] text-[20px] absolute left-[20px] top-[16px]">
+          <span className="font-bold">댓글</span>
+          <span> {commentNum}</span>
+        </div>
       </div>
       {comment && (
         <CommentList
@@ -290,7 +306,7 @@ function Detail() {
   const [imgURL, setImgURL] = useState<string>();
   const { id } = useParams();
   const commentEndRef = useRef<HTMLDivElement>(null);
-  const headerRef =  useMoveToTop();
+  const headerRef = useMoveToTop();
   const [post, setPost] = useState<PostDetail>({
     createdDate: "",
     modifiedDate: "",
@@ -316,16 +332,15 @@ function Detail() {
 
   const mutation = useMutation({
     mutationFn: postComment,
-    onSuccess: () => {
-    },
+    onSuccess: () => {},
     onError: () => {
       alert("서버에서 에러가 났어요 😡");
     },
-  })
+  });
   const isCommentLoading = mutation.isLoading;
-  
-  let userToken = false
-  if (localStorage.getItem('refresh_token')){
+
+  let userToken = false;
+  if (localStorage.getItem("refresh_token")) {
     userToken = true;
   }
 
@@ -361,10 +376,13 @@ function Detail() {
     //@ts-ignore
     setComment(res.data.commentsDto);
     //@ts-ignore
-    setCommentNum(res.data.numberOfComments)
-    {commentEndRef.current && commentEndRef.current.scrollIntoView({ behavior: 'smooth' }) }
-    setNewComment('');
-  }
+    setCommentNum(res.data.numberOfComments);
+    {
+      commentEndRef.current &&
+        commentEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+    setNewComment("");
+  };
 
   if (isLoading) {
     return <div>로딩중</div>;
@@ -373,8 +391,8 @@ function Detail() {
       <>
         <div ref={headerRef}></div>
         <Header setPlaying={setPlaying}></Header>
-        <div className="w-[390px] h-[14px] mb-[20px]">
-          <p className="text-[20px] font-bold mt-[20px] ml-[40px]">
+        <div className="w-[390px] h-[70px] relative">
+          <p className="text-[20px] h-[30px] font-bold absolute mt-[24px] ml-[40px]">
             같이 감상하면 좋은 곡
           </p>
         </div>
@@ -386,7 +404,7 @@ function Detail() {
           artist={artist}
           imgURL={imgURL}
         />
-        <div className="w-[390px] h-[14px] bg-st-gray-02 mt-[32px]"></div>
+        <div className="w-[390px] h-[14px] bg-st-gray-02 mt-[24px]"></div>
         <Content
           userName={post.nickname}
           createdDate={post.createdDate}
@@ -406,7 +424,7 @@ function Detail() {
           setNewComment={setNewComment}
           onSendComment={onSendComment}
           commentEndRef={commentEndRef}
-          userToken = {userToken}
+          userToken={userToken}
           isCommentLoading={isCommentLoading}
         >
         </Comment>

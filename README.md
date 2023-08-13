@@ -3,28 +3,33 @@
 # ![image](https://github.com/mi-gan-zi/.github/assets/75983289/469640e2-bc2d-4f1b-891a-bf205334fd45)
 
 </div>
-나만 알고 있는 우리 동네 미지의 공간을 특별한 큐레이팅을 통해 소개하는 서비스 
+나만 알고 있는 우리 동네 미지의 공간을 특별한 큐레이팅을 통해 소개하는 서비스
 
-## ⛓ LINK  
+## ⛓ LINK
+
 [미(간)지 사이트 바로가기](https://miganzi.vercel.app/)
 
 ## 실행 방법
+
 1. 깃 클론
+
 ```
-git clone https://github.com/mi-gan-zi/FE-MiGanZi
+git clone https://github.com/mi-gan-zi/FE-MiGanZi.git
 ```
+
 2. 패키지 인스톨
+
 ```
 yarn install
 ```
+
 3. 로컬환경 테스트 실행
+
 ```
 yarn start
 ```
 
-
-
-## 🧐 MEMBERS 
+## 🧐 MEMBERS
 
 <table border>
   <tbody>
@@ -101,9 +106,9 @@ yarn start
 
 ## 📄 PAGE (추가예정)
 
-|                                                              |                                                              |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
-|     **메인 페이지**    |    **검색 페이지** |
+|                 |                            |
+| :-------------: | :------------------------: |
+| **메인 페이지** |      **검색 페이지**       |
 | ![메인페이지]() | ![아티스트페이지]() |
 
 ## gif file
@@ -111,6 +116,3 @@ yarn start
 ![realtimecheck](https://github.com/mi-gan-zi/FE-MiGanZi/assets/116594422/b2fc1d9f-7f20-42a3-a872-ee04bae4d876)
 ![music](https://github.com/mi-gan-zi/FE-MiGanZi/assets/116594422/0dc140e5-169d-4dfe-a0ae-4a0f255d5571)
 ![description](https://github.com/mi-gan-zi/FE-MiGanZi/assets/116594422/e0b8469d-e5dc-46f2-a714-93d9019b43aa)
-
-
-
