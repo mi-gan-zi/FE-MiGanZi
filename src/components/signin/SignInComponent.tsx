@@ -54,7 +54,7 @@ const SignInComponent = () => {
   };
 
   return (
-    <div className="flex flex-col justify-between h-[665px] w-[24rem] px-5 overflow-y-auto">
+    <div className="flex flex-col justify-between h-[665px] w-[24rem] px-5 overflow-y-auto overflow-x-hidden">
       <div className="h-[310px] w-full flex flex-col items-center ">
         <div className="translate-x-3">
           <Line className="mt-2"></Line>
@@ -91,7 +91,7 @@ const SignInComponent = () => {
               <input type="checkbox" className="mr-2" />
               자동로그인
             </div>
-            <span>비밀번호를 잊으셨나요?</span>
+            {/* <span>비밀번호를 잊으셨나요?</span> */}
           </div>
           <button
             disabled={mutation.isLoading}
