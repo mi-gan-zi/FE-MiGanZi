@@ -107,6 +107,7 @@ export const Container = () => {
           회원탈퇴
         </div>
       </div>
+      <LogOutModal />
       {logout && <LogOutModal />}
     </div>
   );
