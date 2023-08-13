@@ -5,6 +5,6 @@ export const vaildNick = (nickName: VaildType["nickName"]) => {
   return regex.test(nickName);
 };
 export const validPassword = (password: VaildType["password"]) => {
-  const regex = /^.{8,}$/;
+  const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
   return regex.test(password);
 };
