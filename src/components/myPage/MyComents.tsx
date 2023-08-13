@@ -15,10 +15,10 @@ export const MyComents = () => {
   const [checkLast, setcheckLast] = useState<boolean>();
   const queryClient = useQueryClient();
 
-  const { data } = useQuery({
-    queryKey: ["mycomment"],
-    queryFn: () => getComments(),
-  });
+  // const { data } = useQuery({
+  //   queryKey: ["mycomment"],
+  //   queryFn: () => getComments(),
+  // });
 
   const getComments = async () => {
     const res = await axios.get(`user/my-page/comments?page=${pageNumber}`);

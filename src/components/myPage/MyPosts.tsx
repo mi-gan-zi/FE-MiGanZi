@@ -9,26 +9,25 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const MyPosts = () => {
-  const [posts, setPosts] = useState<Post[] | null>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(0);
-  const [checkLast, setcheckLast] = useState<boolean>();
+  const [checkLast, setCheckLast] = useState<boolean>(false);
   const [total, setTotal] = useState<number>(0);
   const axios = createAxiosInstance();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
-  const { data } = useQuery({
-    queryKey: ["mypost"],
-    queryFn: () => getPosts(),
-  });
+  // const { data } = useQuery({
+  //   queryKey: ["mypost"],
+  //   queryFn: () => getPosts(),
+  // });
 
   async function getPosts() {
     const res = await axios.get(`user/my-page/posts?page=${pageNumber}`);
     setTotal(res.data.postsDto.content.length);
     const newPosts = res.data.postsDto.content;
-    setPosts((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
+    setPosts((prevPosts) => [...prevPosts, ...newPosts]);
     setPageNumber((prevPage) => prevPage + 1);
-    setcheckLast(res.data.postsDto.last);
+    setCheckLast(res.data.postsDto.last);
     return newPosts;
   }
 
