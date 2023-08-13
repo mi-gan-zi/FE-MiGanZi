@@ -24,8 +24,6 @@ export const AlarmComponent = ({ post }: PostProps) => {
       day && day[0] + "년" + day[1] + "월" + day[2] + "일 " + clock;
     setTime(newTime);
   };
-  console.log(post);
-
   useEffect(() => {
     if (post.createdDate) {
       getTimes(post.createdDate);
