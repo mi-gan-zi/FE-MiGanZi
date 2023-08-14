@@ -23,15 +23,11 @@ const TagList = ({ setTags }: TagProps) => {
     }
   };
   return (
-    <div className="mb-5">
-      <ul className="px-[20px] grid grid-rows-3 grid-flow-col gap-2">
+    <div className="mb-3 px-5 py-3">
+      <ul className="grid grid-rows-3 grid-flow-col gap-2">
         {tagList.map((item) => (
           <li key={item.id}>
-            <TagButton
-              id={item.id}
-              text={item.name}
-              onClickMark={onClickMark}
-            />
+            <TagButton id={item.id} text={item.name} onClickMark={onClickMark} />
           </li>
         ))}
       </ul>

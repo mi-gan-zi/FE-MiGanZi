@@ -13,7 +13,7 @@ const HeaderComponent = () => {
   const handleOnClick = (props: string) => {
     navigate(`/${props}`);
   };
-  
+
   return (
     <div className="flex w-[100%] pb-4 flex-col items-center justify-center px-5 border-b-[1px] border-st-gray-03 mt-4">
       <div className="flex w-[90%] justify-between items-center ml-[25px]">

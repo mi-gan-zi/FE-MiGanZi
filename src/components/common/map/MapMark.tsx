@@ -2,13 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { DrawingManager, Map } from "react-kakao-maps-sdk";
 import { ReactComponent as BluePin } from "assets/blue_pin.svg";
 
-const MapMark = ({
-  keyword,
-  setCoordinate,
-}: {
-  keyword: string;
-  setCoordinate: (y: string, x: string) => void;
-}) => {
+const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (y: string, x: string) => void }) => {
   type DrawingManagerType =
     /*global kakao*/
     kakao.maps.drawing.DrawingManager<kakao.maps.drawing.OverlayType.MARKER>;
@@ -16,9 +10,7 @@ const MapMark = ({
   let managerRef = useRef<DrawingManagerType>(null);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [address, setAddress] = useState(null);
-  const [overlayData, setOverlayData] = useState<
-    ReturnType<DrawingManagerType["getData"]>
-  >({
+  const [overlayData, setOverlayData] = useState<ReturnType<DrawingManagerType["getData"]>>({
     arrow: [],
     circle: [],
     ellipse: [],
@@ -55,7 +47,6 @@ const MapMark = ({
           map.setBounds(bounds);
         }
       });
-    setAddress(null);
   }, [map, keyword]);
 
   function selectOverlay(type: kakao.maps.drawing.OverlayType.MARKER) {
@@ -80,16 +71,13 @@ const MapMark = ({
     if (manager !== null && manager.getData().marker.length === 0) {
       setAddress(null);
     }
-    // FIXME: 요청 횟수 계속 증가하는 오류 -> 응답 완료전에 마커 삭제시 정상 동작 안함
     drawOverlayData();
   }
 
   function searchAddrFromCoords(manager: any) {
     const geocoder = new kakao.maps.services.Geocoder();
-    geocoder.coord2Address(
-      manager?.getData().marker[0].x,
-      manager?.getData().marker[0].y,
-      (result: any) => setAddress(result[0].address.address_name)
+    geocoder.coord2Address(manager?.getData().marker[0].x, manager?.getData().marker[0].y, (result: any) =>
+      setAddress(result[0].address.address_name)
     );
   }
 
@@ -134,9 +122,7 @@ const MapMark = ({
         </button>
       </div>
       {address ? (
-        <p className="px-4 pb-5 text-sm text-active-blue">
-          다른 장소를 탐색하려면 마커를 끌어서 이동시키세요
-        </p>
+        <p className="px-4 pb-5 text-sm text-active-blue">다른 장소를 탐색하려면 마커를 끌어서 이동시키세요</p>
       ) : (
         ""
       )}
