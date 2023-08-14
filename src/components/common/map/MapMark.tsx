@@ -71,7 +71,6 @@ const MapMark = ({ keyword, setCoordinate }: { keyword: string; setCoordinate: (
     if (manager !== null && manager.getData().marker.length === 0) {
       setAddress(null);
     }
-    // FIXME: 요청 횟수 계속 증가하는 오류 -> 응답 완료전에 마커 삭제시 정상 동작 안함
     drawOverlayData();
   }
 

@@ -23,8 +23,6 @@ export default function Search() {
   const getSearchList = useCallback(async () => {
     const res = await axios.get(`${process.env.REACT_APP_ENDPOINT}user/board/find-near-post/${lat}/${lng}/${bit}`);
     setPosts(res.data.content);
-    console.log(res.data);
-    console.log(res.data.content);
   }, [lat, lng, bit]);
 
   useEffect(() => {
