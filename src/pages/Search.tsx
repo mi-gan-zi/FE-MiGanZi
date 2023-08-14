@@ -21,10 +21,10 @@ export default function Search() {
   const bit = useMemo(() => tagsToBit(tags), [tags]);
 
   const getSearchList = useCallback(async () => {
-    const res = await axios.get(
-      `${process.env.REACT_APP_ENDPOINT}user/board/find-near-post/${lat}/${lng}/${bit}`
-    );
+    const res = await axios.get(`${process.env.REACT_APP_ENDPOINT}user/board/find-near-post/${lat}/${lng}/${bit}`);
     setPosts(res.data.content);
+    console.log(res.data);
+    console.log(res.data.content);
   }, [lat, lng, bit]);
 
   useEffect(() => {
@@ -39,11 +39,12 @@ export default function Search() {
     setIsMapOpen(!isMapOpen);
   };
   const handleTagToggle = () => {
+    setIsMapOpen(!isMapOpen);
     setIsTagOpen(!isTagOpen);
   };
   const handleFilterReset = () => {
-    setIsMapOpen(!isMapOpen);
-    setIsTagOpen(!isTagOpen);
+    setIsMapOpen(false);
+    setIsTagOpen(false);
     setPosts([]);
   };
 
@@ -75,10 +76,7 @@ export default function Search() {
       <section className="bg-white border-[#F5F4F3]">
         <div className="py-[20px] flex justify-between items-center">
           <p className="px-[20px] text-xl font-bold">아티클 둘러보기</p>
-          <button
-            className="px-[20px] text-sm font-medium text-[#F22222]"
-            onClick={handleFilterReset}
-          >
+          <button className="px-[20px] text-sm font-medium text-[#F22222]" onClick={handleFilterReset}>
             필터 초기화
           </button>
         </div>
