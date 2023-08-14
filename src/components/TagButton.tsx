@@ -22,7 +22,7 @@ const TagButton = ({
 
   return (
     <button
-      className={`px-2.5 py-1 text-xs font-semibold ${textColor} rounded-[50px] border ${borderColor} ${bgColor}`}
+      className={`px-3 py-1.5 text-xs font-semibold ${textColor} rounded-[50px] border ${borderColor} ${bgColor}`}
       onClick={handleClick}
     >
       {text}
