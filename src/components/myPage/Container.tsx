@@ -8,6 +8,11 @@ import createAxiosInstance from "utils/axiosConfig";
 export const Container = () => {
   const [enabled, setEnabled] = useState(false);
   const [logout, setLogout] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
   const navigate = useNavigate();
   const nickname = localStorage.getItem("nickname");
   const axios = createAxiosInstance();
@@ -61,19 +66,25 @@ export const Container = () => {
             알림설정
           </div>
           <div className="flex">
-            <label className="inline-flex relative items-center mr-5 cursor-pointer">
-              <input
-                type="checkbox"
-                className="sr-only peer"
-                checked={enabled}
-                readOnly
-              />
-              <div
-                onClick={() => {
-                  setEnabled(!enabled);
-                }}
-                className="w-11 h-6 bg-st-gray-03 rounded-full peer  peer-focus:bg-active-blue  peer-checked:after:translate-x-full peer-checked:after:border-st-white peer-checked:after:bg-st-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
-              ></div>
+            <label className="flex cursor-pointer select-none items-center">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  checked={isChecked}
+                  onChange={handleCheckboxChange}
+                  className="sr-only"
+                />
+                <div
+                  className={`box block h-8 w-14 rounded-full ${
+                    isChecked ? "bg-active-blue" : "bg-st-gray-03"
+                  }`}
+                ></div>
+                <div
+                  className={`absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-st-white transition ${
+                    isChecked ? "translate-x-full" : ""
+                  }`}
+                ></div>
+              </div>
             </label>
           </div>
         </div>

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type PostProps = {
   post: {
+    post_id?: number | undefined;
     createdDate?: string | undefined;
     title?: string | undefined;
     message?: string | undefined;
@@ -13,6 +15,7 @@ type PostProps = {
 
 export const AlarmComponent = ({ post }: PostProps) => {
   const [time, setTime] = useState<string | undefined>("");
+  const navigate = useNavigate();
 
   const getTimes = (times: string) => {
     const clock = times.split(" ")[1];
@@ -21,7 +24,6 @@ export const AlarmComponent = ({ post }: PostProps) => {
       day && day[0] + "년" + day[1] + "월" + day[2] + "일 " + clock;
     setTime(newTime);
   };
-
   useEffect(() => {
     if (post.createdDate) {
       getTimes(post.createdDate);
@@ -31,7 +33,10 @@ export const AlarmComponent = ({ post }: PostProps) => {
   }, []);
 
   return (
-    <div className="w-[350px] h-[94px] px-5 py-4 flex items-center justify-start">
+    <div
+      className="w-[350px] h-[94px] px-5 py-4 flex items-center justify-start cursor-pointer"
+      onClick={() => post.post_id && navigate(`/detail/${post.post_id}`)}
+    >
       {post.image_url !== undefined ? (
         <>
           <img

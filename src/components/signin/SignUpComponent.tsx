@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
+import { validPassword } from "components/common/utils/vaild";
 import useDebounce from "hooks/useDebounce";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -68,6 +69,8 @@ export const SignUp = () => {
       setErr("비밀번호를 확인해주세요!");
     } else if (!nickname || !password || !checked) {
       setErr("닉네임과 비밀번호를 입력해주세요!");
+    } else if (password && !validPassword(password)) {
+      setErr("비밀번호가 형식에 맞지 않습니다.");
     } else {
       const formData = new FormData();
       formData.append("nickname", nickname);
@@ -96,36 +99,29 @@ export const SignUp = () => {
         ) : (
           <p className="text-alert-red ">{err}</p>
         )}
-        <div className="mt-[30px] mb-[70px]">
+        <div className="mt-[8px] mb-[36px]">
           <input
             className="w-[350px] h-[44px] px-3 py-2.5 border border-st-gray-05 rounded mr-3 focus:outline-none"
             ref={nickname_ref}
             onChange={nickNameValue}
             placeholder="닉네임 입력"
           />
-          {/* <button
-            type="button"
-            // onClick={() => checkNickname()}
-            className="w-[73px] h-[44px] px-3 py-2.5 bg-active-blue text-sm font-medium text-st-white rounded"
-          >
-            중복확인
-          </button> */}
         </div>
       </div>
       <div className="mb-[90px]">
         <p className="text-xl font-bold">비밀번호</p>
         <input
           type="password"
-          className="mt-[30px] w-[350px] h-[44px] px-3 py-2.5 border border-st-gray-05 rounded mr-3 focus:outline-none"
+          className="mt-[8px] w-[350px] h-[44px] px-3 py-2.5 border border-st-gray-05 rounded mr-3 focus:outline-none"
           ref={password_ref}
-          placeholder="비밀번호 입력"
+          placeholder="소문자, 대문자, 숫자 포함 8자 이상"
         />
       </div>
       <div className="mb-[100px]">
         <p className="text-xl font-bold">비밀번호 재확인</p>
         <input
           type="password"
-          className="mt-[30px] w-[350px] h-[44px] px-3 py-2.5 border border-st-gray-05 rounded mr-3 focus:outline-none"
+          className="mt-[8px] w-[350px] h-[44px] px-3 py-2.5 border border-st-gray-05 rounded mr-3 focus:outline-none"
           ref={check_ref}
           placeholder="비밀번호 입력"
         />

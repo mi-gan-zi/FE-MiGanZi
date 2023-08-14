@@ -15,23 +15,31 @@ export const MyComents = () => {
   const [checkLast, setcheckLast] = useState<boolean>();
   const queryClient = useQueryClient();
 
-  const { data } = useQuery({
-    queryKey: ["mycomment"],
-    queryFn: () => getComments(),
-  });
+  // const { data } = useQuery({
+  //   queryKey: ["mycomment"],
+  //   queryFn: () => getComments(),
+  // });
 
   const getComments = async () => {
-    const res = await axios.get(`user/my-page/comments?page=0`);
-    setTotal(res.data.myCommentsDto.content.length);
+    const res = await axios.get(`user/my-page/comments?page=${pageNumber}`);
+    console.log(res);
+    setTotal(res.data.numberOfComments);
     const newPosts = res.data.myCommentsDto.content;
     setPosts((prevPosts) => Array.from(prevPosts || []).concat(newPosts));
     setPageNumber((prevPage) => prevPage + 1);
     setcheckLast(res.data.myCommentsDto.last);
   };
 
-  const target = useIntersectionObserver(async (entry: any, observer: any) => {
-    await getComments();
-  });
+  const target = useIntersectionObserver(
+    async (
+      entry: IntersectionObserverEntry,
+      observer: IntersectionObserver
+    ) => {
+      if (entry.isIntersecting && !checkLast) {
+        await getComments();
+      }
+    }
+  );
 
   return (
     <div>
@@ -57,6 +65,7 @@ export const MyComents = () => {
         )}
         {total !== 0 &&
           posts?.map((post: any) => <AlarmComponent post={post} />)}
+        {checkLast ? null : <div ref={target} className="h-[90px]" />}
       </div>
     </div>
   );
